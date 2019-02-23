@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="343bb9f8-cf27-47e6-8e55-c7a4ef092654" name="Default Changelist" comment="Added some structure.">
-      <change afterPath="$PROJECT_DIR$/handler/parts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Database_Dev.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Database_Dev.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="343bb9f8-cf27-47e6-8e55-c7a4ef092654" name="Default Changelist" comment="Added some structure." />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,16 +133,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550953833226</updated>
-      <workItem from="1550953835077" duration="2658000" />
+      <workItem from="1550953835077" duration="2955000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2658000" />
+    <option name="totallyTimeSpent" value="2955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="46" width="1107" height="728" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27615458" />
@@ -158,14 +151,14 @@
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49952874" visible="true" weight="0.3294509" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49952874" weight="0.3294509" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3294509" />
       <window_info anchor="bottom" id="Educational.CheckDetails" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3294509" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3294509" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="SciView" />
       <window_info anchor="right" id="Database" />
