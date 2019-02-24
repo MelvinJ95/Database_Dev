@@ -121,7 +121,7 @@ class UserHandler:
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def deleteUser(self, pid):
+    def deleteUser(self, uid):
         dao = UsersDAO()
         if not dao.getUserById(uid):
             return jsonify(Error = "User not found."), 404
@@ -158,7 +158,7 @@ class UserHandler:
         for U in user_counts:
             D = {}
             D['id'] = U[0]
-            D['name'] = U[1]
+            D['u_username'] = U[1]
             D['count'] = U[2]
             result.append(D)
         return result

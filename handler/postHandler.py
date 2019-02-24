@@ -1,4 +1,5 @@
 from flask import jsonify, Flask
+from dao.Posts import PostsDAO
 
 class PostHandler:
     def bulid_post_dict(self, row):
