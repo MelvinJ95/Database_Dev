@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from handler import userHandler, postHandler
 
 @app.route('/')
 def home():

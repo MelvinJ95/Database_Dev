@@ -41,7 +41,7 @@ class PostHandler:
         user = args.get("user")
         dao = PostsDAO()
         posts_list = []
-        if(len(args) == 3) and date and hashtag and user
+        if(len(args) == 3) and date and hashtag and user:
             posts_list = dao.getPostsByDateAndHashtagAndUser(date, hashtag, user)
         elif (len(args) == 2) and date and hashtag:
             posts_list = dao.getPostsByDateAndHashtag(date, hashtag)

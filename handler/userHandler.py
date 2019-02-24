@@ -18,9 +18,8 @@ class UserHandler:
 
 
 
-    def build_user_attributes(self, pid, u_username, ufirstname,ulastname, upwd
-                            uphone,uemail,ubirthday,usex
-                    ):
+    def build_user_attributes(self, pid, u_username, ufirstname,ulastname, upwd, 
+                              uphone,uemail,ubirthday,usex):
         result = {}
         result['uid'] = pid
         result['u_username'] = u_username
@@ -32,6 +31,19 @@ class UserHandler:
         result['ubirthday'] = ubirthday
         result['usex'] = usex 
         return result
+    
+    #inclomplete
+    def authorize(self, form):
+        username = form['username']
+        password = form['password']
+#         if username and password:
+#             needs use of dao
+#                 if auth:
+#                     arrange authorization and return jsonified request
+#                 else:
+#                     return jsonify(ERROR='Wrong Password or Username/Email')
+#         else:
+#             return jsonify(ERROR='Malformed request form(last return)')
 
     def getAllUsers(self):
         dao = UsersDAO()
@@ -133,7 +145,7 @@ class UserHandler:
                 uemail = form['uemail']
                 ubirthday = form['ubirthday']
                 usex = form['usex']
-                 if u_username and ufirstname and ulastname and upwd and uphone and uemail and ubirthday and usex:
+                if u_username and ufirstname and ulastname and upwd and uphone and uemail and ubirthday and usex:
                     dao.update(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex)
                     result = self.build_user_attributes(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex)
                     return jsonify(User=result), 200
