@@ -18,10 +18,10 @@ class UserHandler:
 
 
 
-    def build_user_attributes(self, pid, u_username, ufirstname,ulastname, upwd, 
+    def build_user_attributes(self, uid, u_username, ufirstname,ulastname, upwd, 
                               uphone,uemail,ubirthday,usex):
         result = {}
-        result['uid'] = pid
+        result['uid'] = uid
         result['u_username'] = u_username
         result['ufirstname'] = ufirstname
         result['ulastname'] = ulastname
@@ -54,9 +54,9 @@ class UserHandler:
             result_list.append(result)
         return jsonify(Users=result_list)
 
-    def getUserById(self, pid):
+    def getUserById(self, uid):
         dao = UsersDAO()
-        row = dao.getUserById(pid)
+        row = dao.getUserById(uid)
         if not row:
             return jsonify(Error = "User Not Found"), 404
         else:

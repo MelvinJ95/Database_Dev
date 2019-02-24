@@ -29,9 +29,9 @@ class MessageHandler:
             result_list.append(result)
         return jsonify(Messages=result_list)
 
-    def getmessageById(self, pid):
+    def getmessageById(self, mid):
         dao = messagesDAO()
-        row = dao.getmessageById(pid)
+        row = dao.getmessageById(mid)
         if not row:
             return jsonify(Error = "message Not Found"), 404
         else:
