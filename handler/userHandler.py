@@ -69,11 +69,11 @@ class UserHandler:
         dao = UsersDAO()
         users_list = []
         if (len(args) == 2) and firstname and lastname:
-            users_list = dao.getUsersByFirstnameAndLastname(firstname, lastname)
+            users_list = dao.getUsersByFirstNameAndLastName(firstname, lastname)
         elif (len(args) == 1) and firstname:
-            users_list = dao.getUsersByFirstname(firstname)
+            users_list = dao.getUsersByFirstName(firstname)
         elif (len(args) == 1) and lastname:
-            users_list = dao.getUsersByMaterial(lastname)
+            users_list = dao.getUsersByLastName(lastname)
         else:
             return jsonify(Error = "Malformed query string"), 400
         result_list = []
