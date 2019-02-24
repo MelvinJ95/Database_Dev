@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
-from handler import userHandler, postHandler
+from flask import Flask, jsonify, request
+from handler.postHandler import PostHandler
+from handler.userHandler import UserHandler
 
 @app.route('/')
 def home():
@@ -7,11 +8,11 @@ def home():
 
 @app.route('/GramChat/login', methods= ['POST'])
 def login():
-    return #login
+    return UserHandler.authorize(request.json)
 
 @app.route('/GramChat/register', methods=['POST'])
 def register():
-    return #register new user
+    return UserHandler.insertUser(request.json)
     
 @app.route('/GramChat/user', methods=['GET', 'POST'])
 def getPostUser():
@@ -25,7 +26,7 @@ def getPostUser():
 
 @app.route('/GramChat/user/<int:uID>', methods=['GET'])
 def getUserByID(pID):
-    return #user by id
+    return UserHandler.getUserById(uID)
 
 @app.route('/GramChat/chat/createchat/<int:owner>/<string:chatname>', methods=['POST']) 
 def createNewChat(owner, chatname):
@@ -52,8 +53,8 @@ def deleteChat(owner, chatname):
     return #create new chat
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods = ['POST'])
-def postMessage():
-    return #post a message
+def postPost():
+    return PostHandler.insertPost(request.json)
 
 @app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])
 def likeMessage(mID):
