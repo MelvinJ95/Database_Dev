@@ -8,12 +8,12 @@ class UserHandler:
         result['uid'] = row[0]
         result['u_username'] = row[1]
         result['ufirstname'] = row[2]
-        result['ulastname'] = row[2]
-        result['upwd'] = row[3]
-        result['uphone'] = row[4]
-        result['uemail'] = row[5]
-        result['ubirthday'] = row[6]
-        result['usex'] = row[7]
+        result['ulastname'] = row[3]
+        result['upwd'] = row[4]
+        result['uphone'] = row[5]
+        result['uemail'] = row[6]
+        result['ubirthday'] = row[7]
+        result['usex'] = row[8]
         return result
 
 
