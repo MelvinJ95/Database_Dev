@@ -158,7 +158,7 @@ class UserHandler:
         for U in user_counts:
             D = {}
             D['id'] = U[0]
-            D['u_username'] = U[1]
+            D['username'] = U[1]
             D['count'] = U[2]
             result.append(D)
         return result
