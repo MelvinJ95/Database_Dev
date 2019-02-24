@@ -7,7 +7,7 @@ class UsersDAO:
         if(self.getAllUsers[0]==123):
             return self.getAllUsers()
         return 
-    def getUsersByFirstnameAndLastname(self, firstname, lastname):
+    def getUsersByFirstNameAndLastName(self, firstname, lastname):
         if(self.getAllUsers[2]==firstname and self.getAllUsers[3]==lastname):
             return self.getAllUsers()
         return 
