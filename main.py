@@ -77,10 +77,6 @@ def getAllUsers():
         else:
             return UserHandler().searchUsers(request.args)
 
-@app.route('/GramChat/chat/createchat/<int:owner>', methods=['POST']) 
-def createNewChat(owner):
-    return ChatHandler.insertNewChatGroup(request.json, owner)
-
 @app.route('/GramChat/users/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getUserById(pid):
     if request.method == 'GET':
@@ -104,10 +100,6 @@ def addUsertoContactList(owner):
 def createNewChat(owner):
     return  ChatHandler.insertNewChat(request.jason, owner)
 
-@app.route('/GramChat/contacts/addContact/<int:owner>', methods=['POST'])
-def addUsertoContactList(owner):
-    return  ContactHandler.addContact(request.json, owner)
-
 @app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
 def removeUserFromchat():
     return ChatHandler.removeMember(request.json)
@@ -115,10 +107,6 @@ def removeUserFromchat():
 @app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
 def addUsertochat(cid, uid):
     return  ChatHandler.insertMember(request.json)
-
-@app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE'])
-def removeUserFromchat(cid, uid):
-    return  ChatHandler.removerMember(request.json)
 
 @app.route('/GramChat/contacts/removeContact/<int:uid>', methods=['DELETE'])
 def removeUserFromContactList(owner, uid):
