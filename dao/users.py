@@ -1,8 +1,10 @@
 class UsersDAO:
 
     def getAllUsers(self):
+        result = []
         user = [123, 'Jason123', 'Jason','Freeman', 'password', '123456789', 'J@gmail.com', '12 June 1968', 'M']
-        return user 
+        result.append(user)
+        return result
     def getUserById(self, uid):
         if(self.getAllUsers[0]==123):
             return self.getAllUsers()

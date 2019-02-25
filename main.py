@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from handler.postHandler import PostHandler
+from handler.userHandler import UserHandler
 
 app = Flask(__name__)
 
@@ -54,18 +55,23 @@ def getPostByDate(pdate):
 @app.route('/GramChat/user', methods=['GET', 'POST'])
 def getPostUser():
     if request.method == 'GET':
-
         if len(request.args) >= 1:
-
             return  # get specific user
-
         else:
-
             return  # get all users
-
     if request.method == 'POST':
         return  # create new user
 
+@app.route('/Gramchat/users', methods=['GET', 'POST'])
+def getAllUsers():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return UserHandler().insertUserJson(request.json)
+    else:
+        if not request.args:
+            return UserHandler().getAllUsers()
+        else:
+            return UserHandler().searchUsers(request.args)
 
 # @app.route('/GramChat/user/<int:uID>', methods=['GET'])
 # def getUserByID(pID):

@@ -1,3 +1,4 @@
+from dao import users
 class PostsDAO:
 
     def getAllPosts(self):
@@ -23,3 +24,17 @@ class PostsDAO:
                 return post
 
         return []
+
+    def getPostByUser(self, uid):
+        result = self.getAllPosts()
+        user = users.getAllUsers()
+        post1 = [1, 'Hola', '2-24-2019', 'link.png']
+        for post in result:
+            if post[2] == uid:
+                result.append(post)
+
+        return result
+
+
+
+
