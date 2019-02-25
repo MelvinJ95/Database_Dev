@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from handler.post import PostHandler
+from handler.postHandler import PostHandler
 
 app = Flask(__name__)
 
