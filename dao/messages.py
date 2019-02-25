@@ -16,14 +16,14 @@ class MessagesDAO:
     def getMessagesByIDAndDate(self, Id, date):
         result = self.getAllMessages()
         for r in result: 
-            if(r[1]==Id and r[2]==date):
+            if(r[0]==Id and r[2]==date):
                 return r
         return 
 
     def getMessageByID(self, Id):
         result = self.getAllMessages()
         for r in result: 
-            if(r[1]==Id):
+            if(r[0]==Id):
                 return r
         return
         
