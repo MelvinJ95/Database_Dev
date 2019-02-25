@@ -1,24 +1,39 @@
 class MessagesDAO:
 
     def getAllMessages(self):
-        message = [123, 'This is a message', 'February, 20, 2019']
+        result = []
+        message = [123, 'This is a message', 'February 20, 2019']
+        result.append(message)
         return message 
+
     def getMessageById(self, uid):
-        if(self.getAllMessages[0]==123):
-            return self.getAllMessages()
+        result = self.getAllMessages()
+        for r in result:
+            if(r[0]==123):
+                return r
         return 
+
     def getMessagesByIDAndDate(self, Id, date):
-        if(self.getAllMessages[1]==Id and self.getAllMessages[2]==date):
-            return self.getAllMessages()
+        result = self.getAllMessages()
+        for r in result: 
+            if(r[1]==Id and r[2]==date):
+                return r
         return 
+
     def getMessageByID(self, Id):
-        if(self.getAllMessages[1]==Id):
-            return self.getAllMessages()
+        result = self.getAllMessages()
+        for r in result: 
+            if(r[1]==Id):
+                return r
         return
+        
     def getMessageByDate(self, date):
-        if(self.getAllMessages[2]==date):
-            return self.getAllMessages()
+       result = self.getAllMessages()
+        for r in result: 
+            if(r[2]==date):
+                return r
         return
+
     def insert(self):
         return
 
