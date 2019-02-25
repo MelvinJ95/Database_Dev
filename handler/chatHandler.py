@@ -43,15 +43,21 @@ class ChatHandler:
         members['Name'] = row[0] + " " + row[1]
         return members
     
-    def getAllGroupChats(self):
-        result = ChatDAO().getGroups()
+    def buildChatID(self, row):
+        chats = {}
+        chats['usrid'] = row[0]
+        chats['chatid'] = row[1]
+        return chats
+    
+    def getAllChats(self):
+        result = ChatDAO().getChats()
         chats = []
         if result:
             for i in result:
                 chats.append(self.buildChatAlpha(i))
             return jsonify(Chats=chats)
         else:
-            return jsonify(ERROR='No groups found')
+            return jsonify(ERROR='No chats found')
     
 #     def getChatsByName(self,name):
 #         return 
@@ -79,10 +85,10 @@ class ChatHandler:
     def insertMember(self, form):
         credentialForm = form['credential']
         chatName = form['chatName']
-        if groupname and credentialForm:
-            result = ChatDAO().insertMember(groupname, item)
+        if chatName and credentialForm:
+            result = ChatDAO().insertMember(chatName, item)
             if result:
-                return jsonify(Member=self.arrangeGroupID(result))
+                return jsonify(Member=self.buildChatID(result))
             else:
                 jsonify(ERROR='User is member')
     
