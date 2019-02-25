@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.Messages import MessagesDAO
+from dao.messages import MessagesDAO
 
 
 class MessageHandler:
@@ -21,7 +21,7 @@ class MessageHandler:
     
 
     def getAllmessages(self):
-        dao = messagesDAO()
+        dao = MessagesDAO()
         message_list = dao.getAllmessages()
         result_list = []
         for row in message_list:
@@ -30,7 +30,7 @@ class MessageHandler:
         return jsonify(Messages=result_list)
 
     def getmessageById(self, mid):
-        dao = messagesDAO()
+        dao = MessagesDAO()
         row = dao.getmessageById(mid)
         if not row:
             return jsonify(Error = "message Not Found"), 404
@@ -41,7 +41,7 @@ class MessageHandler:
     def searchmessage(self, args):
         id = args.get("id")
         date = args.get("date")
-        dao = messagesDAO()
+        dao = MessagesDAO()
         messages_list = []
         if (len(args) == 2) and id and date:
             messages_list = dao.getmessagesByIdAndDate(id, date)
@@ -66,7 +66,7 @@ class MessageHandler:
             mtext = form['mtext']
             mdate = form['mdate']
             if mtext and mdate:
-                dao = messagesDAO()
+                dao = MessagesDAO()
                 mid = dao.insert(mtext, mdate)
                 result = self.build_message_attributes(mid, mtext, mdate)
                 return jsonify(Message=result), 201
@@ -78,7 +78,7 @@ class MessageHandler:
         mdate = json['mdate']
        
         if mtext and mdate:
-            dao = messagesDAO()
+            dao = MessagesDAO()
             mid = dao.insert(mtext, mdate)
             result = self.build_message_attributes(mid, mtext, mdate)
             return jsonify(Message=result), 201
@@ -86,7 +86,7 @@ class MessageHandler:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deletemessage(self, mid):
-        dao = messagesDAO()
+        dao = MessagesDAO()
         if not dao.getmessageById(mid):
             return jsonify(Error = "message not found."), 404
         else:
@@ -94,7 +94,7 @@ class MessageHandler:
             return jsonify(DeleteStatus = "OK"), 200
 
     def updatemessage(self, mid, form):
-        dao = messagesDAO()
+        dao = MessagesDAO()
         if not dao.getmessageById(mid):
             return jsonify(Error = "message not found."), 404
         else:
@@ -122,7 +122,7 @@ class MessageHandler:
         return result
 
     def getCountBymessageId(self):
-        dao = messagesDAO()
+        dao = MessagesDAO()
         result = dao.getCountBymessageId()
         #print(self.build_message_counts(result))
         return jsonify(MessageCounts = self.build_message_counts(result)), 200

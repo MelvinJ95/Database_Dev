@@ -16,7 +16,7 @@ class ContactHandler:
         contacts['Name'] = row[3] + " " + row[4]
         contacts['Phone'] = row[5]
         contacts['Email'] = row[6]
-        contact['Birthday'] = row[7]
+        contacts['Birthday'] = row[7]
         return contacts
 
     def buildContactList(self, row):
@@ -43,7 +43,7 @@ class ContactHandler:
             return jsonify(ERROR='No contact list found')
 
     def getContactListbyUser(self, usrID):
-        result = ContactDAO().getContactListbyUser(usrid)
+        result = ContactDAO().getContactListbyUser(usrID)
         contacts = []
         for r in result:
             contacts.append(self.buildContactDirectory(r))
@@ -53,7 +53,7 @@ class ContactHandler:
             return jsonify(ERROR='No contact list found')
 
     def getUserContacts(self, usrID):
-        result = ContactDAO().getUserContacts(usrid)
+        result = ContactDAO().getUserContacts(usrID)
         contacts = []
         if result:
             for r in result:
@@ -63,8 +63,8 @@ class ContactHandler:
 
     def addContact(self, form, usrID):
         phone_email = form['item']
-        if phone_email and usrid:
-            contact = ContactDAO().addContact(usrid, phone_email)
+        if phone_email and usrID:
+            contact = ContactDAO().addContact(usrID, phone_email)
             if contact:
                 result = self.buildContactAlpha(contact)
                 return jsonify(Contact=result)
