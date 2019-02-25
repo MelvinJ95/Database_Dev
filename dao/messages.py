@@ -29,10 +29,10 @@ class MessagesDAO:
         
     def getMessageByDate(self, date):
        result = self.getAllMessages()
-        for r in result: 
-            if(r[2]==date):
-                return r
-        return
+       for r in result:
+           if(r[2]==date):
+               return r
+       return
 
     def insert(self):
         return
