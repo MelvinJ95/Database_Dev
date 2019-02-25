@@ -16,3 +16,18 @@ The application is organized in three broad layers:
 ## Project ER
 
 ![alt text](https://github.com/MelvinJ95/Database_Dev/blob/master/ER.png)
+
+### Understanding the ER
+
+ #### User
+   The user of the application. After registration, the user will be able to access different groups, post and messages as well as create its own as well as access to a contact list. Registration consists of username, name (first and last), password, phone, email, birthday and sex
+ #### Group Chat
+   In order to see posts and messages, a user must be part of at least 1 group. A group can only have 1 admin but is not limited in the amount of members. An admin must be part of the group it administrates. Inside a group a user will be able to post an see the posts of every member in the group. 
+ #### Post
+   A post is a multimedia file (image or video) with a caption and hashtags that will be shared within a group. A post can only have 1 user but a user can post multiple times. A post can be tagged with hashtags.
+ #### Message
+   A message is a comment to an existing post. It cannot be tagged, reacted and cannot possess a multimedia file. Replies are messages referencing another message
+ #### Reaction 
+   A like or dislike in a post. A user can only react once per post.
+ #### Hashtag
+   A tag on a post. A message can have many tags. These hashtags will be displayed on the trending tab (to be implemented) if used by many users within the group. 
