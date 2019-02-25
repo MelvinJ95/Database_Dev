@@ -8,7 +8,7 @@ app = Flask(__name__)
 def home():
     return ('Welcome to GramChat')
 
-@app.route('/Gramchat/posts', methods=['GET', 'POST'])
+@app.route('/GramChat/posts', methods=['GET', 'POST'])
 def getAllPosts():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
@@ -19,7 +19,7 @@ def getAllPosts():
         else:
             return PostHandler().searchPosts(request.args)
 
-@app.route('/Gramchat/posts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/GramChat/posts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getPostById(pid):
     if request.method == 'GET':
         return PostHandler().getPostById(pid)
@@ -30,7 +30,7 @@ def getPostById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/Gramchat/posts/date/<string:pdate>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/GramChat/posts/date/<string:pdate>', methods=['GET', 'PUT', 'DELETE'])
 def getPostByDate(pdate):
     if request.method == 'GET':
         return PostHandler().getPostByDate(pdate)
@@ -52,17 +52,18 @@ def getPostByDate(pdate):
 #     return UserHandler.insertUser(request.json)
 
 
-@app.route('/GramChat/user', methods=['GET', 'POST'])
-def getPostUser():
-    if request.method == 'GET':
-        if len(request.args) >= 1:
-            return  # get specific user
-        else:
-            return  # get all users
-    if request.method == 'POST':
-        return  # create new user
+# @app.route('/GramChat/user', methods=['GET', 'POST'])
+# def getPostUser():
+#     if request.method == 'GET':
+#         if len(request.args) >= 1:
+#             return  # get specific user
+#         else:
+#             return  # get all users
+#     if request.method == 'POST':
+#         return  # create new user
 
-@app.route('/Gramchat/users', methods=['GET', 'POST'])
+
+@app.route('/GramChat/users', methods=['GET', 'POST'])
 def getAllUsers():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
@@ -73,8 +74,20 @@ def getAllUsers():
         else:
             return UserHandler().searchUsers(request.args)
 
+
+@app.route('/GramChat/users/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
+def getUserById(pid):
+    if request.method == 'GET':
+        return UserHandler().getUserById(pid)
+    elif request.method == 'PUT':
+        return UserHandler().updateUser(pid, request.form)
+    elif request.method == 'DELETE':
+        return UserHandler().deleteUser(pid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 # @app.route('/GramChat/user/<int:uID>', methods=['GET'])
-# def getUserByID(pID):
+# def getUserByID(uID):
 #     return UserHandler.getUserById(uID)
 
 

@@ -3,8 +3,8 @@ class PostsDAO:
 
     def getAllPosts(self):
         result = []
-        post1 = [1, 'Hola', '2-24-2019', 'link.png']
-        post2 = [4, 'Adios', '2-25-2019', 'link2.png']
+        post1 = [1, 'Hola', '2-24-2019', 'link.png', 5]
+        post2 = [4, 'Adios', '2-25-2019', 'link2.png', 33]
         result.append(post1)
         result.append(post2)
         return result
@@ -28,9 +28,9 @@ class PostsDAO:
     def getPostByUser(self, uid):
         result = self.getAllPosts()
         user = users.getAllUsers()
-        post1 = [1, 'Hola', '2-24-2019', 'link.png']
+        post1 = [1, 'Hola', '2-24-2019', 'link.png', 123]
         for post in result:
-            if post[2] == uid:
+            if post[4] == uid:
                 result.append(post)
 
         return result

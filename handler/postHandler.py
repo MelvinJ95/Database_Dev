@@ -8,14 +8,16 @@ class PostHandler:
         result['pcaption'] = row[1]
         result['pdate'] = row[2]
         result['pmedia'] = row[3]
+        result['uid'] = row[4]
         return result
 
-    def build_post_attributes(self, pid, pcaption, pdate, pmedia):
+    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid):
         result = {}
         result['pid'] = pid
         result['pcaption'] = pcaption
         result['pdate'] = pdate
         result['pmedia'] = pmedia
+        result['uid'] = uid
         return result
 
     def getAllPosts(self):
@@ -48,7 +50,7 @@ class PostHandler:
     def searchPost(self, args): #date, hashtag, user
         date = args.get("date")
         hashtag = args.get("hashtag")
-        user = args.get("user")
+        user = args.get("uid")
         dao = PostsDAO()
         posts_list = []
         if(len(args) == 3) and date and hashtag and user:
@@ -73,11 +75,11 @@ class PostHandler:
             result_list.append(result)
         return jsonify(Posts=result_list)
 
-    def getPostsByUserId(self, pid):
+    def getPostsByUserId(self, uid):
         dao = PostsDAO()
-        if not dao.getPostById(pid):
+        if not dao.getPostById(uid):
             return jsonify(Error="Post Not Found"), 404
-        user_list = dao.getUsersByPostId(pid)
+        user_list = dao.getUsersByPostId(uid)
         result_list = []
         for row in user_list:
             result = self.build_user_dict(row)
@@ -130,11 +132,12 @@ class PostHandler:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 pcaption = form['pcaption']
-                pdate = form['pprice']
-                pmedia = form['pmedial']
+                pdate = form['pdate']
+                pmedia = form['pmedia']
+                uid = form['uid']
                 if pcaption and pdate and pmedia:
                     dao.update(pcaption, pdate, pmedia)
-                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
+                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid)
                     return jsonify(Post=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
