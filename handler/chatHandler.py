@@ -73,11 +73,11 @@ class ChatHandler:
     
     def insertNewChat(self, form, usrID):
         name = form['chatname']
-        if name and usrid:
+        if name and usrID:
             dao = ChatDAO()
             chat = dao.insertChat(name, usrID)
             if chat:
-                result = self.arrangeChatID(group)
+                result = self.arrangeChatID(chat)
                 return jsonify(ChatID=result)
             else:    
                 return jsonify(ERROR='Creation of chat denied')
@@ -86,7 +86,7 @@ class ChatHandler:
         credentialForm = form['credential']
         chatName = form['chatName']
         if chatName and credentialForm:
-            result = ChatDAO().insertMember(chatName, item)
+            result = ChatDAO().insertMember(chatName, credentialForm)
             if result:
                 return jsonify(Member=self.buildChatID(result))
             else:
