@@ -4,7 +4,7 @@ class MessagesDAO:
         result = []
         message = [123, 'This is a message', 'February 20, 2019']
         result.append(message)
-        return message 
+        return result 
 
     def getMessageById(self, uid):
         result = self.getAllMessages()
