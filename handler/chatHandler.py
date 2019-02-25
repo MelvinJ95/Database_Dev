@@ -23,8 +23,16 @@ class GroupChatHandler:
     def getGroupChatByUserID(self, form):
         return 
     
-    def insertNewChatGroup(self, form):
-        return 
+    def insertNewChatGroup(self, form, usrID):
+        name = form['groupname']
+        if name and usrid:
+            dao = GroupChatDAO()
+            group = dao.insertGroup(name, usrID)
+            if group:
+                result = self.arrangeGroupID(group)
+                return jsonify(GroupID=result)
+            else:    
+                return jsonify(ERROR='Creation of groupchat denied')
     
     def insertParticipant(self, form):
         return
