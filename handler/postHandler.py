@@ -1,8 +1,8 @@
 from flask import jsonify, Flask
-from dao.Posts import PostsDAO
+from dao.post import PostsDAO
 
 class PostHandler:
-    def bulid_post_dict(self, row):
+    def build_post_dict(self, row):
         result = {};
         result['pid'] = row[0]
         result['pcaption'] = row[1]
@@ -36,6 +36,15 @@ class PostHandler:
             post = self.build_post_dict(row)
             return jsonify(Post=post)
 
+    def getPostByDate(self, pdate):
+        dao = PostsDAO()
+        row = dao.getPostByDate(pdate)
+        if not row:
+            return jsonify(Error="Post Not Found"), 404
+        else:
+            post = self.build_post_dict(row)
+            return jsonify(Post=post)
+
     def searchPost(self, args): #date, hashtag, user
         date = args.get("date")
         hashtag = args.get("hashtag")
@@ -53,7 +62,7 @@ class PostHandler:
         elif (len(args) == 1) and date:
             posts_list = dao.getPostsByDate(date)
         elif (len(args) == 1) and hashtag:
-            posts_list = dao.getPostsByMaterial(hashtag)
+            posts_list = dao.getPostsByHashtag(hashtag)
         elif (len(args) == 1) and user:
             posts_list = dao.getPostsByUser(user)
         else:
@@ -143,6 +152,6 @@ class PostHandler:
 
     def getCountByPostId(self):
         dao = PostsDAO()
-        result = dao.getCountByPosttId()
+        result = dao.getCountByPostId()
         #print(self.build_post_counts(result))
         return jsonify(PostCounts = self.build_post_counts(result)), 200
