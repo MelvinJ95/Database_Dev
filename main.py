@@ -132,5 +132,9 @@ def dislikeMessage(mID):
 def replyPost():
     return MessageHandler.insertMessage(request.json)
 
+@app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
+def deleteUser(uid):   
+    UserHandler().deleteUser(uid)
+
 if __name__ == '__main__':
     app.run()
