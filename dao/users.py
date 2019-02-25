@@ -1,24 +1,39 @@
 class UsersDAO:
 
     def getAllUsers(self):
+        result = []
         user = [123, 'Jason123', 'Jason','Freeman', 'password', '123456789', 'J@gmail.com', '12 June 1968', 'M']
-        return user 
+        result.append(user)
+        return result
+
     def getUserById(self, uid):
-        if(self.getAllUsers[0]==123):
-            return self.getAllUsers()
-        return 
+        result = self.getAllUsers()
+        for user in result:
+            if user[0] == uid:
+                return user
+        return []
+
     def getUsersByFirstNameAndLastName(self, firstname, lastname):
-        if(self.getAllUsers[2]==firstname and self.getAllUsers[3]==lastname):
-            return self.getAllUsers()
-        return 
+        result = self.getAllUsers()
+        for user in result:
+            if user[2] == firstname and user[3] == lastname:
+                result.append(user)
+        return result
+
     def getUserByFirstName(self, firstname):
-        if(self.getAllUsers[2]==firstname):
-            return self.getAllUsers()
-        return
+        result = self.getAllUsers()
+        for user in result:
+            if user[2] == firstname:
+                result.append(user)
+        return result
+
     def getUserByLastName(self, lastname):
-        if(self.getAllUsers[3]==lastname):
-            return self.getAllUsers()
-        return
+        result = self.getAllUsers()
+        for user in result:
+            if user[3] == lastname:
+                result.append(user)
+        return result
+
     def insert(self):
         return
 

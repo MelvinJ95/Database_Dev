@@ -65,14 +65,14 @@ class ChatHandler:
 #     def getChatByUserID(self, form):
 #         return 
     
-    def insertNewChatGroup(self, form, usrID):
-        name = form['groupname']
+    def insertNewChat(self, form, usrID):
+        name = form['chatname']
         if name and usrid:
-            dao = GroupChatDAO()
-            group = dao.insertGroup(name, usrID)
-            if group:
-                result = self.arrangeGroupID(group)
-                return jsonify(GroupID=result)
+            dao = ChatDAO()
+            chat = dao.insertChat(name, usrID)
+            if chat:
+                result = self.arrangeChatID(group)
+                return jsonify(ChatID=result)
             else:    
                 return jsonify(ERROR='Creation of chat denied')
     
@@ -94,7 +94,7 @@ class ChatHandler:
             result.delete(usrID)
             return jsonify(DeleteStatus = "OK"), 200
     
-    def removeChatGroup(self, form, cID, ownerID):
+    def removeChat(self, form, cID, ownerID):
         result = ChatDAO()
         if not result.getChatByID(cID):
             return jsonify(Error = "Chat not found."), 404
