@@ -103,7 +103,7 @@ class MessageHandler:
             else:
                 mtext = form['mtext']
                 mdate = form['mdate']
-                if mtext, mdate:
+                if mtext and mdate:
                     dao.update(mid, mtext, mdate)
                     result = self.build_message_attributes(mid, mtext, mdate)
                     return jsonify(Message=result), 200

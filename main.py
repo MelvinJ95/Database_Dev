@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from handler.postHandler import PostHandler
 from handler.userHandler import UserHandler
 from handler.chatHandler import ChatHandler
+from handler.messageHandler import MessageHandler
+from handler.contactHandler import ContactHandler
 
 app = Flask(__name__)
 
@@ -72,50 +74,30 @@ def getPostUser():
 @app.route('/GramChat/chat/createchat/<int:owner>', methods=['POST']) 
 def createNewChat(owner):
     return ChatHandler.insertNewChatGroup(request.json, owner)
+
 # @app.route('/GramChat/user/<int:uID>', methods=['GET'])
 # def getUserByID(pID):
 #     return UserHandler.getUserById(uID)
 
-
-@app.route('/GramChat/chat/createchat/<int:owner>/<string:chatname>', methods=['POST'])
-def createNewChat(owner, chatname):
-    return  # create new chat
-
 @app.route('/GramChat/contacts/addContact/<int:owner>', methods=['POST']) 
 def addUsertoContactList(owner):
-    return #add contact
-
-@app.route('/GramChat/contacts/addContact/<int:owner>/<int:uid>', methods=['POST'])
-def addUsertoContactList(owner, uid):
-    return  # add contact
+    return ContactHandler.addContact(request.json, owner)
 
 @app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST']) 
 def addUsertochat():
     return ChatHandler.insertMember(request.json)
 
-@app.route('/GramChat/chat/adduser/<int:cid>/<int:uid>', methods=['POST'])
-def addUsertochat(cid, uid):
-    return  # add an user
-
 @app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
 def removeUserFromchat():
     return ChatHandler.removeMember(request.json)
 
-@app.route('/GramChat/chat/removeUser/<int:cid>/<int:uid>', methods=['DELETE'])
-def removeUserFromchat(cid, uid):
-    return  # remove a user
-
-@app.route('/GramChat/contacts/addContact/<int:owner>/<int:uid>', methods=['DELETE'])
+@app.route('/GramChat/contacts/removeContact/<int:uid>', methods=['DELETE'])
 def removeUserFromContactList(owner, uid):
-    return  # delete a contact
+    return  ContactHandler.removeContact(request.json, uid)
 
 @app.route('/GramChat/chat/deletechat/<int:owner>', methods=['DELETE']) 
 def deleteChat(owner):
-    return #create new chat
-
-@app.route('/GramChat/chat/deletechat/<int:owner>/<string:chatname>', methods=['DELETE'])
-def deleteChat(owner, chatname):
-    return  # create new chat
+    return ChatHandler.removeChatGroup(request.json, owner)
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
 def postPost():
@@ -134,7 +116,7 @@ def dislikeMessage(mID):
 
 @app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
 def replyPost():
-    return
+    return MessageHandler.insertMessage(request.json)
 
 if __name__ == '__main__':
     app.run()
