@@ -18,13 +18,12 @@ class PostsDAO:
         return []
 
     def getPostByDate(self, pdate):
-        result = []
-        temp = self.getAllPosts()
-        for post in temp:
+        result = self.getAllPosts()
+        for post in result:
             if post[2] == pdate:
-                result.append(temp)
-
-        return result
+                #result.append(post)
+                return post
+        return []
 
     def getPostByUser(self, uid):
         result = self.getAllPosts()
