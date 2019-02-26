@@ -1,10 +1,10 @@
 #Pre-define list of reactions
 result = []
-reactions = [123, 'February 20, 2019', 'Like']
+reaction = [123, 'February 20, 2019', 'Like']
 reaction2 = [124, 'February 20, 2019', 'dislike']
 #append reactions
-result.append(reactions)
-result.append(reactions2)
+result.append(reaction)
+result.append(reaction2)
 class ReactionsDAO:
 
     def getAllReactions(self):
@@ -15,7 +15,7 @@ class ReactionsDAO:
         global result
         result = self.getAllReactions()
         for reaction in result:
-            if reaction[0] == uid:
+            if reaction[0] == Id:
                 return reaction
         return 
 
@@ -38,10 +38,10 @@ class ReactionsDAO:
     def getReactionByDate(self, date):
        global result
        result = self.getAllReactions()
-        for r in result: 
+       for r in result:
             if(r[2]==date):
                 return r
-        return
+       return
 
     def insert(self, date, likeDislike):
         global result
@@ -55,5 +55,5 @@ class ReactionsDAO:
     def delete(self, id):
         global result 
         temp = self.getReactionByID(id)
-        result.remove(temp) 
+        result.remove(temp)
     

@@ -103,7 +103,7 @@ class reactionHandler:
             else:
                 rdate = form['rdate']
                 rLikeDislike = form['rLikeDislike']
-                if rdate, rLikeDislike:
+                if rdate and rLikeDislike:
                     dao.update(rid, rdate, rLikeDislike)
                     result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
                     return jsonify(reaction=result), 200
