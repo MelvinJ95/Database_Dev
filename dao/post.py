@@ -1,4 +1,4 @@
-from dao import users
+#from dao import users
 class PostsDAO:
 
     def getAllPosts(self):
@@ -18,16 +18,17 @@ class PostsDAO:
         return []
 
     def getPostByDate(self, pdate):
-        result = self.getAllPosts()
-        for post in result:
+        result = []
+        temp = self.getAllPosts()
+        for post in temp:
             if post[2] == pdate:
-                return post
+                result.append(temp)
 
-        return []
+        return result
 
     def getPostByUser(self, uid):
         result = self.getAllPosts()
-        user = users.getAllUsers()
+        #user = users.getAllUsers()
         post1 = [1, 'Hola', '2-24-2019', 'link.png', 123]
         for post in result:
             if post[4] == uid:
@@ -35,6 +36,18 @@ class PostsDAO:
 
         return result
 
+    def getPostsPerDayByUser(self, uid, date):
+        result = []
+        all = self.getAllPosts()
+        for post in all:
+            if post[2] == date and post[4] == uid:
+                result.append(post)
+        return result
 
+    def getActiveUsers(self):
+        result = "Active users shown here."
+        return result
 
-
+    def getNumberOfPostsPerDay(self, date):
+        result = self.getPostByDate(date)
+        return len(result)

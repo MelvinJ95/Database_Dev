@@ -1,5 +1,5 @@
 from flask import jsonify
-from dao.reactions import ReactionsDao
+from dao.reaction import ReactionsDAO
 
 
 class reactionHandler:
@@ -21,7 +21,7 @@ class reactionHandler:
     
 
     def getAllReactions(self):
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         reaction_list = dao.getAllReactions()
         result_list = []
         for row in reaction_list:
@@ -30,7 +30,7 @@ class reactionHandler:
         return jsonify(Reactions=result_list)
 
     def getreactionById(self, rid):
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         row = dao.getReactionById(rid)
         if not row:
             return jsonify(Error = "reaction Not Found"), 404
@@ -41,7 +41,7 @@ class reactionHandler:
     def searchreaction(self, args):
         id = args.get("id")
         date = args.get("date")
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         reactions_list = []
         if (len(args) == 2) and id and date:
             reactions_list = dao.getReactionsByIdAndDate(id, date)
@@ -66,7 +66,7 @@ class reactionHandler:
             rdate = form['rdate']
             rLikeDislike = form['rLikeDislike']
             if rdate and rLikeDislike:
-                dao = ReactionsDao()
+                dao = ReactionsDAO()
                 rid = dao.insert(rdate, rLikeDislike)
                 result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
                 return jsonify(Reaction=result), 201
@@ -78,7 +78,7 @@ class reactionHandler:
         rLikeDislike = json['rLikeDislike']
        
         if rdate and rLikeDislike:
-            dao = ReactionsDao()
+            dao = ReactionsDAO()
             rid = dao.insert(rdate, rLikeDislike)
             result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
             return jsonify(Reaction=result), 201
@@ -86,7 +86,7 @@ class reactionHandler:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deletereaction(self, rid):
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         if not dao.getReactionById(rid):
             return jsonify(Error = "reaction not found."), 404
         else:
@@ -94,7 +94,7 @@ class reactionHandler:
             return jsonify(DeleteStatus = "OK"), 200
 
     def updatereaction(self, rid, form):
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         if not dao.getReactionById(rid):
             return jsonify(Error = "reaction not found."), 404
         else:
@@ -122,7 +122,7 @@ class reactionHandler:
         return result
 
     def getCountByreactionId(self):
-        dao = ReactionsDao()
+        dao = ReactionsDAO()
         result = dao.getCountByReactionId()
         #print(self.build_reaction_counts(result))
         return jsonify(reactionCounts = self.build_reaction_counts(result)), 200

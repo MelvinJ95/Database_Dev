@@ -158,3 +158,17 @@ class PostHandler:
         result = dao.getCountByPostId()
         #print(self.build_post_counts(result))
         return jsonify(PostCounts = self.build_post_counts(result)), 200
+
+    def getPostsPerDayByUser(self, uid, pdate):
+        dao = PostsDAO()
+        posts_list = dao.getPostsPerDayByUser(uid, pdate)
+        result = []
+        for post in posts_list:
+            temp = self.build_post_dict(post)
+            result.append(temp)
+        return jsonify(Posts=result)
+
+    def getActiveUsers(self):
+        dao = PostsDAO()
+        result = dao.getActiveUsers()
+        return result

@@ -4,6 +4,7 @@ from handler.userHandler import UserHandler
 from handler.chatHandler import ChatHandler
 from handler.messageHandler import MessageHandler
 from handler.contactHandler import ContactHandler
+from handler.hashtagHandler import HashtagHandler
 
 app = Flask(__name__)
 
@@ -106,11 +107,11 @@ def removeUserFromchat():
 
 @app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
 def addUsertochat(cid, uid):
-    return  ChatHandler.insertMember(request.json)
+    return ChatHandler.insertMember(request.json)
 
 @app.route('/GramChat/contacts/removeContact/<int:uid>', methods=['DELETE'])
 def removeUserFromContactList(owner, uid):
-    return  ContactHandler.removeContact(request.json, uid)
+    return ContactHandler.removeContact(request.json, uid)
 
 @app.route('/GramChat/chat/deletechat/<int:owner>', methods=['DELETE']) 
 def deleteChat(owner):
@@ -135,6 +136,23 @@ def replyPost():
 @app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
 def deleteUser(uid):   
     UserHandler().deleteUser(uid)
+
+@app.route('/GramChat/trends', methods=['GET'])
+def getTrends():
+    if request.method == 'GET':
+        return HashtagHandler().getTrendingTopics()
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+@app.route('/GramChat/posts/user/<int:uid>/<string:date>')
+def getPostsPerDayByUser(uid,date):
+    return PostHandler().getPostsPerDayByUser(uid, date)
+
+
+@app.route('/GramChat/users/active')
+def getActiveUsers():
+    return PostHandler().getActiveUsers()
 
 if __name__ == '__main__':
     app.run()

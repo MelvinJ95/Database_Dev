@@ -48,7 +48,7 @@ class MessagesDAO:
         global result
         result = self.getAllMessages()
         randId = 145677
-        temp = [randId, u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex]
+        temp = [randId, text, date]
         result.append(temp)
         return randId  
         

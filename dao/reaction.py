@@ -39,7 +39,7 @@ class ReactionsDAO:
        global result
        result = self.getAllReactions()
        for r in result:
-            if(r[2]==date):
+          if(r[2]==date):
                 return r
        return
 
