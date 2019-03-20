@@ -45,6 +45,14 @@ def getPostByDate(pdate):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/GramChat/posts/<int:pid>/<string:reaction>', methods=['GET'])
+def addReaction(pid, reaction):
+    if request.method == 'GET':
+        print(reaction)
+        return PostHandler().getReactionsByPost(pid, reaction)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 # @app.route('/GramChat/login', methods=['POST'])
 # def login():
