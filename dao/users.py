@@ -11,8 +11,8 @@ users5 = [127, 'zapper', 'Eric','Melendez', 'password', '123456789', 'zappe@gmai
 users6 = [128, 'Tfue', 'Taylor','Jackson', 'password', '123456789', 'Tfue@gmail.com', '17 June 1968', 'M', []]
 users7 = [129, 'Ninja', 'Scott','Anderson', 'password', '123456789', 'Ninja@gmail.com', '18 June 1968', 'M', []]
 users8 = [130, 'JoeDMTRogan', 'Joe','Rogan', 'password', '123456789', 'Joe.Rogan@gmail.com', '19 June 1968', 'M', []]
-users[9].append([123,'Luis', 'Rivera', '787-939-0540', 'Luis.Rivera@upr.edu']) #add contact to user 123
-users2[9].append([124,'Melvin', 'Malave', '939-282-1866', 'Melvin.Malave@upr.edu']) #add contact to user 124 
+users[9].append([123,'Luis', 'Rivera', '7879390540', 'Luis.Rivera@upr.edu']) #add contact to user 123
+users2[9].append([124,'Melvin', 'Malave', '9392821866', 'Melvin.Malave@upr.edu']) #add contact to user 124 
 #append users 
 
 result.append(users)
