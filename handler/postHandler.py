@@ -9,15 +9,19 @@ class PostHandler:
         result['pdate'] = row[2]
         result['pmedia'] = row[3]
         result['uid'] = row[4]
+        result['like'] = row[5]
+        result['dislike'] = row[6]
         return result
 
-    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid):
+    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
         result = {}
         result['pid'] = pid
         result['pcaption'] = pcaption
         result['pdate'] = pdate
         result['pmedia'] = pmedia
         result['uid'] = uid
+        result['like'] = like
+        result['dislike'] = dislike
         return result
 
     def getAllPosts(self):
@@ -171,4 +175,17 @@ class PostHandler:
     def getActiveUsers(self):
         dao = PostsDAO()
         result = dao.getActiveUsers()
+        return result
+
+    def addLike(self, pid, reaction):
+        dao = PostsDAO()
+        result = dao.addLike(pid, reaction)
+        return result
+        # post = dao.getPostById(pid)
+        # if reaction == "like":
+        #     post[5]+= post[5]
+
+    def getReactionsByPost(self, pid, reaction):
+        dao = PostsDAO()
+        result = dao.getReactionsByPost(pid, reaction)
         return result
