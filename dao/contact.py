@@ -21,8 +21,8 @@ class ContactDAO:
         clist = result[9]
         return clist 
     
-    def getUserContacts(self):
-        return[]
+#     def getUserContacts(self):
+#         return[]
     
 #     def addContactByPhoneAndEmail(self,usrID,first_name,last_name,phone,email):
 #         global result 
@@ -33,18 +33,18 @@ class ContactDAO:
 #         result.append(contact)
 #         return contact
 
-    def addContactByPhone(self, phone):
+    def addContactByPhone(self, owner, phone):
         global result 
-        user = UsersDAO().getUserById(usrID)
+        user = UsersDAO().getUserById(owner)
         randId = random.randint(1, 200)
         contact = [randId,"","",phone,""]
         user[9].append(contact)
         result.append(contact)
         return contact
 
-    def addContactByEmail(self, email):
+    def addContactByEmail(self, owner, email):
         global result 
-        user = UsersDAO().getUserById(usrID)
+        user = UsersDAO().getUserById(owner)
         randId = random.randint(1, 200)
         contact = ["","","",email]
         user[9].append(contact)
@@ -52,18 +52,18 @@ class ContactDAO:
         return contact
     
     
-    def delete(self,usrID, fromUsrID):
+    def delete(self, owner, usrID):
         #delete from local list 
         global result 
-        contact = self.getContactByID(usrID,fromUsrID)
+        contact = self.getContactByID(owner, usrID)
        # result.remove(temp) #should result be deleted 
-        user = UsersDAO().getUserById(fromUsrID)
+        user = UsersDAO().getUserById(owner)
         user[9].remove(contact)
         return contact
 
 
-    def getContactByID(self, usrID, fromUsrID):  
-        user = UsersDAO().getUserById(fromUsrID)
+    def getContactByID(self, owner, usrID):  
+        user = UsersDAO().getUserById(owner)
         if not user:
             return 
         for contact in user[9]:
