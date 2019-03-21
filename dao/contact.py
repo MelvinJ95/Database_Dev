@@ -24,29 +24,29 @@ class ContactDAO:
     def getUserContacts(self):
         return[]
     
-    def addContactByPhoneAndEmail(self,usrID,first_name,last_name,phone,email):
+#     def addContactByPhoneAndEmail(self,usrID,first_name,last_name,phone,email):
+#         global result 
+#         user = UsersDAO().getUserById(usrID)
+#         randId = random.randint(1, 200)
+#         contact = [randId,first_name,last_name,phone,email]
+#         user[9].append(contact)
+#         result.append(contact)
+#         return contact
+
+    def addContactByPhone(self, phone):
         global result 
         user = UsersDAO().getUserById(usrID)
         randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,phone,email]
+        contact = [randId,"","",phone,""]
         user[9].append(contact)
         result.append(contact)
         return contact
 
-    def addContactByPhone(self,usrID,first_name,last_name,phone):
+    def addContactByEmail(self, email):
         global result 
         user = UsersDAO().getUserById(usrID)
         randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,phone,""]
-        user[9].append(contact)
-        result.append(contact)
-        return contact
-
-    def addContactByEmail(self,usrID,first_name,last_name,email):
-        global result 
-        user = UsersDAO().getUserById(usrID)
-        randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,"",email]
+        contact = ["","","",email]
         user[9].append(contact)
         result.append(contact)
         return contact
