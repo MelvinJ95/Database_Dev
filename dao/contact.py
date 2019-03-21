@@ -64,6 +64,8 @@ class ContactDAO:
 
     def getContactByID(self, usrID, fromUsrID):  
         user = UsersDAO().getUserById(fromUsrID)
+        if not user:
+            return 
         for contact in user[9]:
             if contact[0] == usrID:
                 return contact
