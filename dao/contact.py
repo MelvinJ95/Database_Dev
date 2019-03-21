@@ -1,7 +1,7 @@
 
 #import user handler 
 import random
-from users import UsersDAO
+from dao.users import UsersDAO
 
 #declare global variables and default list values
 result = []
