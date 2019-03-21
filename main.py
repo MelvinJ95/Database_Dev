@@ -89,10 +89,6 @@ def getUserById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# @app.route('/GramChat/user/<int:uID>', methods=['GET'])
-# def getUserByID(uID):
-#     return UserHandler.getUserById(uID)
-
 @app.route('/GramChat/contacts/addContact/<int:owner>', methods=['POST']) 
 def addUsertoContactList(owner):
     return ContactHandler.addContact(request.json, owner)
@@ -113,9 +109,9 @@ def addUsertochat(cid, uid):
 def removeUserFromContactList(owner, uid):
     return ContactHandler.removeContact(request.json, uid)
 
-@app.route('/GramChat/chat/deletechat/<int:owner>', methods=['DELETE']) 
-def deleteChat(owner):
-    return ChatHandler.removeChatGroup(request.json, owner)
+@app.route('/GramChat/chat/deletechat/<int:cid>', methods=['DELETE']) 
+def deleteChat(cid):
+    return ChatHandler.removeChatGroup(request.json, cid)
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
 def postPost():
