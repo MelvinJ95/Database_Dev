@@ -2,13 +2,17 @@ from dao.post import PostsDAO
 from random import*
 import re
 
+result = []
+hashtag = ['chat']
+hashtag2 = ['anotherChat']
 
 class HashtagsDAO:
     def getAllHashtags(self):
-        result = []
+        global result
         return result
 
     def getHashtagById(self, hid):
+        global result
         result = self.getAllHashtags()
         for ht in result:
             if ht[0] == hid:
@@ -30,6 +34,7 @@ class HashtagsDAO:
         return trends
 
     def insert(self, htext):
+        global result
         result = self.getAllHashtags()
         id = random()
         ht = [id, htext]

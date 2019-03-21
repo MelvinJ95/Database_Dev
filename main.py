@@ -101,9 +101,9 @@ def getUserById(pid):
 def addUsertoContactList(owner):
     return ContactHandler.addContact(request.json, owner)
 
-@app.route('/GramChat/chat/createchat/<int:owner>', methods=['POST'])
+@app.route('/GramChat/chat/createchat/', methods=['POST'])
 def createNewChat(owner):
-    return  ChatHandler.insertNewChat(request.json, owner)
+    return  ChatHandler.insertChat(request.json)
 
 @app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
 def removeUserFromchat(cid, usrid):
