@@ -4,10 +4,11 @@ from flask import *
 class ContactHandler:
     def buildContactDirectory(self, row):
         contact = {}
-        contact['name'] = row[2]
+        contact['usrid'] = row[0]
+        contact['first_name'] = row[1]
+        contact['last_name'] = row[2]
         contact['phone'] = row[3]
         contact['email'] = row[4]
-        contact['birthday'] = row[5]
         return contact
 
     def buildContactAttributes(self, row):
@@ -28,8 +29,7 @@ class ContactHandler:
 
     def buildContactAlpha(self, row):
         contact = {}
-        contact['owner_id'] = row[0]
-        contact['contact_id'] = row[1]
+        contact['contact_id'] = row[0]
         return contact
 
     def getContactLists(self):
@@ -43,7 +43,7 @@ class ContactHandler:
             return jsonify(ERROR='No contact list found')
 
     def getContactListbyUser(self, usrID):
-        result = ContactDAO().getContactListbyUser(usrID)
+        result = ContactDAO().getContactListByUser(usrID)
         contacts = []
         for r in result:
             contacts.append(self.buildContactDirectory(r))
@@ -52,7 +52,7 @@ class ContactHandler:
         else:
             return jsonify(ERROR='No contact list found')
 
-    def getUserContacts(self, usrID):
+    def getUserContacts(self, usrID): #needs to be evaluated 
         result = ContactDAO().getUserContacts(usrID)
         contacts = []
         if result:
@@ -61,21 +61,41 @@ class ContactHandler:
             return jsonify(Contacts=contacts)
         return jsonify(ERROR='No Contact List for the User')
 
-    def addContact(self, form, usrID):
-        phone_email = form['item']
-        if phone_email and usrID:
-            contact = ContactDAO().addContact(usrID, phone_email)
+    def addContactByPhone(self, form, usrID,firstname,lastname,phone):
+        if usrID and firstname and lastname and phone:
+            contact = ContactDAO().addContactByPhone(usrID, firstname, lastname, phone)
+            if contact:
+                result = self.buildContactAlpha(contact)
+                return jsonify(Contact=result)
+            else:
+                return jsonify(ERROR='Error adding contact')
+    
+    def addContactByEmail(self, form, usrID,firstname,lastname,email):
+        if usrID and firstname and lastname and email:
+            contact = ContactDAO().addContactByEmail(usrID, firstname, lastname, email)
+            if contact:
+                result = self.buildContactAlpha(contact)
+                return jsonify(Contact=result)
+            else:
+                return jsonify(ERROR='Error adding contact')
+
+    def addContactByPhoneAndEmail(self, form, usrID,firstname,lastname,phone,email):
+        if usrID and firstname and lastname and phone and email:
+            contact = ContactDAO().addContactByPhoneAndEmail(usrID, firstname, lastname, phone, email)
             if contact:
                 result = self.buildContactAlpha(contact)
                 return jsonify(Contact=result)
             else:
                 return jsonify(ERROR='Error adding contact')
             
-    def removeContact(self, form, usrID):
+    def removeContact(self, form, cID, fromUsrID):
         result = ContactDAO()
-        if not result.getContactByID(usrID):
+        if not result.getContactByID(cID, fromUsrID):
             return jsonify(Error = "Contact not found."), 404
         else:
-            result.delete(usrID)
+            result.delete(cID, fromUsrID)
             return jsonify(DeleteStatus = "OK"), 200
         
+    def getAllContacts(self):
+        result = ContactDAO()
+        return jsonify(result.getAllContacts())

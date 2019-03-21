@@ -45,6 +45,14 @@ def getPostByDate(pdate):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/GramChat/posts/<int:pid>/<string:reaction>', methods=['GET'])
+def addReaction(pid, reaction):
+    if request.method == 'GET':
+        print(reaction)
+        return PostHandler().getReactionsByPost(pid, reaction)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 # @app.route('/GramChat/login', methods=['POST'])
 # def login():
@@ -95,7 +103,7 @@ def addUsertoContactList(owner):
 
 @app.route('/GramChat/chat/createchat/<int:owner>', methods=['POST'])
 def createNewChat(owner):
-    return  ChatHandler.insertNewChat(request.jason, owner)
+    return  ChatHandler.insertNewChat(request.json, owner)
 
 @app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
 def removeUserFromchat():
@@ -105,9 +113,29 @@ def removeUserFromchat():
 def addUsertochat(cid, uid):
     return ChatHandler.insertMember(request.json)
 
-@app.route('/GramChat/contacts/removeContact/<int:uid>', methods=['DELETE'])
-def removeUserFromContactList(owner, uid):
-    return ContactHandler.removeContact(request.json, uid)
+@app.route('/GramChat/contacts', methods = ['GET'])
+def getAllContacts():
+    return ContactHandler().getAllContacts()
+
+@app.route('/GramChat/contacts/getUserContacts/<int:uid>', methods=['GET'])
+def getUserContacts(uid):
+    return ContactHandler().getContactListbyUser(uid)
+
+@app.route('/GramChat/contacts/addContact/<int:uid>/<string:firstname>/<string:lastname>/<int:phone>/<string:email>', methods = ['PUT','POST'])
+def addContactbyPhoneAndEmail(uid,firstname,lastname,phone,email):
+    return ContactHandler().addContactByPhoneAndEmail(request.json,uid,firstname,lastname,phone,email)
+
+@app.route('/GramChat/contacts/addContact/<int:uid>/<string:firstname>/<string:lastname>/<int:phone>', methods = ['PUT','POST'])
+def addContactbyPhone(uid,firstname,lastname,phone):
+    return ContactHandler().addContactByPhone(request.json,uid,firstname,lastname,phone)
+
+@app.route('/GramChat/contacts/addContact/<int:uid>/<string:firstname>/<string:lastname>/<string:email>', methods = ['PUT','POST'])
+def addContactbyEmail(uid,firstname,lastname,email):
+    return ContactHandler().addContactByEmail(request.json,uid,firstname,lastname,email)
+
+@app.route('/GramChat/contacts/removeContact/<int:cid>/<int:uid>', methods=['DELETE'])
+def removeUserFromContactList( cid, uid):
+    return ContactHandler().removeContact(request.json, cid,uid)
 
 @app.route('/GramChat/chat/deletechat/<int:cid>', methods=['DELETE']) 
 def deleteChat(cid):
@@ -131,7 +159,7 @@ def replyPost():
 
 @app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
 def deleteUser(uid):   
-    UserHandler().deleteUser(uid)
+    return UserHandler().deleteUser(uid)
 
 @app.route('/GramChat/trends', methods=['GET'])
 def getTrends():

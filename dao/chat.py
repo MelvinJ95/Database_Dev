@@ -1,5 +1,5 @@
 from dao.users import UsersDAO
-from psycopg2.sql import NULL
+#from psycopg2.sql import NULL
 #Pre-define list of users 
 result = []
 chat = [1, 'MyChat', 123, [123, 124]]

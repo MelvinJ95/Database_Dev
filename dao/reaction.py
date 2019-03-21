@@ -1,3 +1,5 @@
+from dao import post
+
 #Pre-define list of reactions
 result = []
 reaction = [123, 'February 20, 2019', 'Like']
@@ -50,10 +52,14 @@ class ReactionsDAO:
         temp = [randId,date, likeDislike]
         result.append(temp)
         return randId    
-        
 
     def delete(self, id):
         global result 
         temp = self.getReactionByID(id)
         result.remove(temp)
-    
+
+    def insertLike(self, pid):
+        p = post.PostsDAO.getPostById(pid)
+        z = p[5]
+        z+=1
+        p[5] = z
