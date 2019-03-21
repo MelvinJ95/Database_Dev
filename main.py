@@ -170,13 +170,19 @@ def getTrends():
 
 
 @app.route('/GramChat/posts/user/<int:uid>/<string:date>')
-def getPostsPerDayByUser(uid,date):
+def getPostsPerDayByUser(uid, date):
     return PostHandler().getPostsPerDayByUser(uid, date)
 
 
 @app.route('/GramChat/users/active')
 def getActiveUsers():
     return PostHandler().getActiveUsers()
+
+
+@app.route('/GramChat/posts/<string:date>')
+def getNumberOfPostsPerDay(date):
+    return PostHandler().getNumberOfPostsPerDay(date)
+
 
 if __name__ == '__main__':
     app.run()

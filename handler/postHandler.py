@@ -189,3 +189,8 @@ class PostHandler:
         dao = PostsDAO()
         result = dao.getReactionsByPost(pid, reaction)
         return result
+
+    def getNumberOfPostsPerDay(self, pdate):
+        dao = PostsDAO()
+        result = dao.getNumberOfPostsPerDay(pdate)
+        return result

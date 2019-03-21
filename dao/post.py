@@ -26,9 +26,9 @@ class PostsDAO:
         result = self.getAllPosts()
         for post in result:
             if post[2] == pdate:
-                #result.append(post)
-                return post
-        return []
+                result.append(post)
+                #return post
+        return result
 
     def getPostByUser(self, uid):
         global result
@@ -58,22 +58,7 @@ class PostsDAO:
     def getNumberOfPostsPerDay(self, date):
         global result
         result = self.getPostByDate(date)
-        return len(result)
-
-    def insertLike(self, pid):
-        #p = post.PostsDAO.getPostById(pid)
-        post = self.getPostById(pid)
-        z = post[5]
-        z+=1
-        post[5] = z
-
-    def addLike(self, pid, reaction):
-        print(reaction)
-        #dao = PostsDAO()
-        post = self.getPostById(pid)
-        if reaction == "like":
-            post[5]+=1
-        return post
+        return "There were a total of %d posts on this day." % (len(result))
 
     def getReactionsByPost(self, pid, reaction):
         #global result
@@ -82,9 +67,3 @@ class PostsDAO:
             return "The number of likes for post with id %d is %d." % (pid, result[5])
         if reaction == 'dislike':
             return "The number of dislikes for post with id %d is %d." % (pid, result[6])
-
-
-    def getDislikesByPost(self, pid):
-        # global result
-        result = self.getPostById(pid)
-        return "The number of dislikes for post with id %d is %d." % (pid, result[6])
