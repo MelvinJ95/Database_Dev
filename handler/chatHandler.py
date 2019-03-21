@@ -71,7 +71,7 @@ class ChatHandler:
 #     def getChatByUserID(self, form):
 #         return 
     
-    def insertNewChat(self, form, usrID):
+    def insertChat(self, form, usrID):
         name = form['chatname']
         if name and usrID:
             dao = ChatDAO()
@@ -82,11 +82,9 @@ class ChatHandler:
             else:    
                 return jsonify(ERROR='Creation of chat denied')
     
-    def insertMember(self, form):
-        credentialForm = form['credential']
-        chatName = form['chatName']
+    def insertMember(self, form, cid, usrID):
         if chatName and credentialForm:
-            result = ChatDAO().insertMember(chatName, credentialForm)
+            result = ChatDAO().insertMember(cid, usrID)
             if result:
                 return jsonify(Member=self.buildChatID(result))
             else:
@@ -97,7 +95,7 @@ class ChatHandler:
         if not result.getChatByID(cid):
             return jsonify(Error = "Chat not found."), 404
         else:
-            result.removeMember(usrID)
+            result.removeMember(cid, usrID)
             return jsonify(DeleteStatus = "OK"), 200
     
     def removeChat(self, form, cID, ownerID):
