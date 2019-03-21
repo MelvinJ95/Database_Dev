@@ -34,23 +34,23 @@ class ContactHandler:
 
     def getContactLists(self):
         result = ContactDAO().getContactLists()
+        if not result:
+            return jsonify(ERROR='No contact list found')
         contact = []
         for r in result:
             contact.append(self.buildContactList(r))
-        if contact is not None:
-            return jsonify(ContactList=contact)
-        else:
-            return jsonify(ERROR='No contact list found')
+        return jsonify(ContactList=contact)
+    
 
     def getContactListbyUser(self, usrID):
         result = ContactDAO().getContactListByUser(usrID)
+        if not result:
+            return jsonify(ERROR='No contact list found')
         contacts = []
         for r in result:
             contacts.append(self.buildContactDirectory(r))
-        if contacts:
-            return jsonify(Contacts=contacts)
-        else:
-            return jsonify(ERROR='No contact list found')
+        return jsonify(Contacts=contacts)
+     
 
     def getUserContacts(self, usrID): #needs to be evaluated 
         result = ContactDAO().getUserContacts(usrID)
@@ -79,14 +79,6 @@ class ContactHandler:
             else:
                 return jsonify(ERROR='Error adding contact')
 
-    def addContactByPhoneAndEmail(self, form, usrID,firstname,lastname,phone,email):
-        if usrID and firstname and lastname and phone and email:
-            contact = ContactDAO().addContactByPhoneAndEmail(usrID, firstname, lastname, phone, email)
-            if contact:
-                result = self.buildContactAlpha(contact)
-                return jsonify(Contact=result)
-            else:
-                return jsonify(ERROR='Error adding contact')
             
     def removeContact(self, form, cID, fromUsrID):
         result = ContactDAO()

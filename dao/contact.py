@@ -18,24 +18,17 @@ class ContactDAO:
         result = []
         clist = []
         result = UsersDAO().getUserById(usrID)
+        if not result:
+            return
         clist = result[9]
         return clist 
-    
-#     def getUserContacts(self):
-#         return[]
-    
-    def addContactByPhoneAndEmail(self,usrID,first_name,last_name,phone,email):
-        global result 
-        user = UsersDAO().getUserById(usrID)
-        randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,phone,email]
-        user[9].append(contact)
-        result.append(contact)
-        return contact
-
+ 
+ 
     def addContactByPhone(self,usrID,first_name,last_name,phone):
         global result 
         user = UsersDAO().getUserById(usrID)
+        if not user:
+            return
         randId = random.randint(1, 200)
         contact = [randId,first_name,last_name,phone,""]
         user[9].append(contact)
@@ -45,6 +38,8 @@ class ContactDAO:
     def addContactByEmail(self,usrID,first_name,last_name,email):
         global result 
         user = UsersDAO().getUserById(usrID)
+        if not user:
+            return
         randId = random.randint(1, 200)
         contact = [randId,first_name,last_name,"",email]
         user[9].append(contact)
