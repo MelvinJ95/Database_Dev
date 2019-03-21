@@ -1,8 +1,8 @@
 #from dao import users
 
 result = []
-post1 = [1, 'Hola', '2-24-2019', 'link.png', 5, 10, 3]
-post2 = [4, 'Adios', '2-25-2019', 'link2.png', 33, 0, 0]
+post1 = [1, 'Hola', '2-24-2019', 'link.png', 125, 10, 3]
+post2 = [4, 'Adios', '2-25-2019', 'link2.png', 124, 0, 0]
 result.append(post1)
 result.append(post2)
 
