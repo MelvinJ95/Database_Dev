@@ -10,15 +10,12 @@ class MessageHandler:
         result['mdate'] = row[2]       
         return result
 
-
-
     def build_message_attributes(self, mid, mtext, mdate):
         result = {}
         result['mid'] = mid
         result['mtext'] = mtext
         result['mdate'] = mdate   
-        return result
-    
+        return result  
 
     def getAllmessages(self):
         dao = MessagesDAO()
@@ -60,7 +57,7 @@ class MessageHandler:
 
     def insertmessage(self, form):
         print("form: ", form)
-        if len(form) != 4:
+        if len(form) != 2:
             return jsonify(Error = "Malformed post request"), 400
         else:
             mtext = form['mtext']
@@ -98,7 +95,7 @@ class MessageHandler:
         if not dao.getmessageById(mid):
             return jsonify(Error = "message not found."), 404
         else:
-            if len(form) != 4:
+            if len(form) != 2:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 mtext = form['mtext']

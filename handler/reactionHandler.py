@@ -10,8 +10,6 @@ class reactionHandler:
         result['rLikeDislike'] = row[2]       
         return result
 
-
-
     def build_reaction_attributes(self, rid, rdate, rLikeDislike):
         result = {}
         result['rid'] = rid
@@ -19,7 +17,6 @@ class reactionHandler:
         result['rLikeDislike'] = rLikeDislike   
         return result
     
-
     def getAllReactions(self):
         dao = ReactionsDAO()
         reaction_list = dao.getAllReactions()
@@ -29,7 +26,7 @@ class reactionHandler:
             result_list.append(result)
         return jsonify(Reactions=result_list)
 
-    def getreactionById(self, rid):
+    def getReactionsById(self, rid):
         dao = ReactionsDAO()
         row = dao.getReactionById(rid)
         if not row:
@@ -38,6 +35,7 @@ class reactionHandler:
             reaction = self.build_reaction_dict(row)
             return jsonify(Reaction = reaction)
 
+    #might be missing like/dislike in if conditions
     def searchreaction(self, args):
         id = args.get("id")
         date = args.get("date")
@@ -57,10 +55,9 @@ class reactionHandler:
             result_list.append(result)
         return jsonify(Reactions=result_list)
 
-
     def insertreaction(self, form):
         print("form: ", form)
-        if len(form) != 4:
+        if len(form) != 2:
             return jsonify(Error = "Malformed post request"), 400
         else:
             rdate = form['rdate']
@@ -76,7 +73,6 @@ class reactionHandler:
     def insertreactionJson(self, json):
         rdate = json['rdate']
         rLikeDislike = json['rLikeDislike']
-       
         if rdate and rLikeDislike:
             dao = ReactionsDAO()
             rid = dao.insert(rdate, rLikeDislike)
@@ -87,7 +83,7 @@ class reactionHandler:
 
     def deletereaction(self, rid):
         dao = ReactionsDAO()
-        if not dao.getReactionById(rid):
+        if not dao.getReactionsById(rid):
             return jsonify(Error = "reaction not found."), 404
         else:
             dao.delete(rid)
@@ -95,10 +91,10 @@ class reactionHandler:
 
     def updatereaction(self, rid, form):
         dao = ReactionsDAO()
-        if not dao.getReactionById(rid):
+        if not dao.getReactionsById(rid):
             return jsonify(Error = "reaction not found."), 404
         else:
-            if len(form) != 4:
+            if len(form) != 2:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 rdate = form['rdate']

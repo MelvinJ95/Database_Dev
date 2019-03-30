@@ -17,8 +17,6 @@ class UserHandler:
         result['ucontacts'] = row[9]
         return result
 
-
-
     def build_user_attributes(self, uid, u_username, ufirstname,ulastname, upwd, 
                               uphone,uemail,ubirthday,usex, contact):
         result = {}
@@ -87,7 +85,7 @@ class UserHandler:
 
     def insertUser(self, form):
         print("form: ", form)
-        if len(form) != 4:
+        if len(form) != 8:
             return jsonify(Error = "Malformed post request"), 400
         else:
             u_username = form['u_username']
@@ -138,7 +136,7 @@ class UserHandler:
         if not dao.getUserById(uid):
             return jsonify(Error = "User not found."), 404
         else:
-            if len(form) != 4:
+            if len(form) != 8:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 u_username = form['u_username']
