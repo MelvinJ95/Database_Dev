@@ -13,15 +13,23 @@ class PostHandler:
         result['dislike'] = row[6]
         return result
 
-    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
+    # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
+    #     result = {}
+    #     result['pid'] = pid
+    #     result['pcaption'] = pcaption
+    #     result['pdate'] = pdate
+    #     result['pmedia'] = pmedia
+    #     result['uid'] = uid
+    #     result['like'] = like
+    #     result['dislike'] = dislike
+    #     return result
+
+    def build_post_attributes(self, pid, pcaption, pdate, pmedia):
         result = {}
         result['pid'] = pid
         result['pcaption'] = pcaption
         result['pdate'] = pdate
         result['pmedia'] = pmedia
-        result['uid'] = uid
-        result['like'] = like
-        result['dislike'] = dislike
         return result
 
     def getAllPosts(self):
