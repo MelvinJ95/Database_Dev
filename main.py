@@ -97,10 +97,6 @@ def getUserById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/GramChat/contacts/addContact/<int:owner>', methods=['POST']) 
-def addUsertoContactList(owner):
-    return ContactHandler.addContact(request.json, owner)
-
 @app.route('/GramChat/chat/createchat/', methods=['POST'])
 def createNewChat(owner):
     return  ChatHandler.insertChat(request.json)
@@ -125,17 +121,17 @@ def getAllContacts(owner):
 # def addContactbyPhoneAndEmail(uid,firstname,lastname,phone,email):
 #     return ContactHandler().addContactByPhoneAndEmail(request.json,uid,firstname,lastname,phone,email)
 
-@app.route('/GramChat/contacts/addContact/<int:owner>/<string:fname>/<string:lname>/<int:phone>', methods = ['PUT','POST'])
-def addContactbyPhone(owner, fname, lname, phone):
-    return ContactHandler().addContactByPhone(request.json, owner, fname, lname, phone)
+@app.route('/GramChat/contacts/addContact/byPhone/<int:owner>', methods = ['PUT','POST'])
+def addContactbyPhone(owner):
+    return ContactHandler().addContactByPhone(request.form, owner)
 
-@app.route('/GramChat/contacts/addContact/<int:owner>/<string:fname>/<string:lname>/<string:email>', methods = ['PUT','POST'])
-def addContactbyEmail(owner, fname,  lname, email):
-    return ContactHandler().addContactByEmail(request.json, owner, fname, lname, email)
+@app.route('/GramChat/contacts/addContact/byEmail/<int:owner>', methods = ['PUT','POST'])
+def addContactbyEmail(owner):
+    return ContactHandler().addContactByEmail(request.form, owner)
 
 @app.route('/GramChat/contacts/removeContact/<int:owner>/<int:uid>', methods=['DELETE'])
 def removeUserFromContactList(owner, uid):
-    return ContactHandler().removeContact(request.json, owner, uid)
+    return ContactHandler().removeContact(request.form, owner, uid)
 
 @app.route('/GramChat/chat/deletechat/<int:cid>', methods=['DELETE']) 
 def deleteChat(cid):
