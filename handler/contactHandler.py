@@ -61,26 +61,40 @@ class ContactHandler:
             return jsonify(Contacts=contacts)
         return jsonify(ERROR='No Contact List for the User')
 
-    def addContactByPhone(self, form, usrID,firstname,lastname,phone):
-        if usrID and firstname and lastname and phone:
-            contact = ContactDAO().addContactByPhone(usrID, firstname, lastname, phone)
-            if contact:
-                result = self.buildContactAlpha(contact)
-                return jsonify(Contact=result)
-            else:
-                return jsonify(ERROR='Error adding contact')
+    def addContactByPhone(self, form, usrID):
+        print("form: ", form)
+        if len(form) != 3:
+            return jsonify(Error = "Malformed post request"), 400
+        else:
+            firstname = form.to_dict().values()[0]
+            lastname = form.to_dict().values()[1]
+            phone = form.to_dict().values()[2]
+            if firstname and lastname and phone:
+                contact = ContactDAO().addContactByPhone(usrID, firstname, lastname, phone)
+                if contact:
+                    result = self.buildContactDirectory(contact)
+                    return jsonify(Contact=result)
+                else:
+                    return jsonify(ERROR='Error adding contact')
     
-    def addContactByEmail(self, form, usrID,firstname,lastname,email):
-        if usrID and firstname and lastname and email:
-            contact = ContactDAO().addContactByEmail(usrID, firstname, lastname, email)
-            if contact:
-                result = self.buildContactAlpha(contact)
-                return jsonify(Contact=result)
-            else:
-                return jsonify(ERROR='Error adding contact')
+    def addContactByEmail(self, form, usrID):
+        print("form: ", form)
+        if len(form) != 4:
+            return jsonify(Error = "Malformed post request"), 400
+        else:
+            firstname = form.to_dict().values()[0]
+            lastname = form.to_dict().values()[1]
+            email = form.to_dict().values()[2]
+            if firstname and lastname and email:
+                contact = ContactDAO().addContactByEmail(usrID, firstname, lastname, email)
+                if contact:
+                    result = self.buildContactDirectory(contact)
+                    return jsonify(Contact=result)
+                else:
+                    return jsonify(ERROR='Error adding contact')
 
             
-    def removeContact(self, form, cID, fromUsrID):
+    def removeContact(self, cID, fromUsrID):
         result = ContactDAO()
         if not result.getContactByID(cID, fromUsrID):
             return jsonify(Error = "Contact not found."), 404
