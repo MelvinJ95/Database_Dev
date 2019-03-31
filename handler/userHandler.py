@@ -6,30 +6,30 @@ class UserHandler:
     def build_user_dict(self, row):
         result = {}
         result['uid'] = row[0]
-        result['u_username'] = row[1]
-        result['ufirstname'] = row[2]
-        result['ulastname'] = row[3]
-        result['upwd'] = row[4]
+        result['username'] = row[1]
+        result['first_name'] = row[2]
+        result['last_name'] = row[3]
+        result['upassword'] = row[4]
         result['uphone'] = row[5]
         result['uemail'] = row[6]
         result['ubirthday'] = row[7]
         result['usex'] = row[8]
-        result['ucontacts'] = row[9]
+        #result['ucontacts'] = row[9]
         return result
 
-    def build_user_attributes(self, uid, u_username, ufirstname,ulastname, upwd, 
-                              uphone,uemail,ubirthday,usex, contact):
+    def build_user_attributes(self, uid, username, first_name,last_name, upassword, 
+                              uphone,uemail,ubirthday,usex):
         result = {}
         result['uid'] = uid
-        result['u_username'] = u_username
-        result['ufirstname'] = ufirstname
-        result['ulastname'] = ulastname
-        result['upwd'] = upwd
+        result['username'] = username
+        result['first_name'] = first_name
+        result['last_name'] = last_name
+        result['upassword'] = upassword
         result['uphone'] = uphone
         result['uemail'] = uemail
         result['ubirthday'] = ubirthday
         result['usex'] = usex
-        result['ucontacts'] = contact
+        #result['ucontacts'] = contact
         return result
     
     #inclomplete
@@ -88,37 +88,37 @@ class UserHandler:
         if len(form) != 8:
             return jsonify(Error = "Malformed post request"), 400
         else:
-            u_username = form['u_username']
-            ufirstname = form['ufirstname']
-            ulastname = form['ulastname']
-            upwd = form['upwd']
+            username = form['username']
+            first_name = form['first_name']
+            last_name = form['last_name']
+            upassword = form['upassword']
             uphone = form['uphone']
             uemail = form['uemail']
             ubirthday = form['ubirthday']
             usex = form['usex']
-            ucontacts = form['ucontacts']
-            if u_username and ufirstname and ulastname and upwd and uphone and uemail and ubirthday and usex and ucontacts:
+            #ucontacts = form['ucontacts']
+            if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
                 dao = UsersDAO()
-                uid = dao.insert(u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex)
-                result = self.build_user_attributes(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex,ucontacts)
+                uid = dao.insert(username,first_name,last_name,uphone,uemail,ubirthday,usex)
+                result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
                 return jsonify(User=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
     def insertUserJson(self, json):
-        u_username = json['u_username']
-        ufirstname = json['ufirstname']
-        ulastname = json['ulastname']
-        upwd = json['upwd']
+        username = json['username']
+        first_name = json['first_name']
+        last_name = json['last_name']
+        upassword = json['upassword']
         uphone = json['uphone']
         uemail = json['uemail']
         ubirthday = json['ubirthday']
         usex = json['usex']
-        ucontacts = json['ucontacts']
-        if u_username and ufirstname and ulastname and upwd and uphone and uemail and ubirthday and usex and ucontacts:
+#        ucontacts = json['ucontacts']
+        if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
             dao = UsersDAO()
-            uid = dao.insert(u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex)
-            result = self.build_user_attributes(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex,ucontacts)
+            uid = dao.insert(username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex)
+            result = self.build_user_attributes(uid,username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex)
             return jsonify(User=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -139,18 +139,18 @@ class UserHandler:
             if len(form) != 8:
                 return jsonify(Error="Malformed update request"), 400
             else:
-                u_username = form['u_username']
-                ufirstname = form['ufirstname']
-                ulastname = form['ulastname']
-                upwd = form['upwd']
+                username = form['username']
+                first_name = form['first_name']
+                last_name = form['last_name']
+                upassword = form['upassword']
                 uphone = form['uphone']
                 uemail = form['uemail']
                 ubirthday = form['ubirthday']
                 usex = form['usex']
-                ucontacts = form['ucontacts']
-                if u_username and ufirstname and ulastname and upwd and uphone and uemail and ubirthday and usex and ucontacts:
-                    dao.update(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex)
-                    result = self.build_user_attributes(uid,u_username,ufirstname,ulastname,uphone,uemail,ubirthday,usex,ucontacts)
+                #ucontacts = form['ucontacts']
+                if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
+                    dao.update(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
+                    result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
                     return jsonify(User=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
