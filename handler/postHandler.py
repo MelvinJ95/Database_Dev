@@ -20,6 +20,8 @@ class PostHandler:
         result['pcaption'] = row[1]
         result['pdate'] = row[2]
         result['pmedia'] = row[3]
+        result['uid'] = row[4]
+        result['cid'] = row[5]
         return result
 
     # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
@@ -33,12 +35,14 @@ class PostHandler:
     #     result['dislike'] = dislike
     #     return result
 
-    def build_post_attributes(self, pid, pcaption, pdate, pmedia):
+    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, cid):
         result = {}
         result['pid'] = pid
         result['pcaption'] = pcaption
         result['pdate'] = pdate
         result['pmedia'] = pmedia
+        result['uid'] = uid
+        result['cid'] = cid
         return result
 
     def getAllPosts(self):
@@ -113,16 +117,18 @@ class PostHandler:
 
     def insertPost(self, form):
         print("form: ", form)
-        if len(form) != 3:
+        if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             pcaption = form['pname']
             pdate = form['pprice']
             pmedia = form['pmedia']
-            if pcaption and pdate and pmedia:
+            uid = form['uid']
+            cid = form['cid']
+            if pcaption and pdate and pmedia and uid and cid:
                 dao = PostsDAO()
-                pid = dao.insert(pcaption, pdate, pmedia)
-                result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
+                pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
+                result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
                 return jsonify(Post=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -131,10 +137,12 @@ class PostHandler:
         pcaption = json['pcaption']
         pdate = json['pdate']
         pmedia = json['pmedia']
-        if pcaption and pdate and pmedia:
+        uid = json['uid']
+        cid = json['cid']
+        if pcaption and pdate and pmedia and uid and cid:
             dao = PostsDAO()
-            pid = dao.insert(pcaption, pdate, pmedia)
-            result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
+            pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
+            result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
 
             return jsonify(Post=result), 201
         else:
@@ -162,7 +170,7 @@ class PostHandler:
                 uid = form['uid']
                 if pcaption and pdate and pmedia:
                     dao.update(pcaption, pdate, pmedia)
-                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid)
+                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
                     return jsonify(Post=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400

@@ -33,7 +33,7 @@ def getAllPosts():
 @app.route('/GramChat/posts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getPostById(pid):
     if request.method == 'GET':
-        return PostHandler().getPostsById(pid)
+        return PostHandler().getPostById(pid)
     elif request.method == 'PUT':
         return PostHandler().updatePost(pid, request.form)
     elif request.method == 'DELETE':

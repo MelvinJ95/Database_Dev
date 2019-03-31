@@ -11,7 +11,7 @@ class PostsDAO:
 
     def getAllPosts(self):
         cursor = self.conn.cursor()
-        query = "select pid, pcaption, pdate, pmedia from posts;"
+        query = "select * from posts;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -80,10 +80,10 @@ class PostsDAO:
         if reaction == 'dislike':
             return "The number of dislikes for post with id %d is %d." % (pid, result[6])
 
-    def insert(self, pcaption, pdate, pmedia):
+    def insert(self, pcaption, pdate, pmedia, uid, cid):
         cursor = self.conn.cursor()
-        query = "insert into posts(pcaption, pdate, pmedia) values (%s, %s, %s) returning pid;"
-        cursor.execute(query, (pcaption, pdate, pmedia,))
+        query = "insert into posts(pcaption, pdate, pmedia, uid, cid) values (%s, %s, %s, %s, %s) returning pid;"
+        cursor.execute(query, (pcaption, pdate, pmedia, uid, cid,))
         pid = cursor.fetchone()[0]
         self.conn.commit()
         return pid
