@@ -217,5 +217,6 @@ def getNumberOfPostsPerDay(date):
     return PostHandler().getNumberOfPostsPerDay(date)
 
 
+
 if __name__ == '__main__':
     app.run()

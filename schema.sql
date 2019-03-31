@@ -29,5 +29,3 @@ create table contacts(uid integer references users(uid), contact integer referen
 
 -- Member table
 create table member(uid integer references users(uid), cid integer refences chats(cid), primary key(uid, cid));
-
-
