@@ -1,7 +1,7 @@
 ------------------ Entity tables ----------------------
 -- Posts table
-create table posts(pid serial primary key, pcaption varchar(30), pdate varchar(10), pmedia varchar(20));
-
+create table posts(pid serial primary key, pcaption varchar(140), pdate varchar(10), pmedia varchar(10),
+    uid integer references users(uid), cid integer references chats(cid));
 -- Messages table
 create table messages(mid serial primary key, );
 
@@ -10,7 +10,7 @@ create table users(uid serial primary key, username varchar(25), first_name varc
  upassword varchar(20), uphone varchar(10), uemail varchar(30), ubirthday varchar(10), usex varchar(1));
 
 -- Chats table
-create table chats(cid serial primary key, cname varchar(20), admin integer references users(uid));
+create table chats(cid serial primary key, cname varchar(20), uid integer references users(uid));
 
 -- Hashtags table
 create table hashtags(hid serial primary key, htext varchar(50));

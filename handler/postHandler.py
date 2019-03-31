@@ -72,6 +72,17 @@ class PostHandler:
                 result_list.append(result)
             return jsonify(Posts=result_list)
 
+    def getPostsByUser(self, uid):
+        dao = PostsDAO()
+        if not dao.getPostsByUser(uid):
+            return jsonify(Error="This user has not posted yet"), 404
+        user_list = dao.getPostsByUser(uid)
+        result_list = []
+        for row in user_list:
+            result = self.build_post_dict(row)
+            result_list.append(result)
+        return jsonify(Posts=result_list)
+
     def searchPost(self, args): #date, hashtag, user
         date = args.get("date")
         hashtag = args.get("hashtag")
@@ -99,17 +110,6 @@ class PostHandler:
             result = self.build_post_dict(row)
             result_list.append(result)
         return jsonify(Posts=result_list)
-
-    def getPostsByUserId(self, uid):
-        dao = PostsDAO()
-        if not dao.getPostById(uid):
-            return jsonify(Error="Post Not Found"), 404
-        user_list = dao.getUsersByPostId(uid)
-        result_list = []
-        for row in user_list:
-            result = self.build_user_dict(row)
-            result_list.append(result)
-        return jsonify(Users=result_list)
 
     def insertPost(self, form):
         print("form: ", form)

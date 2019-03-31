@@ -44,15 +44,13 @@ class PostsDAO:
         #result = cursor.fetchone()
         return result
 
-    def getPostByUser(self, uid):
-        global result
-        result = self.getAllPosts()
-        #user = users.getAllUsers()
-        post1 = [1, 'Hola', '2-24-2019', 'link.png', 123]
-        for post in result:
-            if post[4] == uid:
-                result.append(post)
-
+    def getPostsByUser(self, uid):
+        cursor = self.conn.cursor()
+        query = "select * from posts natural inner join users where uid = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getPostsPerDayByUser(self, uid, date):
