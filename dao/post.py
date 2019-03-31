@@ -61,9 +61,13 @@ class PostsDAO:
         return "There were a total of %d posts on this day." % (len(result))
 
     def getReactionsByPost(self, pid, reaction):
-        #global result
+        global result
         result = self.getPostById(pid)
+        r_list = []
         if reaction == 'like':
-            return "The number of likes for post with id %d is %d." % (pid, result[5])
+            r_list.append(pid)
+            r_list.append(result[5])
         if reaction == 'dislike':
-            return "The number of dislikes for post with id %d is %d." % (pid, result[6])
+            r_list.append(pid)
+            r_list.append(result[6])
+        return r_list

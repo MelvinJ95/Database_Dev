@@ -17,9 +17,18 @@ class MessageHandler:
         result['mdate'] = mdate   
         return result  
 
+    def build_message_Alpha(self, row,reaction):
+        result = {}
+        result['pid'] = row[0]
+        if(reaction == 'like'):
+            result['likes'] = row[1]
+        else:
+            result['dislikes'] = row[2]
+        return result
+
     def getAllmessages(self):
         dao = MessagesDAO()
-        message_list = dao.getAllmessages()
+        message_list = dao.getAllMessages()
         result_list = []
         for row in message_list:
             result = self.build_message_dict(row)
@@ -28,24 +37,24 @@ class MessageHandler:
 
     def getmessageById(self, mid):
         dao = MessagesDAO()
-        row = dao.getmessageById(mid)
+        row = dao.getMessageById(mid)
         if not row:
             return jsonify(Error = "message Not Found"), 404
         else:
             message = self.build_message_dict(row)
             return jsonify(Message = message)
 
-    def searchmessage(self, args):
-        id = args.get("id")
-        date = args.get("date")
+    def searchmessage(self, form):
+        id = form.to_dict().values()[0]
+        date = form.to_dict().values[1]
         dao = MessagesDAO()
         messages_list = []
-        if (len(args) == 2) and id and date:
-            messages_list = dao.getmessagesByIdAndDate(id, date)
-        elif (len(args) == 1) and id:
-            messages_list = dao.getmessagesById(id)
-        elif (len(args) == 1) and date:
-            messages_list = dao.getmessagesBydate(date)
+        if (len(form) == 2) and id and date:
+            messages_list = dao.getMessagesByIdAndDate(id, date)
+        elif (len(form) == 1) and id:
+            messages_list = dao.getMessagesById(id)
+        elif (len(form) == 1) and date:
+            messages_list = dao.getMessagesBydate(date)
         else:
             return jsonify(Error = "Malformed query string"), 400
         result_list = []
@@ -60,8 +69,8 @@ class MessageHandler:
         if len(form) != 2:
             return jsonify(Error = "Malformed post request"), 400
         else:
-            mtext = form['mtext']
-            mdate = form['mdate']
+            mtext = form.to_dict().values()[0]
+            mdate = form.to_dict().values()[1]
             if mtext and mdate:
                 dao = MessagesDAO()
                 mid = dao.insert(mtext, mdate)
@@ -84,7 +93,7 @@ class MessageHandler:
 
     def deletemessage(self, mid):
         dao = MessagesDAO()
-        if not dao.getmessageById(mid):
+        if not dao.getMessageById(mid):
             return jsonify(Error = "message not found."), 404
         else:
             dao.delete(mid)
@@ -92,14 +101,14 @@ class MessageHandler:
 
     def updatemessage(self, mid, form):
         dao = MessagesDAO()
-        if not dao.getmessageById(mid):
+        if not dao.getMessageById(mid):
             return jsonify(Error = "message not found."), 404
         else:
             if len(form) != 2:
                 return jsonify(Error="Malformed update request"), 400
             else:
-                mtext = form['mtext']
-                mdate = form['mdate']
+                mtext = form.to_dict().values()[0]
+                mdate = form.to_dict().values()[1]
                 if mtext and mdate:
                     dao.update(mid, mtext, mdate)
                     result = self.build_message_attributes(mid, mtext, mdate)
@@ -123,3 +132,19 @@ class MessageHandler:
         result = dao.getCountBymessageId()
         #print(self.build_message_counts(result))
         return jsonify(MessageCounts = self.build_message_counts(result)), 200
+
+    def getMessageByDate(self, mdate):
+        dao = MessagesDAO()
+        row = dao.getMessageByDate(mdate)
+        if not row:
+            return jsonify(Error="Message Not Found"), 404
+        else:
+            message = self.build_message_dict(row)
+            return jsonify(Message=message)
+
+
+    def getReactionsByMessage(self, mid, reaction):
+     dao = MessagesDAO()
+     result = dao.getReactionsByMessage(mid, reaction) 
+     temp = self.build_message_Alpha(result,reaction)
+     return jsonify(Message=temp)

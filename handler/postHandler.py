@@ -24,6 +24,15 @@ class PostHandler:
         result['dislike'] = dislike
         return result
 
+    def build_post_Alpha(self, row,reaction):
+        result = {}
+        result['pid'] = row[0]
+        if(reaction == 'like'):
+            result['likes'] = row[1]
+        else:
+            result['dislikes'] = row[2]
+        return result
+
     def getAllPosts(self):
         dao = PostsDAO()
         posts_list = dao.getAllPosts()
@@ -187,8 +196,9 @@ class PostHandler:
 
     def getReactionsByPost(self, pid, reaction):
         dao = PostsDAO()
-        result = dao.getReactionsByPost(pid, reaction)
-        return result
+        result = dao.getReactionsByPost(pid, reaction) 
+        temp = self.build_post_Alpha(result,reaction)
+        return jsonify(Posts=temp)
 
     def getNumberOfPostsPerDay(self, pdate):
         dao = PostsDAO()

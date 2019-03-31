@@ -54,6 +54,47 @@ def addReaction(pid, reaction):
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/GramChat/messages', methods=['GET', 'POST'])
+def getAllmessages():
+    if request.method == 'POST':
+        return MessageHandler().insertmessage(request.form)
+    else:
+        if not request.args:
+            return MessageHandler().getAllmessages()
+        else:
+            return MessageHandler().searchmessage(request.form)
+
+
+@app.route('/GramChat/messages/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+def getMessageById(mid):
+    if request.method == 'GET':
+        return MessageHandler().getmessageById(mid)
+    elif request.method == 'PUT':
+        return MessageHandler().updatemessage(mid, request.form)
+    elif request.method == 'DELETE':
+        return MessageHandler().deletemessage(mid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+@app.route('/GramChat/messages/date/<string:mdate>', methods=['GET', 'PUT', 'DELETE'])
+def getMessageByDate(mdate):
+    if request.method == 'GET':
+        return MessageHandler().getMessageByDate(mdate) 
+    elif request.method == 'PUT':
+        return MessageHandler().updatemessage(mdate, request.form)
+    elif request.method == 'DELETE':
+        return MessageHandler().deletemessage(mdate)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+@app.route('/GramChat/messages/<int:mid>/<string:reaction>', methods=['GET'])
+def addMessageReaction(mid, reaction):
+    if request.method == 'GET':
+        print(reaction)
+        return MessageHandler().getReactionsByMessage(mid, reaction)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 # @app.route('/GramChat/login', methods=['POST'])
 # def login():
 #     return UserHandler.authorize(request.json)
@@ -182,3 +223,5 @@ def getNumberOfPostsPerDay(date):
 
 if __name__ == '__main__':
     app.run()
+
+

@@ -1,7 +1,7 @@
 #Predefine values for messages 
 result = []
-messages = [123, 'This is a message', 'February 20, 2019']
-messages2 = [124, 'This is a message', 'February 20, 2019']
+messages = [123, 'This is a message', 'February 20, 2019', 34, 42]
+messages2 = [124, 'This is a message', 'February 20, 2019',16, 5]
 
 #append messages 
 result.append(messages)
@@ -58,3 +58,25 @@ class MessagesDAO:
         temp = self.getMessageByID(id)
         result.remove(temp) 
     
+    def getReactionsByMessage(self, pid, reaction):
+        global result
+        result = self.getMessageByID(pid)
+        r_list = []
+        if reaction == 'like':
+            r_list.append(pid)
+            r_list.append(result[3])
+        if reaction == 'dislike':
+            r_list.append(pid)
+            r_list.append(result[4])
+        return r_list
+
+    def update(self, mid,message,mdate):
+        global result 
+        mess = self.getMessageByID(mid)
+        if not message:
+            return
+        
+        mess[1] = message
+        mess[2] = mdate
+        print message
+        return message
