@@ -17,7 +17,8 @@ create table hashtags(hid serial primary key, htext varchar(50));
 
 -- Reactions table
 create table reactions(rid serial primary key, rdate varchar(10), reaction varchar(7), pid integer references
-    posts(pid), uid references users(uid));
+    posts(pid), uid integer references users(uid));
+
 
 ----------------- Relation tables -------------------------
 -- Tagged table
