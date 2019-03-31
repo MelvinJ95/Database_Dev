@@ -1,16 +1,25 @@
 from flask import jsonify, Flask
 from dao.post import PostsDAO
 
+
 class PostHandler:
+    # def build_post_dict(self, row):
+    #     result = {};
+    #     result['pid'] = row[0]
+    #     result['pcaption'] = row[1]
+    #     result['pdate'] = row[2]
+    #     result['pmedia'] = row[3]
+    #     result['uid'] = row[4]
+    #     result['like'] = row[5]
+    #     result['dislike'] = row[6]
+    #     return result
+
     def build_post_dict(self, row):
         result = {};
         result['pid'] = row[0]
         result['pcaption'] = row[1]
         result['pdate'] = row[2]
         result['pmedia'] = row[3]
-        result['uid'] = row[4]
-        result['like'] = row[5]
-        result['dislike'] = row[6]
         return result
 
     # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
@@ -50,14 +59,18 @@ class PostHandler:
             post = self.build_post_dict(row)
             return jsonify(Post=post)
 
-    def getPostByDate(self, pdate):
+    def getPostsByDate(self, pdate):
         dao = PostsDAO()
-        row = dao.getPostByDate(pdate)
+        row = dao.getPostsByDate(pdate)
         if not row:
-            return jsonify(Error="Post Not Found"), 404
+            return jsonify(Error="No Posts in this Date"), 404
         else:
-            post = self.build_post_dict(row)
-            return jsonify(Post=post)
+            posts_list = dao.getPostsByDate(pdate)
+            result_list = []
+            for row in posts_list:
+                result = self.build_post_dict(row)
+                result_list.append(result)
+            return jsonify(Posts=result_list)
 
     def searchPost(self, args): #date, hashtag, user
         date = args.get("date")
