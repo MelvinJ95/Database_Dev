@@ -35,7 +35,8 @@ class ChatHandler:
         chat = {}
         chat['Chat id'] = row[0]
         chat['Chat Name'] = row[1]
-        chat['Chat Admin'] = row[2] + " " + row[3]
+        chat['Chat Admin'] = row[2]
+        #chat['Chat Admin'] = row[2] + " " + row[3]
         return chat
 
     def buildChatMembers(self, row):
@@ -48,9 +49,16 @@ class ChatHandler:
         chats['usrid'] = row[0]
         chats['chatid'] = row[1]
         return chats
+
+    def build_chat_attributes(self, cid, cname, uid):
+        result = {}
+        result['cid'] = cid
+        result['cname'] = cname
+        result['uid'] = uid
+        return result
     
     def getAllChats(self):
-        result = ChatDAO().getChats()
+        result = ChatDAO().getAllChats()
         chats = []
         if result:
             for i in result:
@@ -71,17 +79,44 @@ class ChatHandler:
 #     def getChatByUserID(self, form):
 #         return 
     
-    def insertChat(self, form, usrID):
-        name = form['chatname']
-        if name and usrID:
+    # def insertChat(self, form, usrID):
+    #     name = form['chatname']
+    #     if name and usrID:
+    #         dao = ChatDAO()
+    #         chat = dao.insertChat(name, usrID)
+    #         if chat:
+    #             result = self.arrangeChatID(chat)
+    #             return jsonify(ChatID=result)
+    #         else:
+    #             return jsonify(ERROR='Creation of chat denied')
+
+    def insertChat(self, form):
+        print("form: ", form)
+        if len(form) != 2:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            cname = form['cname']
+            uid = form['uid']
+            if cname and uid:
+                dao = ChatDAO()
+                cid = dao.insert(cname, uid)
+                result = self.build_post_attributes(cid,cname, uid)
+                return jsonify(Chat=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def insertChatJson(self, json):
+        cname = json['cname']
+        uid = json['uid']
+        if cname and uid:
             dao = ChatDAO()
-            chat = dao.insertChat(name, usrID)
-            if chat:
-                result = self.arrangeChatID(chat)
-                return jsonify(ChatID=result)
-            else:    
-                return jsonify(ERROR='Creation of chat denied')
-    
+            cid = dao.insert(cname, uid)
+            result = self.build_chat_attributes(cid, cname, uid)
+
+            return jsonify(Chat=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
     def insertMember(self, form, cid, usrID):
         if chatName and credentialForm:
             result = ChatDAO().insertMember(cid, usrID)
@@ -103,7 +138,7 @@ class ChatHandler:
         if not result.getChatByID(cID):
             return jsonify(Error = "Chat not found."), 404
         else:
-            if ownerID == result.getChatAdmin:
+            if ownerID == result.getChatAdmin(cID):
                 result.delete(cID)
                 return jsonify(DeleteStatus = "OK"), 200
             else: 

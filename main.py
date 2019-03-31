@@ -150,10 +150,20 @@ def removeUserFromContactList(owner, uid):
 
 # ------------------ CHATS -----------------------------
 
+@app.route('/GramChat/chats', methods=['GET', 'POST'])
+def getAllChats():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ChatHandler().insertChatJson(request.json)
+    else:
+        if not request.args:
+            return ChatHandler().getAllChats()
+        else:
+            return ChatHandler().searchChats(request.args)
 
 @app.route('/GramChat/chat/createchat/', methods=['POST'])
-def createNewChat(owner):
-    return  ChatHandler.insertChat(request.json)
+def createNewChat():
+    return ChatHandler.insertChatJson(request.json)
 
 
 @app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
@@ -166,9 +176,9 @@ def addUsertochat(cid, uid):
     return ChatHandler.insertMember(request.json, cid, uid)
 
 
-@app.route('/GramChat/chat/deletechat/<int:cid>', methods=['DELETE']) 
-def deleteChat(cid):
-    return ChatHandler.removeChatGroup(request.json, cid)
+@app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])
+def deleteChat(cid, uid):
+    return ChatHandler.removeChat(request.json, cid, uid)
 
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])

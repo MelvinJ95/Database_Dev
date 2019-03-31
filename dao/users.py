@@ -1,7 +1,7 @@
-#import libraries 
 import random
 from config.db_config import pg_config
 import psycopg2
+
 
 class UsersDAO:
     def __init__(self):
@@ -20,38 +20,36 @@ class UsersDAO:
         return result
 
     def getUserById(self, uid):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-           # for attr in user:
-            if user[0] == uid:
-                return user
-        return []
+        cursor = self.conn.cursor()
+        query = "select * from users where uid = %s;"
+        cursor.execute(query, (uid,))
+        result = cursor.fetchone()
+        return result
 
-    def getUsersByFirstNameAndLastName(self, firstname, lastname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[2] == firstname and user[3] == lastname:
-                return user 
-        return 
-
-    def getUserByFirstName(self, firstname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[2] == firstname:
-                return 
-
-        return 
-
-    def getUserByLastName(self, lastname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[3] == lastname:
-                return user
-        return
+    # def getUsersByFirstNameAndLastName(self, firstname, lastname):
+    #     global result
+    #     result = self.getAllUsers()
+    #     for user in result:
+    #         if user[2] == firstname and user[3] == lastname:
+    #             return user
+    #     return
+    #
+    # def getUserByFirstName(self, firstname):
+    #     global result
+    #     result = self.getAllUsers()
+    #     for user in result:
+    #         if user[2] == firstname:
+    #             return
+    #
+    #     return
+    #
+    # def getUserByLastName(self, lastname):
+    #     global result
+    #     result = self.getAllUsers()
+    #     for user in result:
+    #         if user[3] == lastname:
+    #             return user
+    #     return
 
     # def insert(self, u_username,ufirstname,ulastname,upwd,uphone,uemail,ubirthday,usex):
     #     global result
@@ -72,12 +70,13 @@ class UsersDAO:
         uid = cursor.fetchone()[0]
         self.conn.commit()
         return uid
-        
 
     def delete(self, uid):
-        global result 
-        temp = self.getUserById(uid)
-        result.remove(temp)
+        cursor = self.conn.cursor()
+        query = "delete from users where uid = %s;"
+        cursor.execute(query, (uid,))
+        self.conn.commit()
+        return uid
         
     
 
