@@ -34,7 +34,6 @@ class PostsDAO:
     #             #return post
     #     return result
 
-    # --------------ERROR------------------
     def getPostsByDate(self, date):
         cursor = self.conn.cursor()
         query = "select * from posts where pdate = %s;"
