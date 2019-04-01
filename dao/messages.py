@@ -28,7 +28,7 @@ class MessagesDAO:
     def getMessagesByIDAndDate(self, mid, date):
         cursor = self.conn.cursor()
         query = "select * from messagess where mid = %s and date = %s;"
-        cursor.execute(query, (mid,date))
+        cursor.execute(query, (mid,date,))
         result = []
         for row in cursor:
             result.append(row)
@@ -38,7 +38,7 @@ class MessagesDAO:
     def getMessageByDate(self, date):
         cursor = self.conn.cursor()
         query = "select * from messages where date = %s;"
-        cursor.execute(query, (date))
+        cursor.execute(query, (date,))
         result = cursor.fetchone()
         return result
 

@@ -37,7 +37,7 @@ class ContactDAO:
     def addContactByPhone(self,usrID,first_name,last_name,phone):
         cursor = self.conn.cursor()
         query = "select * from users where first_name = %s and last_name = %s and uphone = %s;"
-        cursor.execute(query, (first_name,last_name,phone,))
+        cursor.execute(query, (last_name,phone,first_name,)) #NOT TESTED SHOULD WORK SAME AS addContactByEmail
         cid = cursor.fetchone()[0]
         query_T = "insert into contacts(cid,uid) values (%s, %s) returning cid;"
         cursor.execute(query_T, (cid,usrID,))
@@ -48,7 +48,7 @@ class ContactDAO:
         print("%s,%s,%s", first_name,last_name,email)
         cursor = self.conn.cursor()
         query = "select * from users where first_name = %s and last_name = %s and uemail = %s;"
-        cursor.execute(query, (last_name,email,first_name,))
+        cursor.execute(query, (last_name,email,first_name,)) #WORKS AND TESTED BUT ORDER NEEDS TO BE FIXED? 
         cid = cursor.fetchone()[0]
         query_T = "insert into contacts(cid,uid) values (%s, %s) returning cid;"
         cursor.execute(query_T, (cid,usrID,))
