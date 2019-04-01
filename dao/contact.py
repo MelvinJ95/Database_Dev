@@ -1,75 +1,72 @@
+from config.db_config import pg_config
+import psycopg2
 
-#import user handler 
-import random
-from dao.users import UsersDAO
-
-#declare global variables and default list values
-result = []
-contact1 = [ 123,'Luis', 'Rivera', 7879390540, 'Luis.Rivera@upr.edu']
-contact2 = [ 124, 'Melvin', 'Malave', 9392821866, 'Melvin.Malave@upr.edu']
-result.append(contact1)
-result.append(contact2)
 class ContactDAO:
-    def getContactList(self):
-        global result 
-        return result
-    
-    def getContactListByUser(self, usrID):
+
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
+
+    '''
+    def getAllContacts(self):
+        cursor = self.conn.cursor()
+        query = "select * from contacts;"
+        cursor.execute(query)
         result = []
-        clist = []
-        result = UsersDAO().getUserById(usrID)
-        if not result:
-            return
-        clist = result[9]
-        return clist 
+        for row in cursor:
+            result.append(row)
+        return result
+    '''
+    def getContactListByUser(self, usrID):
+        cursor = self.conn.cursor()
+       # query = "select * from(select * from users natural inner join contacts where uid = %s) as T1 natural inner join users as T2 where T1.cid=T2.uid);"
+        query = "select * from users natural inner join contacts where uid = %s;"
+        cursor.execute(query,(usrID,))
+        cid = cursor.fetchone()[8]
+        query_T = "select * from users where uid = %s;"
+        cid_T = cursor.execute(query_T, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
  
  
     def addContactByPhone(self,usrID,first_name,last_name,phone):
-        global result 
-        user = UsersDAO().getUserById(usrID)
-        if not user:
-            return
-        randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,phone,""]
-        user[9].append(contact)
-        result.append(contact)
-        return contact
+        cursor = self.conn.cursor()
+        query = "select * from users where first_name = %s and last_name = %s and uphone = %s;"
+        cursor.execute(query, (first_name,last_name,phone,))
+        cid = cursor.fetchone()[0]
+        query_T = "insert into contacts(cid,uid) values (%s, %s) returning cid;"
+        cursor.execute(query_T, (cid,usrID,))
+        self.conn.commit()
+        return cid
 
     def addContactByEmail(self,usrID,first_name,last_name,email):
-        global result 
-        user = UsersDAO().getUserById(usrID)
-        if not user:
-            return
-        randId = random.randint(1, 200)
-        contact = [randId,first_name,last_name,"",email]
-        user[9].append(contact)
-        result.append(contact)
-        return contact
+        print("%s,%s,%s", first_name,last_name,email)
+        cursor = self.conn.cursor()
+        query = "select * from users where first_name = %s and last_name = %s and uemail = %s;"
+        cursor.execute(query, (last_name,email,first_name,))
+        cid = cursor.fetchone()[0]
+        query_T = "insert into contacts(cid,uid) values (%s, %s) returning cid;"
+        cursor.execute(query_T, (cid,usrID,))
+        self.conn.commit()
+        return cid
     
     
-    def delete(self, owner, usrID):
-        #delete from local list 
-        global result 
-        contact = self.getContactByID(owner, usrID)
-       # result.remove(temp) #should result be deleted 
-        user = UsersDAO().getUserById(owner)
-        user[9].remove(contact)
-        return contact
+    def delete(self, owner, usrIDs):
+        cursor = self.conn.cursor()
+        query = "delete from contact where cid = %s;"
+        cursor.execute(query, (usrIDs,))
+        self.conn.commit()
+        return usrIDs
 
 
     def getContactByID(self, owner, usrID):  
-        user = UsersDAO().getUserById(owner)
-        if not user:
-            return 
-        for contact in user[9]:
-            if contact[0] == usrID:
-                return contact
-        return 
-
-    def getAllContacts(self):
-        result = []
-        users = UsersDAO().getAllUsers()
-        for user in users:
-            result.append(user[9])
+        cursor = self.conn.cursor()
+        query = "select * from contact where uid = %s;"
+        cursor.execute(query, (usrID,))
+        result = cursor.fetchone()
         return result
-    

@@ -29,7 +29,7 @@ class ContactHandler:
 
     def buildContactAlpha(self, row):
         contact = {}
-        contact['contact_id'] = row[0]
+        contact['contact_id'] = row
         return contact
 
     def getContactLists(self):
@@ -72,23 +72,23 @@ class ContactHandler:
             if firstname and lastname and phone:
                 contact = ContactDAO().addContactByPhone(usrID, firstname, lastname, phone)
                 if contact:
-                    result = self.buildContactDirectory(contact)
+                    result = self.buildContactAlpha(contact)
                     return jsonify(Contact=result)
                 else:
                     return jsonify(ERROR='Error adding contact')
     
     def addContactByEmail(self, form, usrID):
         print("form: ", form)
-        if len(form) != 4:
+        if len(form) != 3:
             return jsonify(Error = "Malformed post request"), 400
         else:
-            firstname = form.to_dict().values()[0]
+            firstname = (form.to_dict().values()[0])
             lastname = form.to_dict().values()[1]
             email = form.to_dict().values()[2]
             if firstname and lastname and email:
                 contact = ContactDAO().addContactByEmail(usrID, firstname, lastname, email)
                 if contact:
-                    result = self.buildContactDirectory(contact)
+                    result = self.buildContactAlpha(contact)
                     return jsonify(Contact=result)
                 else:
                     return jsonify(ERROR='Error adding contact')

@@ -5,12 +5,18 @@ from handler.chatHandler import ChatHandler
 from handler.messageHandler import MessageHandler
 from handler.contactHandler import ContactHandler
 from handler.hashtagHandler import HashtagHandler
+#from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+#CORS(app)
+
 
 @app.route('/')
 def home():
-    return ('Welcome to GramChat')
+    return 'Welcome to GramChat'
+
+# ----------------- POSTS --------------------------------------
+
 
 @app.route('/GramChat/posts', methods=['GET', 'POST'])
 def getAllPosts():
@@ -23,6 +29,7 @@ def getAllPosts():
         else:
             return PostHandler().searchPosts(request.args)
 
+
 @app.route('/GramChat/posts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getPostById(pid):
     if request.method == 'GET':
@@ -34,16 +41,18 @@ def getPostById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/GramChat/posts/date/<string:pdate>', methods=['GET', 'PUT', 'DELETE'])
-def getPostByDate(pdate):
+def getPostsByDate(pdate):
     if request.method == 'GET':
-        return PostHandler().getPostByDate(pdate)
+        return PostHandler().getPostsByDate(pdate)
     elif request.method == 'PUT':
         return PostHandler().updatePost(pdate, request.form)
     elif request.method == 'DELETE':
         return PostHandler().deletePost(pdate)
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/GramChat/posts/<int:pid>/<string:reaction>', methods=['GET'])
 def addReaction(pid, reaction):
@@ -54,47 +63,6 @@ def addReaction(pid, reaction):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/GramChat/messages', methods=['GET', 'POST'])
-def getAllmessages():
-    if request.method == 'POST':
-        return MessageHandler().insertmessage(request.form)
-    else:
-        if not request.args:
-            return MessageHandler().getAllmessages()
-        else:
-            return MessageHandler().searchmessage(request.form)
-
-
-@app.route('/GramChat/messages/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
-def getMessageById(mid):
-    if request.method == 'GET':
-        return MessageHandler().getmessageById(mid)
-    elif request.method == 'PUT':
-        return MessageHandler().updatemessage(mid, request.form)
-    elif request.method == 'DELETE':
-        return MessageHandler().deletemessage(mid)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-@app.route('/GramChat/messages/date/<string:mdate>', methods=['GET', 'PUT', 'DELETE'])
-def getMessageByDate(mdate):
-    if request.method == 'GET':
-        return MessageHandler().getMessageByDate(mdate) 
-    elif request.method == 'PUT':
-        return MessageHandler().updatemessage(mdate, request.form)
-    elif request.method == 'DELETE':
-        return MessageHandler().deletemessage(mdate)
-    else:
-        return jsonify(Error="Method not allowed."), 405
-
-
-@app.route('/GramChat/messages/<int:mid>/<string:reaction>', methods=['GET'])
-def addMessageReaction(mid, reaction):
-    if request.method == 'GET':
-        print(reaction)
-        return MessageHandler().getReactionsByMessage(mid, reaction)
-    else:
-        return jsonify(Error="Method not allowed."), 405
 # @app.route('/GramChat/login', methods=['POST'])
 # def login():
 #     return UserHandler.authorize(request.json)
@@ -127,6 +95,7 @@ def getAllUsers():
         else:
             return UserHandler().searchUsers(request.args)
 
+
 @app.route('/GramChat/users/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getUserById(pid):
     if request.method == 'GET':
@@ -138,65 +107,95 @@ def getUserById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/GramChat/chat/createchat/', methods=['POST'])
-def createNewChat(owner):
-    return  ChatHandler.insertChat(request.json)
 
-@app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
-def removeUserFromchat(cid, usrid):
-    return ChatHandler.removeMember(request.json, cid)
+@app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
+def deleteUser(uid):
+    return UserHandler().deleteUser(uid)
 
-@app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
-def addUsertochat(cid, uid):
-    return ChatHandler.insertMember(request.json, cid, uid)
 
-@app.route('/GramChat/contacts/<int:owner>', methods = ['GET'])
+@app.route('/GramChat/contacts/<int:owner>', methods=['GET'])
 def getAllContacts(owner):
     return ContactHandler().getContactListbyUser(owner)
 
-#@app.route('/GramChat/contacts/getUserContacts/<int:uid>', methods=['GET'])
-#def getUserContacts(uid):
+
+@app.route('/GramChat/contacts/addContact/byPhone/<int:owner>', methods=['PUT', 'POST'])
+def addContactbyPhone(owner):
+    return ContactHandler().addContactByPhone(request.form, owner)
+
+
+@app.route('/GramChat/contacts/addContact/byEmail/<int:owner>', methods=['PUT', 'POST'])
+def addContactbyEmail(owner):
+    return ContactHandler().addContactByEmail(request.form, owner)
+
+
+@app.route('/GramChat/contacts/removeContact/<int:owner>/<int:uid>', methods=['DELETE'])
+def removeUserFromContactList(owner, uid):
+    return ContactHandler().removeContact(request.form, owner, uid)
+
+
+# @app.route('/GramChat/contacts/getUserContacts/<int:uid>', methods=['GET'])
+# def getUserContacts(uid):
 #    return ContactHandler().getContactListbyUser(uid)
 
 # @app.route('/GramChat/contacts/addContact/<int:uid>', methods = ['PUT','POST'])
 # def addContactbyPhoneAndEmail(uid,firstname,lastname,phone,email):
 #     return ContactHandler().addContactByPhoneAndEmail(request.json,uid,firstname,lastname,phone,email)
 
-@app.route('/GramChat/contacts/addContact/byPhone/<int:owner>', methods = ['PUT','POST'])
-def addContactbyPhone(owner):
-    return ContactHandler().addContactByPhone(request.form, owner)
+# ------------------ CHATS -----------------------------
 
-@app.route('/GramChat/contacts/addContact/byEmail/<int:owner>', methods = ['PUT','POST'])
-def addContactbyEmail(owner):
-    return ContactHandler().addContactByEmail(request.form, owner)
+@app.route('/GramChat/chats', methods=['GET', 'POST'])
+def getAllChats():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ChatHandler().insertChatJson(request.json)
+    else:
+        if not request.args:
+            return ChatHandler().getAllChats()
+        else:
+            return ChatHandler().searchChats(request.args)
 
-@app.route('/GramChat/contacts/removeContact/<int:owner>/<int:uid>', methods=['DELETE'])
-def removeUserFromContactList(owner, uid):
-    return ContactHandler().removeContact(request.form, owner, uid)
+@app.route('/GramChat/chat/createchat/', methods=['POST'])
+def createNewChat():
+    return ChatHandler.insertChatJson(request.json)
 
-@app.route('/GramChat/chat/deletechat/<int:cid>', methods=['DELETE']) 
-def deleteChat(cid):
-    return ChatHandler.removeChatGroup(request.json, cid)
+
+@app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
+def removeUserFromchat(cid, usrid):
+    return ChatHandler.removeMember(request.json, cid)
+
+
+@app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
+def addUsertochat(cid, uid):
+    return ChatHandler.insertMember(request.json, cid, uid)
+
+
+@app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])
+def deleteChat(cid, uid):
+    return ChatHandler.removeChat(request.json, cid, uid)
+
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
 def postPost():
     return PostHandler.insertPost(request.json)
 
+
 @app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])
 def likeMessage(mID):
     return
+
 
 @app.route('/GramChat/chat/<int:cid>/<int:mID>/dislike', methods=['POST'])
 def dislikeMessage(mID):
     return
 
+
 @app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
 def replyPost():
     return MessageHandler.insertMessage(request.json)
 
-@app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
-def deleteUser(uid):   
-    return UserHandler().deleteUser(uid)
+
+# -------------- ETC -----------------------------
+
 
 @app.route('/GramChat/trends', methods=['GET'])
 def getTrends():
@@ -221,7 +220,6 @@ def getNumberOfPostsPerDay(date):
     return PostHandler().getNumberOfPostsPerDay(date)
 
 
+
 if __name__ == '__main__':
     app.run()
-
-

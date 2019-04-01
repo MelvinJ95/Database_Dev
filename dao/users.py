@@ -1,85 +1,72 @@
-#import libraries 
-import random
+from config.db_config import pg_config
+import psycopg2
 
-#Pre-define list of users 
-result = []
-users = [123, 'Jason123', 'Jason','Freeman', 'password', '123456789', 'J@gmail.com', '12 June 1968', 'M', []]
-users2 = [124, 'CL23', 'Carlos','Lopez', 'password', '123456789', 'CL23@gmail.com', '13 June 1968', 'M', []]
-users3 = [125, 'JD', 'Joey','Diaz', 'password', '123456789', 'JD@gmail.com', '14 June 1968', 'M', []]
-users4 = [126, 'SOldado2', 'Frank','Ramirez', 'password', '123456789', 'SOldado2@gmail.com', '15 June 1968', 'M', []]
-users5 = [127, 'zapper', 'Eric','Melendez', 'password', '123456789', 'zappe@gmail.com', '16 June 1968', 'M', []]
-users6 = [128, 'Tfue', 'Taylor','Jackson', 'password', '123456789', 'Tfue@gmail.com', '17 June 1968', 'M', []]
-users7 = [129, 'Ninja', 'Scott','Anderson', 'password', '123456789', 'Ninja@gmail.com', '18 June 1968', 'M', []]
-users8 = [130, 'JoeDMTRogan', 'Joe','Rogan', 'password', '123456789', 'Joe.Rogan@gmail.com', '19 June 1968', 'M', []]
-users[9].append([123,'Luis', 'Rivera', '7879390540', 'Luis.Rivera@upr.edu']) #add contact to user 123
-users2[9].append([124,'Melvin', 'Malave', '9392821866', 'Melvin.Malave@upr.edu']) #add contact to user 124 
-#append users 
 
-result.append(users)
-result.append(users2)
-result.append(users3)
-result.append(users4)
-result.append(users5)
-result.append(users6)
-result.append(users7)
-result.append(users8)
 class UsersDAO:
-  
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllUsers(self):
-        global result
+        cursor = self.conn.cursor()
+        query = "select * from users;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getUserById(self, uid):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-           # for attr in user:
-            if user[0] == uid:
-                return user
-        return []
+        cursor = self.conn.cursor()
+        query = "select * from users where uid = %s;"
+        cursor.execute(query, (uid,))
+        result = cursor.fetchone()
+        return result
 
     def getUsersByFirstNameAndLastName(self, firstname, lastname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[2] == firstname and user[3] == lastname:
-                return user 
-        return 
+        cursor = self.conn.cursor()
+        query = "select * from users where first_name = %s and last_name = %s;"
+        cursor.execute(query, (firstname,lastname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getUserByFirstName(self, firstname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[2] == firstname:
-                return 
-
-        return 
-
+        cursor = self.conn.cursor()
+        query = "select * from users where first_name = %s;"
+        cursor.execute(query, (firstname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    
     def getUserByLastName(self, lastname):
-        global result
-        result = self.getAllUsers()
-        for user in result:
-            if user[3] == lastname:
-                return user
-        return
+        cursor = self.conn.cursor()
+        query = "select * from users where last_name = %s;"
+        cursor.execute(query, (lastname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def insert(self, u_username,ufirstname,ulastname,upwd,uphone,uemail,ubirthday,usex):
-        global result 
-        randId = random.randint(1,200) 
-        result = self.getAllUsers()
-        for user in result:
-            while(randId == user[0]):
-                randId = randint(1,200)
-        temp = [randId,u_username,ufirstname,ulastname,upwd,uphone,uemail,ubirthday,usex]
-        result.append(temp)
-        return randId  
-        
+
+    def insert(self, username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex):
+       cursor = self.conn.cursor()
+       query = "insert into users(username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex) values (%s, %s, %s, %s, %s,  %s, %s, %s) returning uid;"
+       cursor.execute(query, (username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex,))
+       uid = cursor.fetchone()[0]
+       self.conn.commit()
+       return uid
 
     def delete(self, uid):
-        global result 
-        temp = self.getUserById(uid)
-        result.remove(temp)
+        cursor = self.conn.cursor()
+        query = "delete from users where uid = %s;"
+        cursor.execute(query, (uid,))
+        self.conn.commit()
+        return uid
         
     
 

@@ -1,44 +1,56 @@
-#from dao import users
+from config.db_config import pg_config
+import psycopg2
 
-result = []
-post1 = [1, 'Hola', '2-24-2019', 'link.png', 125, 10, 3]
-post2 = [4, 'Adios', '2-25-2019', 'link2.png', 124, 0, 0]
-result.append(post1)
-result.append(post2)
 
 class PostsDAO:
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllPosts(self):
-        global result
+        cursor = self.conn.cursor()
+        query = "select * from posts;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getPostById(self, pid):
-        global result
-        result = self.getAllPosts()
-        for post in result:
-            if post[0] == pid:
-                return post
-
-        return []
-
-    def getPostByDate(self, pdate):
-        global result
-        result = self.getAllPosts()
-        for post in result:
-            if post[2] == pdate:
-                result.append(post)
-                #return post
+        cursor = self.conn.cursor()
+        query = "select * from posts where pid = %s;"
+        cursor.execute(query, (pid,))
+        result = cursor.fetchone()
         return result
 
-    def getPostByUser(self, uid):
-        global result
-        result = self.getAllPosts()
-        #user = users.getAllUsers()
-        post1 = [1, 'Hola', '2-24-2019', 'link.png', 123]
-        for post in result:
-            if post[4] == uid:
-                result.append(post)
+    # def getPostByDate(self, pdate):
+    #     global result
+    #     result = self.getAllPosts()
+    #     for post in result:
+    #         if post[2] == pdate:
+    #             result.append(post)
+    #             #return post
+    #     return result
 
+    def getPostsByDate(self, date):
+        cursor = self.conn.cursor()
+        query = "select * from posts where pdate = %s;"
+        cursor.execute(query, (date,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        #result = cursor.fetchone()
+        return result
+
+    def getPostsByUser(self, uid):
+        cursor = self.conn.cursor()
+        query = "select * from posts natural inner join users where uid = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getPostsPerDayByUser(self, uid, date):
@@ -71,3 +83,26 @@ class PostsDAO:
             r_list.append(pid)
             r_list.append(result[6])
         return r_list
+
+
+    def insert(self, pcaption, pdate, pmedia, uid, cid):
+        cursor = self.conn.cursor()
+        query = "insert into posts(pcaption, pdate, pmedia, uid, cid) values (%s, %s, %s, %s, %s) returning pid;"
+        cursor.execute(query, (pcaption, pdate, pmedia, uid, cid,))
+        pid = cursor.fetchone()[0]
+        self.conn.commit()
+        return pid
+
+    def delete(self, pid):
+        cursor = self.conn.cursor()
+        query = "delete from posts where pid = %s;"
+        cursor.execute(query, (pid,))
+        self.conn.commit()
+        return pid
+
+    def update(self, pid, pcaption, pdate, pmedia):
+        cursor = self.conn.cursor()
+        query = "update posts set pcaption = %s, pdate = %s, pmedia = %s where pid = %s;"
+        cursor.execute(query, (pcaption, pdate, pmedia, pid,))
+        self.conn.commit()
+        return pid

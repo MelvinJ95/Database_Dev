@@ -1,7 +1,19 @@
 from flask import jsonify, Flask
 from dao.post import PostsDAO
 
+
 class PostHandler:
+    # def build_post_dict(self, row):
+    #     result = {};
+    #     result['pid'] = row[0]
+    #     result['pcaption'] = row[1]
+    #     result['pdate'] = row[2]
+    #     result['pmedia'] = row[3]
+    #     result['uid'] = row[4]
+    #     result['like'] = row[5]
+    #     result['dislike'] = row[6]
+    #     return result
+
     def build_post_dict(self, row):
         result = {};
         result['pid'] = row[0]
@@ -9,19 +21,28 @@ class PostHandler:
         result['pdate'] = row[2]
         result['pmedia'] = row[3]
         result['uid'] = row[4]
-        result['like'] = row[5]
-        result['dislike'] = row[6]
+        result['cid'] = row[5]
         return result
 
-    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
+    # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
+    #     result = {}
+    #     result['pid'] = pid
+    #     result['pcaption'] = pcaption
+    #     result['pdate'] = pdate
+    #     result['pmedia'] = pmedia
+    #     result['uid'] = uid
+    #     result['like'] = like
+    #     result['dislike'] = dislike
+    #     return result
+
+    def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, cid):
         result = {}
         result['pid'] = pid
         result['pcaption'] = pcaption
         result['pdate'] = pdate
         result['pmedia'] = pmedia
         result['uid'] = uid
-        result['like'] = like
-        result['dislike'] = dislike
+        result['cid'] = cid
         return result
 
     def build_post_Alpha(self, row,reaction):
@@ -51,14 +72,29 @@ class PostHandler:
             post = self.build_post_dict(row)
             return jsonify(Post=post)
 
-    def getPostByDate(self, pdate):
+    def getPostsByDate(self, pdate):
         dao = PostsDAO()
-        row = dao.getPostByDate(pdate)
+        row = dao.getPostsByDate(pdate)
         if not row:
-            return jsonify(Error="Post Not Found"), 404
+            return jsonify(Error="No Posts in this Date"), 404
         else:
-            post = self.build_post_dict(row)
-            return jsonify(Post=post)
+            posts_list = dao.getPostsByDate(pdate)
+            result_list = []
+            for row in posts_list:
+                result = self.build_post_dict(row)
+                result_list.append(result)
+            return jsonify(Posts=result_list)
+
+    def getPostsByUser(self, uid):
+        dao = PostsDAO()
+        if not dao.getPostsByUser(uid):
+            return jsonify(Error="This user has not posted yet"), 404
+        user_list = dao.getPostsByUser(uid)
+        result_list = []
+        for row in user_list:
+            result = self.build_post_dict(row)
+            result_list.append(result)
+        return jsonify(Posts=result_list)
 
     def searchPost(self, args): #date, hashtag, user
         date = args.get("date")
@@ -88,29 +124,20 @@ class PostHandler:
             result_list.append(result)
         return jsonify(Posts=result_list)
 
-    def getPostsByUserId(self, uid):
-        dao = PostsDAO()
-        if not dao.getPostById(uid):
-            return jsonify(Error="Post Not Found"), 404
-        user_list = dao.getUsersByPostId(uid)
-        result_list = []
-        for row in user_list:
-            result = self.build_user_dict(row)
-            result_list.append(result)
-        return jsonify(Users=result_list)
-
     def insertPost(self, form):
         print("form: ", form)
-        if len(form) != 3:
+        if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             pcaption = form['pname']
             pdate = form['pprice']
             pmedia = form['pmedia']
-            if pcaption and pdate and pmedia:
+            uid = form['uid']
+            cid = form['cid']
+            if pcaption and pdate and pmedia and uid and cid:
                 dao = PostsDAO()
-                pid = dao.insert(pcaption, pdate, pmedia)
-                result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
+                pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
+                result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
                 return jsonify(Post=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -119,10 +146,12 @@ class PostHandler:
         pcaption = json['pcaption']
         pdate = json['pdate']
         pmedia = json['pmedia']
-        if pcaption and pdate and pmedia:
+        uid = json['uid']
+        cid = json['cid']
+        if pcaption and pdate and pmedia and uid and cid:
             dao = PostsDAO()
-            pid = dao.insert(pcaption, pdate, pmedia)
-            result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
+            pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
+            result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
 
             return jsonify(Post=result), 201
         else:
@@ -150,7 +179,7 @@ class PostHandler:
                 uid = form['uid']
                 if pcaption and pdate and pmedia:
                     dao.update(pcaption, pdate, pmedia)
-                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid)
+                    result = self.build_post_attributes(pid, pcaption, pdate, pmedia)
                     return jsonify(Post=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
