@@ -73,6 +73,11 @@ def getPostsByChatId(cid):
     return PostHandler().getPostsByChatId(cid)
 
 
+@app.route('/GramChat/posts/chat/<int:cid>/user/<int:uid>')
+def getPostsByChatIdAndUser(cid, uid):
+    return PostHandler().getPostsByChatIdAndUser(cid, uid)
+
+
 # ------------------- USERS and CONTACTS ---------------------------
 
 # @app.route('/GramChat/login', methods=['POST'])
@@ -217,7 +222,7 @@ def getTrends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/GramChat/posts/user/<int:uid>/<string:date>')
+@app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
 def getPostsPerDayByUser(uid, date):
     return PostHandler().getPostsPerDayByUser(uid, date)
 

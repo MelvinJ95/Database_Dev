@@ -34,6 +34,15 @@ class PostsDAO:
             result.append(row)
         return result
 
+    def getPostsByChatIdAndUser(self, cid, uid):
+        cursor = self.conn.cursor()
+        query = "select * from posts where cid = %s and uid = %s;"
+        cursor.execute(query, (cid, uid))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getPostsByDate(self, date):
         cursor = self.conn.cursor()
         query = "select * from posts where pdate = %s;"
@@ -53,13 +62,13 @@ class PostsDAO:
             result.append(row)
         return result
 
-    def getPostsPerDayByUser(self, uid, date):
-        global result
+    def getPostsPerDayByUser(self, uid, pdate):
+        cursor = self.conn.cursor()
+        query = "select * from posts where uid = %s and pdate = %s;"
+        cursor.execute(query, (uid, pdate))
         result = []
-        all = self.getAllPosts()
-        for post in all:
-            if post[2] == date and post[4] == uid:
-                result.append(post)
+        for row in cursor:
+            result.append(row)
         return result
 
     def getActiveUsers(self):
