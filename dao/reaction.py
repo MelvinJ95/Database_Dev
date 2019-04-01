@@ -1,65 +1,81 @@
-from dao import post
+from config.db_config import pg_config
+import psycopg2
 
-#Pre-define list of reactions
-result = []
-reaction = [123, 'February 20, 2019', 'Like']
-reaction2 = [124, 'February 20, 2019', 'dislike']
-#append reactions
-result.append(reaction)
-result.append(reaction2)
+
 class ReactionsDAO:
 
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
     def getAllReactions(self):
-        global result
-        return reaction 
+        cursor = self.conn.cursor()
+        query = "select * from reactions;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def getReactionById(self, Id):
-        global result
-        result = self.getAllReactions()
-        for reaction in result:
-            if reaction[0] == Id:
-                return reaction
-        return 
+    def getReactionById(self, rid):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where rid = %s;"
+        cursor.execute(query, (rid,))
+        result = cursor.fetchone()
+        return result
 
-    def getReactionsByIDAndDate(self, Id, date):
-        global result
-        result = self.getAllReactions()
-        for r in result: 
-            if(r[0]==Id and r[2]==date):
-                return r
-        return 
-
-    def getReactionByID(self, Id):
-        global result
-        result = self.getAllReactions()
-        for r in result: 
-            if(r[0]==Id):
-                return r
-        return
+    def getReactionsByIdAndDate(self, rid, rdate):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where rid = %s and rdate = %s;"
+        cursor.execute(query, (rid, rdate))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
         
-    def getReactionByDate(self, date):
-       global result
-       result = self.getAllReactions()
-       for r in result:
-          if(r[2]==date):
-                return r
-       return
+    def getReactionsByDate(self, rdate):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where rdate = %s;"
+        cursor.execute(query, (rdate,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        # result = cursor.fetchone()
+        return result
 
-    def insert(self, date, likeDislike):
-        global result
-        result = self.getAllReactions()
-        randId = 12344
-        temp = [randId,date, likeDislike]
-        result.append(temp)
-        return randId    
+    def getAllLikes(self):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where reaction = 'like';"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        #result = cursor.fetchone()
+        return result
 
-    def delete(self, id):
-        global result 
-        temp = self.getReactionByID(id)
-        result.remove(temp)
+    def getAllDislikes(self):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where reaction = 'dislike';"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        # result = cursor.fetchone()
+        return result
 
-    def insertLike(self, pid):
-        p = post.PostsDAO.getPostById(pid)
-        z = p[5]
-        z+=1
-        p[5] = z
+    def insert(self, rdate, reaction, pid, uid):
+        cursor = self.conn.cursor()
+        query = "insert into reactions(rdate, reaction, pid, uid) values (%s, %s, %s, %s) returning rid;"
+        cursor.execute(query, (rdate, reaction, pid, uid))
+        rid = cursor.fetchone()[0]
+        self.conn.commit()
+        return rid
+
+    def delete(self, rid):
+        cursor = self.conn.cursor()
+        query = "delete from reactions where rid = %s;"
+        cursor.execute(query, (rid,))
+        self.conn.commit()
+        return rid

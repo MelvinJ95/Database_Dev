@@ -5,6 +5,7 @@ from handler.chatHandler import ChatHandler
 from handler.messageHandler import MessageHandler
 from handler.contactHandler import ContactHandler
 from handler.hashtagHandler import HashtagHandler
+from handler.reactionHandler import ReactionHandler
 #from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -196,6 +197,35 @@ def postPost():
     return PostHandler.insertPost(request.json)
 
 
+@app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
+def replyPost():
+    return MessageHandler.insertMessage(request.json)
+
+
+# ---------------- REACTIONS ---------------------
+
+@app.route('/GramChat/reactions', methods=['GET', 'POST'])
+def getAllReactions():
+    if request.method == 'POST':
+        print("REQUEST: ", request.json)
+        return ReactionHandler().insertReactionJson(request.json)
+    else:
+        if not request.args:
+            return ReactionHandler().getAllReactions()
+        else:
+            return ReactionHandler().searchReactions(request.args)
+
+
+@app.route('/GramChat/reactions/likes')
+def getAllLikes():
+    return ReactionHandler().getAllLikes()
+
+
+@app.route('/GramChat/reactions/dislikes')
+def getAllDislikes():
+    return ReactionHandler().getAllDislikes()
+
+
 @app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])
 def likeMessage(mID):
     return
@@ -204,11 +234,6 @@ def likeMessage(mID):
 @app.route('/GramChat/chat/<int:cid>/<int:mID>/dislike', methods=['POST'])
 def dislikeMessage(mID):
     return
-
-
-@app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
-def replyPost():
-    return MessageHandler.insertMessage(request.json)
 
 
 # -------------- ETC -----------------------------
