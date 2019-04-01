@@ -85,6 +85,45 @@ class PostHandler:
                 result_list.append(result)
             return jsonify(Posts=result_list)
 
+    def getPostsPerDayByUser(self, uid, pdate):
+        dao = PostsDAO()
+        row = dao.getPostsPerDayByUser(uid, pdate)
+        if not row:
+            return jsonify(Error="The User didn't Posted on this Date"), 404
+        else:
+            posts_list = dao.getPostsPerDayByUser(uid, pdate)
+            result_list = []
+            for row in posts_list:
+                temp = self.build_post_dict(row)
+                result_list.append(temp)
+        return jsonify(Posts=result_list)
+
+    def getPostsByChatId(self, cid):
+        dao = PostsDAO()
+        row = dao.getPostsByChatId(cid)
+        if not row:
+            return jsonify(Error="No Posts in this Chat"), 404
+        else:
+            posts_list = dao.getPostsByChatId(cid)
+            result_list = []
+            for row in posts_list:
+                result = self.build_post_dict(row)
+                result_list.append(result)
+            return jsonify(Posts=result_list)
+
+    def getPostsByChatIdAndUser(self, cid, uid):
+        dao = PostsDAO()
+        row = dao.getPostsByChatIdAndUser(cid, uid)
+        if not row:
+            return jsonify(Error="This User hasn't Posted in this Chat"), 404
+        else:
+            posts_list = dao.getPostsByChatIdAndUser(cid, uid)
+            result_list = []
+            for row in posts_list:
+                result = self.build_post_dict(row)
+                result_list.append(result)
+            return jsonify(Posts=result_list)
+
     def getPostsByUser(self, uid):
         dao = PostsDAO()
         if not dao.getPostsByUser(uid):
@@ -200,15 +239,6 @@ class PostHandler:
         result = dao.getCountByPostId()
         #print(self.build_post_counts(result))
         return jsonify(PostCounts = self.build_post_counts(result)), 200
-
-    def getPostsPerDayByUser(self, uid, pdate):
-        dao = PostsDAO()
-        posts_list = dao.getPostsPerDayByUser(uid, pdate)
-        result = []
-        for post in posts_list:
-            temp = self.build_post_dict(post)
-            result.append(temp)
-        return jsonify(Posts=result)
 
     def getActiveUsers(self):
         dao = PostsDAO()

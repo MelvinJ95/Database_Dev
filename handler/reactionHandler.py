@@ -2,19 +2,24 @@ from flask import jsonify
 from dao.reaction import ReactionsDAO
 
 
-class reactionHandler:
+class ReactionHandler:
+    
     def build_reaction_dict(self, row):
         result = {}
         result['rid'] = row[0]
         result['rdate'] = row[1]
-        result['rLikeDislike'] = row[2]       
+        result['reaction'] = row[2]
+        result['pid'] = row[3]
+        result['uid'] = row[4]
         return result
 
-    def build_reaction_attributes(self, rid, rdate, rLikeDislike):
+    def build_reaction_attributes(self, rid, rdate, reaction, pid, uid):
         result = {}
         result['rid'] = rid
         result['rdate'] = rdate
-        result['rLikeDislike'] = rLikeDislike   
+        result['reaction'] = reaction
+        result['pid'] = pid
+        result['uid'] = uid
         return result
     
     def getAllReactions(self):
@@ -30,10 +35,30 @@ class reactionHandler:
         dao = ReactionsDAO()
         row = dao.getReactionById(rid)
         if not row:
-            return jsonify(Error = "reaction Not Found"), 404
+            return jsonify(Error = "Reaction Not Found"), 404
         else:
             reaction = self.build_reaction_dict(row)
-            return jsonify(Reaction = reaction)
+            return jsonify(Reaction=reaction)
+
+    def getAllLikes(self):
+        dao = ReactionsDAO()
+        likes_list = dao.getAllLikes()
+        result_list = []
+        for row in likes_list:
+            result = self.build_reaction_dict(row)
+            result_list.append(result)
+        return jsonify(Reactions=result_list)
+
+    def getAllDislikes(self):
+        dao = ReactionsDAO()
+        dislikes_list = dao.getAllDislikes()
+        result_list = []
+        for row in dislikes_list:
+            result = self.build_reaction_dict(row)
+            result_list.append(result)
+        return jsonify(Reactions=result_list)
+
+
 
     #might be missing like/dislike in if conditions
     def searchreaction(self, args):
@@ -55,28 +80,32 @@ class reactionHandler:
             result_list.append(result)
         return jsonify(Reactions=result_list)
 
-    def insertreaction(self, form):
+    def insertReaction(self, form):
         print("form: ", form)
-        if len(form) != 2:
-            return jsonify(Error = "Malformed post request"), 400
+        if len(form) != 4:
+            return jsonify(Error="Malformed post request"), 400
         else:
             rdate = form['rdate']
-            rLikeDislike = form['rLikeDislike']
-            if rdate and rLikeDislike:
+            reaction = form['reaction']
+            pid = form['pid']
+            uid = form['uid']
+            if rdate and reaction and pid and uid:
                 dao = ReactionsDAO()
-                rid = dao.insert(rdate, rLikeDislike)
-                result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
+                rid = dao.insert(rdate, reaction, pid, uid)
+                result = self.build_reaction_attributes(rid, rdate, reaction, pid, uid)
                 return jsonify(Reaction=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def insertreactionJson(self, json):
+    def insertReactionJson(self, json):
         rdate = json['rdate']
-        rLikeDislike = json['rLikeDislike']
-        if rdate and rLikeDislike:
+        reaction = json['reaction']
+        pid = json['pid']
+        uid = json['uid']
+        if rdate and reaction and pid and uid:
             dao = ReactionsDAO()
-            rid = dao.insert(rdate, rLikeDislike)
-            result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
+            rid = dao.insert(rdate, reaction, pid, uid)
+            result = self.build_reaction_attributes(rid, rdate, reaction, pid, uid)
             return jsonify(Reaction=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -98,10 +127,10 @@ class reactionHandler:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 rdate = form['rdate']
-                rLikeDislike = form['rLikeDislike']
-                if rdate and rLikeDislike:
-                    dao.update(rid, rdate, rLikeDislike)
-                    result = self.build_reaction_attributes(rid, rdate, rLikeDislike)
+                reaction = form['reaction']
+                if rdate and reaction:
+                    dao.update(rid, rdate, reaction)
+                    result = self.build_reaction_attributes(rid, rdate, reaction)
                     return jsonify(reaction=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
@@ -117,7 +146,7 @@ class reactionHandler:
             result.append(D)
         return result
 
-    def getCountByreactionId(self):
+    def getCountByReactionId(self):
         dao = ReactionsDAO()
         result = dao.getCountByReactionId()
         #print(self.build_reaction_counts(result))
