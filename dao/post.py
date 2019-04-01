@@ -25,14 +25,14 @@ class PostsDAO:
         result = cursor.fetchone()
         return result
 
-    # def getPostByDate(self, pdate):
-    #     global result
-    #     result = self.getAllPosts()
-    #     for post in result:
-    #         if post[2] == pdate:
-    #             result.append(post)
-    #             #return post
-    #     return result
+    def getPostsByChatId(self, cid):
+        cursor = self.conn.cursor()
+        query = "select * from posts where cid = %s;"
+        cursor.execute(query, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getPostsByDate(self, date):
         cursor = self.conn.cursor()

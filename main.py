@@ -68,6 +68,11 @@ def getPostsByUser(uid):
     return PostHandler().getPostsByUser(uid)
 
 
+@app.route('/GramChat/posts/chat/<int:cid>')
+def getPostsByChatId(cid):
+    return PostHandler().getPostsByChatId(cid)
+
+
 # ------------------- USERS and CONTACTS ---------------------------
 
 # @app.route('/GramChat/login', methods=['POST'])
