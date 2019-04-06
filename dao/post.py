@@ -77,21 +77,23 @@ class PostsDAO:
         return result
 
     def getNumberOfPostsPerDay(self, date):
-        global result
-        result = self.getPostByDate(date)
-        return "There were a total of %d posts on this day." % (len(result))
+        cursor = self.conn.cursor()
+        query = "select count(*) from posts where pdate = %s;" #TO BE TESTED 
+        cursor.execute(query, (date,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getReactionsByPost(self, pid, reaction):
-        global result
-        result = self.getPostById(pid)
-        r_list = []
-        if reaction == 'like':
-            r_list.append(pid)
-            r_list.append(result[5])
-        if reaction == 'dislike':
-            r_list.append(pid)
-            r_list.append(result[6])
-        return r_list
+        cursor = self.conn.cursor()
+        query = "select reaction count(*) from posts inner natural join reactions where pid = %s and reaction = %s group by reaction;" #TO BE TESTED
+        cursor.execute(query, (pid, reaction,))
+        preaction = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
 
     def insert(self, pcaption, pdate, pmedia, uid, cid):
