@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="GramChat">
+<head>
+    <meta charset="UTF-8">
+    <title>App Chat</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+ 	<link href="css/bootstrap.css" rel="stylesheet">
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+
+    <!-- Materialize -->
+    <link href = "css/materialize.css" rel = "stylesheet">
+    <script src="js/materialize.js"></script>
+    <!-- AngularJS -->
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="app_content/app.css" rel="stylesheet" />
+
+</head>
+<body>
+
+
+    <center><h2>GramChat</h2></center>
+    <!--
+	<ng-view>
+    </ng-view>
+  -->
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col s12 m6">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+             <div ng-view></div>
+            </div>
+        </div>
+    </div>
+
+	<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular-route.min.js"></script>
+    <script src="//code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
+
+
+
+    <script src="appjs/main.js"></script>
+    <script src="app_functions/authentication.service.js"></script>
+    <script src="app_functions/flash.service.js"></script>
+
+    <!-- Real user service that uses an api -->
+    <!-- <script src="app-services/user_ervicefunctions.js"></script> -->
+
+    <!-- Fake user service for demo that uses local storage -->
+    <script src="app_functions/user.functions.local-storage.js"></script>
+
+    <script src="appjs/chat.js"></script>
+    <script src="appjs/login.js"></script>
+	<script src= "appjs/register.js"></script>
+</body>
+</html>
