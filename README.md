@@ -24,9 +24,7 @@ The application is organized in three broad layers:
  #### Group Chat
    In order to see posts and messages, a user must be part of at least 1 group. A group can only have 1 admin but is not limited in the amount of members. An admin must be part of the group it administrates. Inside a group a user will be able to post an see the posts of every member in the group. 
  #### Post
-   A post is a multimedia file (image or video) with a caption and hashtags that will be shared within a group. A post can only have 1 user but a user can post multiple times. A post can be tagged with hashtags.
- #### Message
-   A message is a comment to an existing post. It cannot be tagged, reacted and cannot possess a multimedia file. Replies are messages referencing another message
+   A post is a multimedia file (image or video) with a caption and hashtags that will be shared within a group. A post can only have 1 user but a user can post multiple times. A post can be tagged with hashtags. A reply is a post without multimedia. A reply to a post is a comment. A comment can be replied, but a reply cannot be replied.
  #### Reaction 
    A like or dislike in a post. A user can only react once per post.
  #### Hashtag
