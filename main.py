@@ -6,7 +6,7 @@ from handler.messageHandler import MessageHandler
 from handler.contactHandler import ContactHandler
 from handler.hashtagHandler import HashtagHandler
 from handler.reactionHandler import ReactionHandler
-#from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 #CORS(app)
@@ -146,9 +146,9 @@ def addContactbyEmail(owner):
     return ContactHandler().addContactByEmail(request.form, owner)
 
 
-@app.route('/GramChat/contacts/removeContact/<int:owner>/<int:uid>', methods=['DELETE'])
-def removeUserFromContactList(owner, uid):
-    return ContactHandler().removeContact(request.form, owner, uid)
+@app.route('/GramChat/contacts/removeContact/<int:owner>/<int:contact>', methods=['DELETE'])
+def removeUserFromContactList(owner, contact):
+    return ContactHandler().removeContact(owner, contact)
 
 
 # @app.route('/GramChat/contacts/getUserContacts/<int:uid>', methods=['GET'])
@@ -174,32 +174,32 @@ def getAllChats():
 
 @app.route('/GramChat/chat/createchat/', methods=['POST'])
 def createNewChat():
-    return ChatHandler.insertChatJson(request.json)
+    return ChatHandler().insertChatJson(request.json)
 
 
-@app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
-def removeUserFromchat(cid, usrid):
-    return ChatHandler.removeMember(request.json, cid)
+@app.route('/GramChat/chat/removeUser/<int:cid>/<int:uid>', methods=['DELETE'])
+def removeUserFromChat(cid, uid):
+    return ChatHandler().removeMember(cid, uid)
 
 
 @app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
 def addUsertochat(cid, uid):
-    return ChatHandler.insertMember(request.json, cid, uid)
+    return ChatHandler().insertMember(request.json, cid, uid)
 
 
 @app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])
 def deleteChat(cid, uid):
-    return ChatHandler.removeChat(request.json, cid, uid)
+    return ChatHandler().removeChat(request.json, cid, uid)
 
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
 def postPost():
-    return PostHandler.insertPost(request.json)
+    return PostHandler().insertPost(request.json)
 
 
 @app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
 def replyPost():
-    return MessageHandler.insertMessage(request.json)
+    return MessageHandler().insertMessage(request.json)
 
 
 # ---------------- REACTIONS ---------------------
