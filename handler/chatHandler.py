@@ -124,15 +124,15 @@ class ChatHandler:
             else:
                 jsonify(ERROR='User is member')
     
-    def removeMember(self, usrID, cid):
+    def removeMember(self, cid, uid):
         result = ChatDAO()
         if not result.getChatByID(cid):
             return jsonify(Error = "Chat not found."), 404
         else:
-            result.removeMember(cid, usrID)
+            result.removeMember(cid, uid)
             return jsonify(DeleteStatus = "OK"), 200
     
-    def removeChat(self, form, cID, ownerID):
+    def removeChat(self, cID, ownerID):
         result = ChatDAO()
         if not result.getChatByID(cID):
             return jsonify(Error = "Chat not found."), 404
@@ -142,7 +142,6 @@ class ChatHandler:
                 return jsonify(DeleteStatus = "OK"), 200
             else: 
                 return jsonify(Error = "Not chat admin")
-    
+
     def chatOwner(self, cid):
-        result = ChatDAO() 
-        
+        result = ChatDAO()

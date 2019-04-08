@@ -1,6 +1,8 @@
 from config.db_config import pg_config
 import psycopg2
-#Pre-define list of users 
+from dao.users import UsersDAO
+
+#Pre-define list of users
 # result = []
 # chat = [1, 'MyChat', 123, [123, 124]]
 # chat2 = [12, 'NotMyChat', 124, [124, 123]]
@@ -62,8 +64,8 @@ class ChatDAO:
     
     def removeMember(self, cid, uid):
         cursor = self.conn.cursor()
-        query = "delete from member where cid = %s and uid = %s;"
-        cursor.execute(query, (cid,uid,))
+        query = "delete from members where cid = %s and uid = %s;"
+        cursor.execute(query, (cid, uid))
         self.conn.commit()
         return cid
 

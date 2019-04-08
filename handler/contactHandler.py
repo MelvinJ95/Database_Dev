@@ -20,6 +20,15 @@ class ContactHandler:
         contacts['Birthday'] = row[7]
         return contacts
 
+    def buildContactByPhone(self, row):
+        contacts = {}
+        contacts['Contact ID'] = row[2]
+        contacts['Name'] = row[3] + " " + row[4]
+        contacts['Phone'] = row[5]
+        contacts['Email'] = row[6]
+        contacts['Birthday'] = row[7]
+        return contacts
+
     def buildContactList(self, row):
         contact = {}
         contact['usrid'] = row[0]
@@ -93,13 +102,12 @@ class ContactHandler:
                 else:
                     return jsonify(ERROR='Error adding contact')
 
-            
-    def removeContact(self, cID, fromUsrID):
+    def removeContact(self, owner, contact):
         result = ContactDAO()
-        if not result.getContactByID(cID, fromUsrID):
+        if not result.getContactByID(owner, contact):
             return jsonify(Error = "Contact not found."), 404
         else:
-            result.delete(cID, fromUsrID)
+            result.delete(owner, contact)
             return jsonify(DeleteStatus = "OK"), 200
         
     def getAllContacts(self):
