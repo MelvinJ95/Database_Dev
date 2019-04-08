@@ -20,7 +20,15 @@ The application is organized in three broad layers:
 ### Understanding the ER
 
  #### User
-   The user of the application. After registration, the user will be able to access different groups, post and messages as well as create its own as well as access to a contact list. Registration consists of username, name (first and last), password, phone, email, birthday and sex
+   The user of the application. After registration, the user will be able to access different groups, post and messages as well as create its own as well as access to a contact list. Registration consists of username, name (first and last), password, phone, email, birthday.
+   ###### uID - Unique integer used to identify a user (to be used by the system)
+   ###### userName - Unique name proposed by the user to identify (to be used by the user/system)
+   ###### name - First name and last name of each user
+   ###### uPassword - variable to log in the user's account
+   ###### uPhone - user's phone number
+   ###### uEmail - user's email
+   ###### uBirthday - user's birthday (used to derive age)
+   ###### uSex - user's sex (not required)
  #### Group Chat
    In order to see posts and messages, a user must be part of at least 1 group. A group can only have 1 admin but is not limited in the amount of members. An admin must be part of the group it administrates. Inside a group a user will be able to post an see the posts of every member in the group. 
  #### Post
