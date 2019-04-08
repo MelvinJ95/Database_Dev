@@ -1,5 +1,5 @@
-from dao.post import PostsDAO
-from random import*
+from config.db_config import pg_config
+import psycopg2
 import re
 
 result = []
@@ -7,6 +7,13 @@ hashtag = ['chat']
 hashtag2 = ['anotherChat']
 
 class HashtagsDAO:
+
+    def __init__(self):
+        connection_url = "dbname=%s user=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['passwd'])
+        self.conn = psycopg2._connect(connection_url)
+
     def getAllHashtags(self):
         global result
         return result
@@ -20,18 +27,14 @@ class HashtagsDAO:
 
         return []
 
-    # def getHashtagsByDate(self, date):
-    #     result = []
-    #     temp = PostsDAO.getAllPosts(self)
-    #     for p in temp:
-    #         if date == p[2]:
-    #             re.findall(r"#(\w+)", p[1])
-    #             result.append(p[1])
-    #     return result
-
     def getTrends(self):
-        trends = "Here are today's trends."
-        return trends
+        cursor = self.conn.cursor()
+        query = "select htext, count(*) from hashtags group by htext order by count desc;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def insert(self, htext):
         global result
