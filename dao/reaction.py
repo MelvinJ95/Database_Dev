@@ -29,7 +29,7 @@ class ReactionsDAO:
     def getReactionsByIdAndDate(self, rid, rdate):
         cursor = self.conn.cursor()
         query = "select * from reactions where rid = %s and rdate = %s;"
-        cursor.execute(query, (rid, rdate))
+        cursor.execute(query, (rid, rdate,))
         result = []
         for row in cursor:
             result.append(row)
@@ -68,7 +68,7 @@ class ReactionsDAO:
     def insert(self, rdate, reaction, pid, uid):
         cursor = self.conn.cursor()
         query = "insert into reactions(rdate, reaction, pid, uid) values (%s, %s, %s, %s) returning rid;"
-        cursor.execute(query, (rdate, reaction, pid, uid))
+        cursor.execute(query, (rdate, reaction, pid, uid,))
         rid = cursor.fetchone()[0]
         self.conn.commit()
         return rid

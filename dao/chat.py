@@ -38,7 +38,7 @@ class ChatDAO:
     def insert(self, cname, uid):
         cursor = self.conn.cursor()
         query = "insert into chats(cname, uid) values (%s, %s) returning cid;"
-        cursor.execute(query, (cname, uid))
+        cursor.execute(query, (cname, uid,))
         cid = cursor.fetchone()[0]
         self.conn.commit()
         return cid
@@ -46,7 +46,7 @@ class ChatDAO:
     def insertMember(self, cid, uid):
         cursor = self.conn.cursor()
         query = "insert into member(cid,uid) values (%s, %s) returning cid;"
-        cursor.execute(query, (cid, uid))
+        cursor.execute(query, (cid, uid,))
         result = [uid,cid]
         self.conn.commit()
         return result
@@ -65,7 +65,7 @@ class ChatDAO:
     def removeMember(self, cid, uid):
         cursor = self.conn.cursor()
         query = "delete from members where cid = %s and uid = %s;"
-        cursor.execute(query, (cid, uid))
+        cursor.execute(query, (cid, uid,))
         self.conn.commit()
         return cid
 
