@@ -248,19 +248,10 @@ def getAllDislikes():
 def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
 
+
 @app.route('/GramChat/reactions/getDislikes/<int:PID>', methods=['GET'])
 def getDislikesbyPostID(PID):
     return ReactionHandler().getDislikesByPostId(PID)
-
-
-@app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])
-def likeMessage(mID):
-    return
-
-
-@app.route('/GramChat/chat/<int:cid>/<int:mID>/dislike', methods=['POST'])
-def dislikeMessage(mID):
-    return
 
 
 # -------------- ETC -----------------------------
@@ -296,25 +287,31 @@ def getActiveUsers():
 def getNumberOfPostsPerDay(date):
     return PostHandler().getNumberOfPostsPerDay(date)
 
+
 @app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
 def reply(post):
     return PostHandler().getAllReplies(post)
+
 
 @app.route('/GramChat/posts/insert', methods =['POST'])
 def insert():
     return PostHandler().insertPostJson(request.json)
 
+
 @app.route('/GramChat/users/reaction/like', methods=['GET'])
 def getUsersLike():
     return UserHandler().getUserLikeMessage()
+
 
 @app.route('/GramChat/users/reaction/dislike/<int:pid>', methods=['GET'])
 def getUsersDislike(pid):
     return UserHandler().getUserDislikeMessage(pid)
 
+
 @app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
 def chatOwner(cid):
     return UserHandler().chatOwner(cid)
+
 
 if __name__ == '__main__':
     app.run()
