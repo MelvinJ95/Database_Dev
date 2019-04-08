@@ -27,7 +27,20 @@ class UserHandler:
         result['uemail'] = uemail
         #result['ucontacts'] = contact
         return result
-    
+
+    def build_members(self,row):
+        result = {}
+        result['uid'] = row[0]
+        result['name'] = row[2] + " " + row[3]
+        return result
+
+    def build_user_reaction(self, row):
+        result = {}
+        result['uid'] = row[0]
+        result['name'] = row[1] + " " + row[2]
+        result['date of reaction'] = row[3]
+        return result
+
     #inclomplete
     def authorize(self, form):
         username = form['username']
@@ -46,7 +59,7 @@ class UserHandler:
         user_list = dao.getAllUsers()
         result_list = []
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_members(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
@@ -77,7 +90,6 @@ class UserHandler:
             result = self.build_user_dict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
-
 
     def insertUser(self, form):
         print("form: ", form)
@@ -162,24 +174,27 @@ class UserHandler:
         #print(self.build_User_counts(result))
         return jsonify(UserCounts = self.build_user_counts(result)), 200
 
-    def getUserLikeMessage(self):
+    def getUserLikeMessage(self, pid):
         dao = UsersDAO()
-        user_list = dao.getUserLikedMessage()
+        user_list = dao.getUserLikedMessage(pid)
         result_list = []
+        if not user_list:
+            return jsonify(Error="Post has no likes"), 404
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_user_reaction(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
-    def getUserDislikeMessage(self):
+    def getUserDislikeMessage(self, pid):
         dao = UsersDAO()
-        user_list = dao.getUserDislikedMessage
+        user_list = dao.getUserDislikedMessage(pid)
         result_list = []
+        if not user_list:
+            return jsonify(Error="Post has no dislikes"), 404
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_user_reaction(row)
             result_list.append(result)
         return jsonify(Users=result_list)
-
 
     def chatOwner(self, cid):
         dao = UsersDAO()
@@ -190,14 +205,14 @@ class UserHandler:
             result_list.append(result)
         return jsonify(Users=result_list)
 
-    def getUsersByChat(self, cid):
+    def getChatMembers(self, cid):
         dao = UsersDAO()
         user_list = dao.getUsersByChat(cid)
         if not user_list:
             return jsonify(Error = "Chat is Empty"), 404
         result_list = []
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_members(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
@@ -218,3 +233,12 @@ class UserHandler:
         else:
             user = self.build_user_dict(row)
             return jsonify(User=user)
+
+    def chatOwner(self, cid):
+        dao = UsersDAO()
+        user_list = dao.chatOwner(cid)
+        result_list = []
+        for row in user_list:
+            result = self.build_members(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
