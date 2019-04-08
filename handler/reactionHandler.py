@@ -90,8 +90,6 @@ class ReactionHandler:
             result_list.append(result)
         return jsonify(Reactions=result_list)
 
-
-
     #might be missing like/dislike in if conditions
     def searchreaction(self, args):
         id = args.get("id")

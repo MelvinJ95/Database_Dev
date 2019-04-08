@@ -214,7 +214,7 @@ def replyPost():
 
 @app.route('/GramChat/chat/members/<int:cid>')
 def getMembersOfChat(cid):
-    return UserHandler().getUsersByChat(cid)
+    return UserHandler().getChatMembers(cid)
 
 # ---------------- REACTIONS ---------------------
 
@@ -288,13 +288,13 @@ def getNumberOfPostsPerDay(date):
 def reply(post):
     return PostHandler().getAllReplies(post)
 
-@app.route('/GramChat/users/reaction/like', methods=['GET'])
-def getUsersLike():
-    return UserHandler().getUserLikeMessage()
+@app.route('/GramChat/users/reaction/like/<int:pid>', methods=['GET'])
+def getUsersLike(pid):
+    return UserHandler().getUserLikeMessage(pid)
 
-@app.route('/GramChat/users/reaction/dislike', methods=['GET'])
-def getUsersDislike():
-    return UserHandler().getUserDislikeMessage()
+@app.route('/GramChat/users/reaction/dislike/<int:pid>', methods=['GET'])
+def getUsersDislike(pid):
+    return UserHandler().getUserDislikeMessage(pid)
 
 @app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
 def chatOwner(cid):
