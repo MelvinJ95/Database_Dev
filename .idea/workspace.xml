@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="343bb9f8-cf27-47e6-8e55-c7a4ef092654" name="Default Changelist" comment="Updated getPostById() and getPostByDate()">
-      <change beforePath="$PROJECT_DIR$/.idea/Database_Dev.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Database_Dev.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="343bb9f8-cf27-47e6-8e55-c7a4ef092654" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dao/post.py" beforeDir="false" afterPath="$PROJECT_DIR$/dao/post.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/postHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/handler/postHandler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/reactionHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/handler/reactionHandler.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="10" column="10" lean-forward="true" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+            <state relative-caret-position="4097">
+              <caret line="249" selection-start-line="249" selection-end-line="249" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -39,7 +34,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dao/post.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
+            <state relative-caret-position="884">
               <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
             </state>
           </provider>
@@ -48,8 +43,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/handler/postHandler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="95" column="48" lean-forward="true" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
+            <state relative-caret-position="1598">
+              <caret line="95" column="48" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -60,8 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/schema.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="14" column="17" lean-forward="true" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+            <state relative-caret-position="238">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
@@ -74,8 +69,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/db_config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+            <state relative-caret-position="51">
+              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dao/reaction.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1547">
+              <caret line="92" column="112" selection-start-line="92" selection-start-column="112" selection-end-line="92" selection-end-column="112" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/handler/reactionHandler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="818">
+              <caret line="70" column="24" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,6 +108,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>part</find>
+      <find>postid</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,9 +138,7 @@
         <option value="$PROJECT_DIR$/handler/chatHandler.py" />
         <option value="$PROJECT_DIR$/dao/chat.py" />
         <option value="$PROJECT_DIR$/dao/users.py" />
-        <option value="$PROJECT_DIR$/handler/reactionHandler.py" />
         <option value="$PROJECT_DIR$/dao/messages.py" />
-        <option value="$PROJECT_DIR$/dao/reaction.py" />
         <option value="$PROJECT_DIR$/handler/hashtagHandler.py" />
         <option value="$PROJECT_DIR$/dao/hashtag.py" />
         <option value="$PROJECT_DIR$/config/db_config.py" />
@@ -132,10 +147,12 @@
         <option value="$PROJECT_DIR$/dao/post.py" />
         <option value="$PROJECT_DIR$/handler/postHandler.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/dao/reaction.py" />
+        <option value="$PROJECT_DIR$/handler/reactionHandler.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="118" />
     <option name="y" value="23" />
     <option name="width" value="1107" />
@@ -172,9 +189,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/handler/parts.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -189,7 +207,7 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="DBApp-master" type="Python.FlaskServer" factoryName="Flask server">
+    <configuration name="DBApp-master" type="Python.FlaskServer">
       <module name="Database_Dev" />
       <option name="target" value="$PROJECT_DIR$/main.py" />
       <option name="targetType" value="PATH" />
@@ -224,6 +242,9 @@
       <workItem from="1551140660253" duration="396000" />
       <workItem from="1551141498963" duration="937000" />
       <workItem from="1553975457718" duration="17541000" />
+      <workItem from="1554687734405" duration="645000" />
+      <workItem from="1554691950775" duration="429000" />
+      <workItem from="1554732190454" duration="89000" />
     </task>
     <task id="LOCAL-00001" summary="Added dao for posts.">
       <created>1551110127359</created>
@@ -274,17 +295,24 @@
       <option name="project" value="LOCAL" />
       <updated>1554048026257</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added getDislikesbyPostID">
+      <created>1554692351718</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1554692351718</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54957000" />
+    <option name="totallyTimeSpent" value="56120000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="118" y="23" width="1107" height="713" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25633803" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2708018" />
       <window_info id="Structure" order="1" weight="0.24976437" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -296,7 +324,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3294509" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32850242" />
       <window_info anchor="bottom" id="Educational.CheckDetails" order="8" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32850242" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3275862" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32850242" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
@@ -388,7 +416,8 @@
     <MESSAGE value="Added database configuration files and now posts can be added directly(JSON)." />
     <MESSAGE value="Updated getPostById() and getPostByDate(). Also added SQL file for mapping of the ER into tables." />
     <MESSAGE value="Updated SQL file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated SQL file." />
+    <MESSAGE value="Added getDislikesbyPostID" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added getDislikesbyPostID" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/ER Phase1" />
@@ -400,16 +429,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/handler/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handler/reactionHandler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1860">
-          <caret line="124" column="26" selection-start-line="124" selection-start-column="26" selection-end-line="124" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dao/chat.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -429,13 +448,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="50" column="34" selection-start-line="50" selection-start-column="34" selection-end-line="50" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dao/reaction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="41" column="10" selection-start-line="41" selection-start-column="10" selection-end-line="41" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -496,12 +508,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/pip-selfcheck.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/pyvenv.cfg">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/pip-selfcheck.json" />
+    <entry file="file://$PROJECT_DIR$/venv/pyvenv.cfg" />
     <entry file="file://$PROJECT_DIR$/handler/messageHandler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1440">
@@ -515,49 +523,64 @@
     <entry file="file://$PROJECT_DIR$/config/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/db_config.py">
+    <entry file="file://$PROJECT_DIR$/ER Phase1.html" />
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ER Phase1.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ER.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="14" column="17" lean-forward="true" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        <state relative-caret-position="4097">
+          <caret line="249" selection-start-line="249" selection-end-line="249" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dao/post.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
+        <state relative-caret-position="884">
           <caret line="53" column="21" selection-start-line="53" selection-start-column="21" selection-end-line="53" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/handler/postHandler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="95" column="48" lean-forward="true" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
+        <state relative-caret-position="1598">
+          <caret line="95" column="48" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/schema.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="10" column="10" lean-forward="true" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+        <state relative-caret-position="238">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ER.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/db_config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/reaction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1547">
+          <caret line="92" column="112" selection-start-line="92" selection-start-column="112" selection-end-line="92" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handler/reactionHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="818">
+          <caret line="70" column="24" selection-start-line="70" selection-start-column="24" selection-end-line="70" selection-end-column="24" />
           <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
