@@ -84,19 +84,19 @@ class UsersDAO:
         result = cursor.fetchone()
         return result
 
-    def getUserLikedMessage(self):
+    def getUserLikedMessage(self, pid):
         cursor = self.conn.cursor()
-        query = "Select * from users natural inner join reactions where reaction='like';"
-        cursor.execute(query)
+        query = "select uid, first_name, last_name, rdate from users as U natural inner join reactions as R where R.reaction='like' and R.pid = %s;"
+        cursor.execute(query, (pid,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getUserDislikedMessage(self):
+    def getUserDislikedMessage(self, pid):
         cursor = self.conn.cursor()
-        query = "Select * from users natural inner join reactions where reaction='dislike';"
-        cursor.execute(query)
+        query = "select uid, first_name, last_name, rdate from users as U natural inner join reactions as R where R.reaction='dislike' and R.pid = %s;"
+        cursor.execute(query, (pid,))
         result = []
         for row in cursor:
             result.append(row)
@@ -104,7 +104,7 @@ class UsersDAO:
 
     def chatOwner(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from users natural inner join chats where cid = %s and user_id = uid;"
+        query = "select * from users as U natural inner join chats as C where C.cid = %s and C.uid = U.uid;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:

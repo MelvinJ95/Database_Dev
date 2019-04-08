@@ -36,13 +36,12 @@ class ChatHandler:
         chat['Chat id'] = row[0]
         chat['Chat Name'] = row[1]
         chat['Chat Admin'] = row[2]
-        #chat['Chat Admin'] = row[2] + " " + row[3]
         return chat
 
-    def buildChatMembers(self, row):
-        members = {}
-        members['Name'] = row[0] + " " + row[1]
-        return members
+    # def buildChatMembers(self, row):
+    #     members = {}
+    #     members['Name'] = row[0] + " " + row[1]
+    #     return members
     
     def buildChatID(self, row):
         chats = {}

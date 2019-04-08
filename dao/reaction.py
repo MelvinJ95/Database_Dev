@@ -82,7 +82,7 @@ class ReactionsDAO:
 
     def getLikesByPostId(self, pid):
         cursor = self.conn.cursor()
-        query = "select pid, count(*) from reactions natural inner join posts where pid = %s and reaction = 'like' group by pid;"
+        query = "select pid, count(*) from reactions where pid = %s and reaction = 'like' group by pid;"
         cursor.execute(query, (pid,))
         result = cursor.fetchone()
         # print result
@@ -90,8 +90,26 @@ class ReactionsDAO:
 
     def getDislikesByPostId(self, pid):
         cursor = self.conn.cursor()
-        query = "select pid, count(*) from reactions natural inner join posts where pid = %s and reaction = 'dislike' group by pid;"
+        query = "select pid, count(*) from reactions where pid = %s and reaction = 'dislike' group by pid;"
         cursor.execute(query, (pid,))
         result = cursor.fetchone()
         # print result
+        return result
+
+    def getUserLikedMessage(self, pid):
+        cursor = self.conn.cursor()
+        query = "select * from users natural inner join reactions where reaction='like' and pid = %s;"
+        cursor.execute(query, (pid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUserDislikedMessage(self, pid):
+        cursor = self.conn.cursor()
+        query = "select * from users natural inner join reactions where reaction='dislike' and pid = %s;"
+        cursor.execute(query, (pid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result

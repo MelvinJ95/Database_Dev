@@ -218,7 +218,7 @@ def replyPost():
 
 @app.route('/GramChat/chat/members/<int:cid>')
 def getMembersOfChat(cid):
-    return UserHandler().getUsersByChat(cid)
+    return UserHandler().getChatMembers(cid)
 
 # ---------------- REACTIONS ---------------------
 
@@ -274,6 +274,14 @@ def getTrends():
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/GramChat/hashtags', methods=['GET', 'POST'])
+def getHashtags():
+    if request.method == 'POST':
+        return HashtagHandler().insertHashtagJson(request.json)
+    else:
+        return HashtagHandler().getAllHashtags()
+
+
 @app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
 def getPostsPerDayByUser(uid, date):
     return PostHandler().getPostsPerDayByUser(uid, date)
@@ -300,9 +308,9 @@ def insert():
 def getUsersLike():
     return UserHandler().getUserLikeMessage()
 
-@app.route('/GramChat/users/reaction/dislike', methods=['GET'])
-def getUsersDislike():
-    return UserHandler().getUserDislikeMessage()
+@app.route('/GramChat/users/reaction/dislike/<int:pid>', methods=['GET'])
+def getUsersDislike(pid):
+    return UserHandler().getUserDislikeMessage(pid)
 
 @app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
 def chatOwner(cid):
