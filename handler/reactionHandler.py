@@ -22,6 +22,13 @@ class ReactionHandler:
         result['uid'] = uid
         return result
     
+    def build(self,row):
+        result = {}
+        result['pid'] = row[0]
+        result['likes'] = row[1]
+        return result
+
+
     def getAllReactions(self):
         dao = ReactionsDAO()
         reaction_list = dao.getAllReactions()
@@ -55,7 +62,7 @@ class ReactionHandler:
         if not row:
             return jsonify(Error="Reaction Not Found"), 404
         else:
-            reaction = self.build_reaction_dict(row)
+            reaction = self.build(row)
             return jsonify(Reaction=reaction)
 
     def getAllDislikes(self):
@@ -160,3 +167,4 @@ class ReactionHandler:
         result = dao.getCountByReactionId()
         #print(self.build_reaction_counts(result))
         return jsonify(reactionCounts = self.build_reaction_counts(result)), 200
+
