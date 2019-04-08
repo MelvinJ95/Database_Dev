@@ -268,7 +268,7 @@ class PostHandler:
     def getNumberOfPostsPerDay(self, pdate):
         dao = PostsDAO()
         post = dao.getNumberOfPostsPerDay(pdate)
-        print post
+        # print post
         result_list = []
         for row in post:
             result = self.build_post_perday(row)

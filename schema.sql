@@ -1,7 +1,5 @@
 ﻿------------------ Entity tables ----------------------
 
-
-
 -- Users table
 create table users(uid serial primary key, username varchar(25), first_name varchar(15), last_name varchar(20),
     upassword varchar(20), uphone varchar(10), uemail varchar(30), ubirthday char(10), usex char(1));

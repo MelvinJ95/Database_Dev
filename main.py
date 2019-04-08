@@ -234,7 +234,6 @@ def getAllReactions():
 def getAllLikes():
     return ReactionHandler().getAllLikes()
 
-
 @app.route('/GramChat/reactions/dislikes')
 def getAllDislikes():
     return ReactionHandler().getAllDislikes()
