@@ -42,13 +42,12 @@ class ChatDAO:
         return cid
     
     def insertMember(self, cid, uid):
-        chat = self.getChatByID(cid)
-        users = UsersDAO.getAllUsers()
-        for user in users: 
-            if user[0] == uid:
-                chat[3].append(uid)
-                return uid
-        return cid
+        cursor = self.conn.cursor()
+        query = "insert into member(cid,uid) values (%s, %s) returning cid;"
+        cursor.execute(query, (cid, uid))
+        result = [uid,cid]
+        self.conn.commit()
+        return result
     
     def delete(self, cid):
         cursor = self.conn.cursor()
@@ -62,9 +61,9 @@ class ChatDAO:
         return chat[3]
     
     def removeMember(self, cid, uid):
-        chat = self.getChatByID(cid)
-        for users in chat[3]:
-            if users == uid:
-                users = NULL
-                return uid
+        cursor = self.conn.cursor()
+        query = "delete from member where cid = %s and uid = %s;"
+        cursor.execute(query, (cid,uid,))
+        self.conn.commit()
         return cid
+

@@ -143,7 +143,7 @@ def addContactbyPhone(owner):
 
 @app.route('/GramChat/contacts/addContact/byEmail/<int:owner>', methods=['PUT', 'POST'])
 def addContactbyEmail(owner):
-    return ContactHandler().addContactByEmail(request.form, owner)
+    return ContactHandler().addContactByEmail(listrequest.form, owner)
 
 
 @app.route('/GramChat/contacts/removeContact/<int:owner>/<int:uid>', methods=['DELETE'])
@@ -177,14 +177,14 @@ def createNewChat():
     return ChatHandler.insertChatJson(request.json)
 
 
-@app.route('/GramChat/chat/removeUser/<int:cid>', methods=['DELETE']) 
+@app.route('/GramChat/chat/removeUser/<int:cid>/<int:usrid>', methods=['DELETE']) 
 def removeUserFromchat(cid, usrid):
-    return ChatHandler.removeMember(request.json, cid)
+    return ChatHandler().removeMember(cid, usrid)
 
 
-@app.route('/GramChat/chat/adduser/<int:cid>', methods=['POST'])
+@app.route('/GramChat/chat/adduser/<int:cid>/<int:uid>', methods=['POST'])
 def addUsertochat(cid, uid):
-    return ChatHandler.insertMember(request.json, cid, uid)
+    return ChatHandler().insertMember(cid, uid)
 
 
 @app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])
@@ -262,6 +262,21 @@ def getNumberOfPostsPerDay(date):
     return PostHandler().getNumberOfPostsPerDay(date)
 
 
+@app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
+def reply(post):
+    return PostHandler().getAllReplies(post)
+
+@app.route('/GramChat/users/reaction/like', methods=['GET'])
+def getUsersLike():
+    return UserHandler().getUserLikeMessage()
+
+@app.route('/GramChat/users/reaction/dislike', methods=['GET'])
+def getUsersDislike():
+    return UserHandler().getUserDislikeMessage()
+
+@app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
+def chatOwner(cid):
+    return UserHandler().chatOwner(cid)
 
 if __name__ == '__main__':
     app.run()

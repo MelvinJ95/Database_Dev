@@ -171,3 +171,31 @@ class UserHandler:
         result = dao.getCountByUserId()
         #print(self.build_User_counts(result))
         return jsonify(UserCounts = self.build_user_counts(result)), 200
+
+    def getUserLikeMessage(self):
+        dao = UsersDAO()
+        user_list = dao.getUserLikedMessage()
+        result_list = []
+        for row in user_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
+
+    def getUserDislikeMessage(self):
+        dao = UsersDAO()
+        user_list = dao.getUserDislikedMessage
+        result_list = []
+        for row in user_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
+
+
+    def chatOwner(self, cid):
+        dao = UsersDAO()
+        user_list = dao.chatOwner(cid)
+        result_list = []
+        for row in user_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)

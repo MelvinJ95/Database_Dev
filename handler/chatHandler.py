@@ -117,15 +117,14 @@ class ChatHandler:
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def insertMember(self, form, cid, usrID):
-        if chatName and credentialForm:
+    def insertMember(self, cid, usrID):
             result = ChatDAO().insertMember(cid, usrID)
             if result:
                 return jsonify(Member=self.buildChatID(result))
             else:
                 jsonify(ERROR='User is member')
     
-    def removeMember(self, form, usrID, cid):
+    def removeMember(self, usrID, cid):
         result = ChatDAO()
         if not result.getChatByID(cid):
             return jsonify(Error = "Chat not found."), 404
@@ -144,3 +143,6 @@ class ChatHandler:
             else: 
                 return jsonify(Error = "Not chat admin")
     
+    def chatOwner(self, cid):
+        result = ChatDAO() 
+        

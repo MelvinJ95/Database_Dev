@@ -79,3 +79,4 @@ class ReactionsDAO:
         cursor.execute(query, (rid,))
         self.conn.commit()
         return rid
+

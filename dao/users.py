@@ -68,5 +68,29 @@ class UsersDAO:
         self.conn.commit()
         return uid
         
-    
+    def getUserLikedMessage(self):
+        cursor = self.conn.cursor()
+        query = "Select * from users natural inner join reactions where reaction='like';"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
+    def getUserDislikedMessage(self):
+        cursor = self.conn.cursor()
+        query = "Select * from users natural inner join reactions where reaction='dislike';"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def chatOwner(self, cid):
+        cursor = self.conn.cursor()
+        query = "select * from users natural inner join chats where cid = %s and user_id = uid;"
+        cursor.execute(query, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

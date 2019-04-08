@@ -23,11 +23,8 @@ class ContactDAO:
     def getContactListByUser(self, usrID):
         cursor = self.conn.cursor()
        # query = "select * from(select * from users natural inner join contacts where uid = %s) as T1 natural inner join users as T2 where T1.cid=T2.uid);"
-        query = "select * from users natural inner join contacts where uid = %s;"
+        query = "select * from users natural inner join contacts where uid = contact and user_id = %s;"
         cursor.execute(query,(usrID,))
-        cid = cursor.fetchone()[8]
-        query_T = "select * from users where uid = %s;"
-        cid_T = cursor.execute(query_T, (cid,))
         result = []
         for row in cursor:
             result.append(row)
@@ -58,8 +55,8 @@ class ContactDAO:
     
     def delete(self, owner, usrIDs):
         cursor = self.conn.cursor()
-        query = "delete from contact where cid = %s;"
-        cursor.execute(query, (usrIDs,))
+        query = "delete from contact where contact = %s and uid = %s;"
+        cursor.execute(query, (usrIDs,owner,))
         self.conn.commit()
         return usrIDs
 

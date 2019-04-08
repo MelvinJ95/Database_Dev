@@ -263,3 +263,12 @@ class PostHandler:
         dao = PostsDAO()
         result = dao.getNumberOfPostsPerDay(pdate)
         return result
+
+
+    def getAllReplies(self, pid):
+        dao = PostsDAO()
+        result = dao.getAllReplies(pid)
+        replies = []
+        for r in result:
+            replies.append(self.build_post_dict(r))
+        return jsonify(Replies=replies)

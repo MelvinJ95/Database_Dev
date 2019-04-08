@@ -78,7 +78,7 @@ class PostsDAO:
 
     def getNumberOfPostsPerDay(self, date):
         cursor = self.conn.cursor()
-        query = "select count(*) from posts where pdate = %s;"
+        query = "select count(*) from posts where pdate = %s;" #TO BE TESTED 
         cursor.execute(query, (date,))
         result = []
         for row in cursor:
@@ -87,7 +87,7 @@ class PostsDAO:
 
     def getReactionsByPost(self, pid, reaction):
         cursor = self.conn.cursor()
-        query = "select reaction count(*) from posts inner natural join reactions where pid = %s and reaction = %s group by reaction;"
+        query = "select reaction count(*) from posts inner natural join reactions where pid = %s and reaction = %s group by reaction;" #TO BE TESTED
         cursor.execute(query, (pid, reaction,))
         preaction = cursor.fetchone()
         result = []
@@ -117,3 +117,14 @@ class PostsDAO:
         cursor.execute(query, (pcaption, pdate, pmedia, pid,))
         self.conn.commit()
         return pid
+
+    def getAllReplies(self, pid):
+        cursor = self.conn.cursor()
+        query = "select * from posts natural inner join reply where pid = rid and post_id = %s;"
+        cursor.execute(query, (pid,))   
+        result =[]
+        for row in cursor:
+            result.append(row)
+        print(result)
+        return result
+        

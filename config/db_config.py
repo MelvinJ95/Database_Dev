@@ -2,6 +2,6 @@
 
 pg_config = {
     'user' : 'appusr',
-    'passwd' : 'minix',
+    'passwd' : 'Number78',
     'dbname' : 'appdb'
 }
