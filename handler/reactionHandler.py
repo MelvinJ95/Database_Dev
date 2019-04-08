@@ -34,7 +34,6 @@ class ReactionHandler:
         result['dislikes'] = row[1]
         return result
 
-
     def getAllReactions(self):
         dao = ReactionsDAO()
         reaction_list = dao.getAllReactions()
