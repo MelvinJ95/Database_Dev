@@ -1,0 +1,29 @@
+    <!-- Toolbar -->
+  <md-toolbar layout="row">
+
+    <div layout="row" flex layout-align="left center" ng-show="!$mdMedia('gt-xs') || main.isMobile">
+      <md-button class="md-icon-button" ng-click="main.toggleSidebar();">
+
+        <md-icon md-font-icon="material-icons">
+          view_headline
+        </md-icon>
+        
+      </md-button>
+    </div>
+
+    <div layout="row" flex layout-margin layout-align="center center" ng-show="$mdMedia('gt-xs')">
+      MyChat
+    </div>
+    <div layout="row" layout-margin layout-align="right center" style="float: right;">
+      {{main.user.name}}
+      <img ng-src="{{main.user.avatar}}" class="md-avatar" style="height: 40px; width: auto;"></img>
+    </div>
+    
+  </md-toolbar>
+
+  <!-- Main screen -->
+  <div flex layout="row">
+	  <!-- Sidebar -->
+    <by-chat layout="column" flex></by-chat>
+	  <by-sidebar layout="column"><by-sidebar/>
+  </div>

@@ -1,4 +1,4 @@
-angular.module('GramChat').controller('ChatController', ['$http', '$log', '$scope',
+angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope',
     function($http, $log, $scope) {
         var thisCtrl = this;
 
@@ -8,10 +8,38 @@ angular.module('GramChat').controller('ChatController', ['$http', '$log', '$scop
 
         this.loadMessages = function(){
             // Get the messages from the server through the rest api
-            thisCtrl.messageList.push({"id": 1, "text": "Hola Mi Amigo", "author" : "Bob",
-            "like" : 4, "nolike" : 1});
-            thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
-                "like" : 11, "nolike" : 12});
+          //  thisCtrl.messageList.push({"id": 1, "text": "Hola Mi Amigo", "author" : "Bob",
+            //"like" : 4, "nolike" : 1});
+            //thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
+              //  "like" : 11, "nolike" : 12});
+
+              var url = "http://127.0.0.1:5000/GramChat/posts"
+              $http.get(url).then(
+                function(response){
+                    console.log("Response: "+JSON.stringify(response));
+                    thisCtrl.messageList = response.data.Posts
+
+                },
+                function (response){
+                    console.log("Error response: "+JSON.stringify(response));
+                    var status = response.status;
+
+                    if (status == 0){
+                        alert("No internet connection");
+                    }
+                    else if (status == 401){
+                        alert("Session has expired");
+                    }
+                    else if (status == 403){
+                        alert("Authorization required");
+                    }
+                    else if (status == 404){
+                        alert("Page not found");
+                    }
+                    else {
+                        alert("Internal system error has occurred");
+                    }
+                });
 
             $log.error("Message Loaded: ", JSON.stringify(thisCtrl.messageList));
         };
@@ -24,6 +52,12 @@ angular.module('GramChat').controller('ChatController', ['$http', '$log', '$scop
             thisCtrl.messageList.unshift({"id": nextId, "text" : msg, "author" : author, "like" : 0, "nolike" : 0});
             thisCtrl.newText = "";
         };
+
+	
+	this.like = function(){
+		
+	
+	};
 
         this.loadMessages();
 }]);
