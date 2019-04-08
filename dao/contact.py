@@ -23,7 +23,8 @@ class ContactDAO:
     def getContactListByUser(self, usrID):
         cursor = self.conn.cursor()
        # query = "select * from(select * from users natural inner join contacts where uid = %s) as T1 natural inner join users as T2 where T1.cid=T2.uid);"
-        query = "select * from users natural inner join contacts where uid = contact and user_id = %s;"
+       #  query = "select * from users natural inner join contacts where uid = contact and user_id = %s;"
+        query = "select * from users natural inner join contacts where uid = contact and owner = %s;"
         cursor.execute(query,(usrID,))
         result = []
         for row in cursor:

@@ -24,6 +24,13 @@ class PostHandler:
         result['cid'] = row[5]
         return result
 
+    def build_posts_chat(self, row):
+        result = {};
+        result['pid'] = row[0]
+        result['pcaption'] = row[1]
+        result['uid'] = row[2]
+        return result
+
     # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
     #     result = {}
     #     result['pid'] = pid
@@ -123,7 +130,7 @@ class PostHandler:
             posts_list = dao.getPostsByChatId(cid)
             result_list = []
             for row in posts_list:
-                result = self.build_post_dict(row)
+                result = self.build_posts_chat(row)
                 result_list.append(result)
             return jsonify(Posts=result_list)
 
@@ -278,7 +285,6 @@ class PostHandler:
     def getNumberOfPostsPerDay(self, pdate):
         dao = PostsDAO()
         post = dao.getNumberOfPostsPerDay(pdate)
-        print post
         result_list = []
         for row in post:
             result = self.build_post_perday(row)

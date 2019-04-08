@@ -14,6 +14,12 @@ class HashtagHandler:
         result['htext'] = htext
         return result
 
+    def build_trends(self, row):
+        result = {}
+        result['hashtag'] = row[0]
+        result['position'] = row[1]
+        return result
+
     def getAllHashtags(self):
         dao = HashtagsDAO()
         hashtags_list = dao.getAllHashtags()
@@ -43,8 +49,15 @@ class HashtagHandler:
 
     def getTrendingTopics(self):
         dao = HashtagsDAO()
-        result = dao.getTrends()
-        return result
+        row = dao.getTrends()
+        if not row:
+            return jsonify(Error="No Trends Found"), 404
+        else:
+            result_list = []
+            for r in row:
+                result = self.build_trends(r)
+                result_list.append(result)
+        return jsonify(Trends=result_list)
 
     def insertHashtag(self, form):
         htext = form['htext']
@@ -58,9 +71,10 @@ class HashtagHandler:
 
     def insertHashtagJson(self, json):
         htext = json['htext']
-        if htext:
+        pid = json['pid']
+        if htext and pid:
             dao = HashtagsDAO()
-            hid = dao.insert(htext)
+            hid = dao.insert(htext, pid)
             result = self.build_hashtag_attributes(hid, htext)
 
             return jsonify(Hashtag=result), 201

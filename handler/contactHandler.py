@@ -41,6 +41,12 @@ class ContactHandler:
         contact['contact_id'] = row
         return contact
 
+    def buildContactsByUser(self, row):
+        result = {}
+        result['uid'] = row[0]
+        result['name'] = row[2] + " " + row[3]
+        return result
+
     def getContactLists(self):
         result = ContactDAO().getContactLists()
         if not result:
@@ -49,7 +55,6 @@ class ContactHandler:
         for r in result:
             contact.append(self.buildContactList(r))
         return jsonify(ContactList=contact)
-    
 
     def getContactListbyUser(self, usrID):
         result = ContactDAO().getContactListByUser(usrID)
@@ -57,7 +62,7 @@ class ContactHandler:
             return jsonify(ERROR='No contact list found')
         contacts = []
         for r in result:
-            contacts.append(self.buildContactDirectory(r))
+            contacts.append(self.buildContactsByUser(r))
         return jsonify(Contacts=contacts)
      
 
