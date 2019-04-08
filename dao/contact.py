@@ -51,19 +51,17 @@ class ContactDAO:
         cursor.execute(query_T, (cid,usrID,))
         self.conn.commit()
         return cid
-    
-    
-    def delete(self, owner, usrIDs):
+
+    def delete(self, owner, contact):
         cursor = self.conn.cursor()
-        query = "delete from contact where contact = %s and uid = %s;"
-        cursor.execute(query, (usrIDs,owner,))
+        query = "delete from contacts where owner = %s and contact = %s;"
+        cursor.execute(query, (owner, contact,))
         self.conn.commit()
-        return usrIDs
+        return owner
 
-
-    def getContactByID(self, owner, usrID):  
+    def getContactByID(self, owner, contact):
         cursor = self.conn.cursor()
-        query = "select * from contact where uid = %s;"
-        cursor.execute(query, (usrID,))
+        query = "select * from contacts where owner = %s and contact = %s;"
+        cursor.execute(query, (owner, contact,))
         result = cursor.fetchone()
         return result

@@ -199,3 +199,32 @@ class UserHandler:
             result = self.build_user_dict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+
+    def getUsersByChat(self, cid):
+        dao = UsersDAO()
+        user_list = dao.getUsersByChat(cid)
+        if not user_list:
+            return jsonify(Error = "Chat is Empty"), 404
+        result_list = []
+        for row in user_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
+
+    def getInfoByUsername(self, username):
+        dao = UsersDAO()
+        row = dao.getUserByUsername(username)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            user = self.build_user_dict(row)
+            return jsonify(User=user)
+
+    def getInfoById(self, uid):
+        dao = UsersDAO()
+        row = dao.getUserById(uid)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            user = self.build_user_dict(row)
+            return jsonify(User=user)

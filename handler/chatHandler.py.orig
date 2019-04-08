@@ -142,8 +142,9 @@ class ChatHandler:
                 return jsonify(DeleteStatus = "OK"), 200
             else: 
                 return jsonify(Error = "Not chat admin")
-    
+
     def chatOwner(self, cid):
+<<<<<<< HEAD
         dao = UsersDAO()
         user_list = dao.chatOwner(cid)
         result_list = []
@@ -151,3 +152,6 @@ class ChatHandler:
             result = self.build_user_dict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+=======
+        result = ChatDAO()
+>>>>>>> 2fb2950cb02114ba1041f6eeed2ec8418cd81bb6

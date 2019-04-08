@@ -80,3 +80,12 @@ class ReactionsDAO:
         self.conn.commit()
         return rid
 
+    def getLikesByPostId(self, pid):
+        cursor = self.conn.cursor()
+        query = "select * from reactions natural inner join posts where pid = %s and reaction = 'like';"
+        cursor.execute(query, (pid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        # result = cursor.fetchone()
+        return result
