@@ -25,14 +25,14 @@
                 <div class="col s12 m6">
                     <div class="card">
                         <div class = "card-image">
-                            <img src = "sample.jpg">
+                            <img src = "sample.jpeg" id="responsive-image">
                         </div>
                         <div class="card-content">
                             <!-- Card Title is the person who write the message -->
-                            <span class="card-title">{{m.author}}</span>
+                            <span class="card-title">{{m.user}}</span>
                             <!-- Here comes the message text -->
                             <p>
-                                {{m.text}}
+                                {{m.pcaption}}
                             </p>
                         </div>
                         <div class="card-action">
@@ -47,7 +47,7 @@
 				<i class="material-icons">thumb_down</i>
 				</button>
 			    </a>
-			    	<span ng-bind="m.nolike">  </span>
+			    	<span ng-bind="m.dislike">  </span>
                         </div>
                     </div>
                 </div>
