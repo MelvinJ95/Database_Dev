@@ -261,7 +261,6 @@ def getActiveUsers():
 def getNumberOfPostsPerDay(date):
     return PostHandler().getNumberOfPostsPerDay(date)
 
-
 @app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
 def reply(post):
     return PostHandler().getAllReplies(post)

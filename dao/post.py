@@ -78,7 +78,7 @@ class PostsDAO:
 
     def getNumberOfPostsPerDay(self, date):
         cursor = self.conn.cursor()
-        query = "select count(*) from posts where pdate = %s;" #TO BE TESTED 
+        query = "select pdate, count(*) from posts where pdate = %s group by pdate;" #TO BE TESTED 
         cursor.execute(query, (date,))
         result = []
         for row in cursor:

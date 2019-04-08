@@ -54,6 +54,12 @@ class PostHandler:
             result['dislikes'] = row[2]
         return result
 
+    def build_post_perday(self,row):
+        result = {}
+        result['day'] = row[0]
+        result['total'] = row[1]
+        return result
+
     def getAllPosts(self):
         dao = PostsDAO()
         posts_list = dao.getAllPosts()
@@ -261,8 +267,13 @@ class PostHandler:
 
     def getNumberOfPostsPerDay(self, pdate):
         dao = PostsDAO()
-        result = dao.getNumberOfPostsPerDay(pdate)
-        return result
+        post = dao.getNumberOfPostsPerDay(pdate)
+        print post
+        result_list = []
+        for row in post:
+            result = self.build_post_perday(row)
+            result_list.append(result)
+        return jsonify(Posts=result_list)
 
 
     def getAllReplies(self, pid):

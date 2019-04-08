@@ -144,5 +144,10 @@ class ChatHandler:
                 return jsonify(Error = "Not chat admin")
     
     def chatOwner(self, cid):
-        result = ChatDAO() 
-        
+        dao = UsersDAO()
+        user_list = dao.chatOwner(cid)
+        result_list = []
+        for row in user_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
