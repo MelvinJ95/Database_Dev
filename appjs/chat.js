@@ -13,6 +13,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             //thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
               //  "like" : 11, "nolike" : 12});
 
+
               var url = "http://127.0.0.1:5000/GramChat/posts/all"
               $http.get(url).then(
                 function(response){
@@ -58,6 +59,6 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 		
 	
 	};
-
+        
         this.loadMessages();
 }]);
