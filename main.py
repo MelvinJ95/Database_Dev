@@ -292,6 +292,10 @@ def getNumberOfPostsPerDay(date):
 def reply(post):
     return PostHandler().getAllReplies(post)
 
+@app.route('/GramChat/posts/insert', methods =['POST'])
+def insert():
+    return PostHandler().insertPostJson(request.json)
+
 @app.route('/GramChat/users/reaction/like', methods=['GET'])
 def getUsersLike():
     return UserHandler().getUserLikeMessage()
