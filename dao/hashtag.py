@@ -15,31 +15,51 @@ class HashtagsDAO:
         self.conn = psycopg2._connect(connection_url)
 
     def getAllHashtags(self):
-        global result
-        return result
-
-    def getHashtagById(self, hid):
-        global result
-        result = self.getAllHashtags()
-        for ht in result:
-            if ht[0] == hid:
-                return ht
-
-        return []
-
-    def getTrends(self):
         cursor = self.conn.cursor()
-        query = "select htext, count(*) from hashtags group by htext order by count desc;"
+        query = "select * from hashtags;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def insert(self, htext):
-        global result
-        result = self.getAllHashtags()
-        id = random()
-        ht = [id, htext]
-        result.append(ht)
-        return ht
+    def getHashtagById(self, hid):
+        cursor = self.conn.cursor()
+        query = "select * from reactions where hid = %s;"
+        cursor.execute(query, (hid,))
+        result = cursor.fetchone()
+        return result
+
+    def getTrends(self):
+        cursor = self.conn.cursor()
+        query = "select htext, row_number() over(order by count(htext) desc) as rownum from hashtags natural inner join tagged group by htext order by rownum;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    # def insert(self, htext):
+    #     global result
+    #     result = self.getAllHashtags()
+    #     id = random()
+    #     ht = [id, htext]
+    #     result.append(ht)
+    #     return ht
+
+    def insert(self, htext, pid):
+        cursor = self.conn.cursor()
+        query = "insert into hashtags(htext) values (%s) returning hid;"
+        cursor.execute(query, (htext,))
+        hid = cursor.fetchone()[0]
+        self.conn.commit()
+        self.attachToPost(hid, pid)
+        return hid
+
+    def attachToPost(self, hid, pid):
+        cursor = self.conn.cursor()
+        query = "insert into tagged(hid, pid) values (%s, %s) returning hid;"
+        cursor.execute(query, (hid, pid,))
+        hid = cursor.fetchone()[0]
+        self.conn.commit()
+        return hid

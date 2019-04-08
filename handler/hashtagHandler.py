@@ -71,9 +71,10 @@ class HashtagHandler:
 
     def insertHashtagJson(self, json):
         htext = json['htext']
-        if htext:
+        pid = json['pid']
+        if htext and pid:
             dao = HashtagsDAO()
-            hid = dao.insert(htext)
+            hid = dao.insert(htext, pid)
             result = self.build_hashtag_attributes(hid, htext)
 
             return jsonify(Hashtag=result), 201

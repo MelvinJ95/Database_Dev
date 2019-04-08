@@ -270,6 +270,14 @@ def getTrends():
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/GramChat/hashtags', methods=['GET', 'POST'])
+def getHashtags():
+    if request.method == 'POST':
+        return HashtagHandler().insertHashtagJson(request.json)
+    else:
+        return HashtagHandler().getAllHashtags()
+
+
 @app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
 def getPostsPerDayByUser(uid, date):
     return PostHandler().getPostsPerDayByUser(uid, date)
