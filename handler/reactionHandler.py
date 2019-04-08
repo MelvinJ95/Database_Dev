@@ -65,6 +65,7 @@ class ReactionHandler:
     def getLikesByPostId(self, pid):
         dao = ReactionsDAO()
         row = dao.getLikesByPostId(pid)
+        print(row)
         if not row:
             return jsonify(Error="Reaction Not Found"), 404
         else:
