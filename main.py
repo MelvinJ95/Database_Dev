@@ -244,6 +244,10 @@ def getAllDislikes():
 def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
 
+@app.route('/GramChat/reactions/getDislikes/<int:PID>', methods=['GET'])
+def getDislikesbyPostID(PID):
+    return ReactionHandler().getDislikesByPostId(PID)
+
 
 @app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])
 def likeMessage(mID):

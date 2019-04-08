@@ -85,5 +85,13 @@ class ReactionsDAO:
         query = "select pid, count(*) from reactions natural inner join posts where pid = %s and reaction = 'like' group by pid;"
         cursor.execute(query, (pid,))
         result = cursor.fetchone()
-        print result
+        # print result
+        return result
+
+    def getDislikesByPostId(self, pid):
+        cursor = self.conn.cursor()
+        query = "select pid, count(*) from reactions natural inner join posts where pid = %s and reaction = 'dislike' group by pid;"
+        cursor.execute(query, (pid,))
+        result = cursor.fetchone()
+        # print result
         return result
