@@ -9,7 +9,7 @@ from handler.reactionHandler import ReactionHandler
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-#CORS(app)
+CORS(app)
 
 
 @app.route('/')
@@ -126,6 +126,16 @@ def getUserById(pid):
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/GramChat/users/info/<int:uid>')
+def getInfoById(uid):
+    return UserHandler().getInfoById(uid)
+
+
+@app.route('/GramChat/users/info/<string:username>')
+def getInfoByUsername(username):
+    return UserHandler().getInfoByUsername(username)
+
+
 @app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
 def deleteUser(uid):
     return UserHandler().deleteUser(uid)
@@ -202,6 +212,10 @@ def replyPost():
     return MessageHandler().insertMessage(request.json)
 
 
+@app.route('/GramChat/chat/members/<int:cid>')
+def getMembersOfChat(cid):
+    return UserHandler().getUsersByChat(cid)
+
 # ---------------- REACTIONS ---------------------
 
 @app.route('/GramChat/reactions', methods=['GET', 'POST'])
@@ -224,6 +238,11 @@ def getAllLikes():
 @app.route('/GramChat/reactions/dislikes')
 def getAllDislikes():
     return ReactionHandler().getAllDislikes()
+
+
+@app.route('/GramChat/reactions/getLikes/<int:PID>', methods=['GET'])
+def getLikesbyPostID(PID):
+    return ReactionHandler().getLikesByPostId(PID)
 
 
 @app.route('/ChatApp/chat/<int:cid>/<int:mID>/like', methods=['POST'])

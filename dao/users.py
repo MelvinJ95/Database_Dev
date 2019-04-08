@@ -67,6 +67,20 @@ class UsersDAO:
         cursor.execute(query, (uid,))
         self.conn.commit()
         return uid
-        
-    
+
+    def getUsersByChat(self, cid):
+        cursor = self.conn.cursor()
+        query = "select * from users natural inner join members where cid = %s;"
+        cursor.execute(query, (cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getUserByUsername(self, uid):
+        cursor = self.conn.cursor()
+        query = "select * from users where username = %s;"
+        cursor.execute(query, (uid,))
+        result = cursor.fetchone()
+        return result
 

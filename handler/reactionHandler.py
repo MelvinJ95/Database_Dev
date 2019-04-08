@@ -49,6 +49,15 @@ class ReactionHandler:
             result_list.append(result)
         return jsonify(Reactions=result_list)
 
+    def getLikesByPostId(self, pid):
+        dao = ReactionsDAO()
+        row = dao.getLikesByPostId(pid)
+        if not row:
+            return jsonify(Error="Reaction Not Found"), 404
+        else:
+            reaction = self.build_reaction_dict(row)
+            return jsonify(Reaction=reaction)
+
     def getAllDislikes(self):
         dao = ReactionsDAO()
         dislikes_list = dao.getAllDislikes()
