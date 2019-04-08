@@ -28,6 +28,12 @@ class ReactionHandler:
         result['likes'] = row[1]
         return result
 
+    def buildDislike(self,row):
+        result = {}
+        result['pid'] = row[0]
+        result['dislikes'] = row[1]
+        return result
+
 
     def getAllReactions(self):
         dao = ReactionsDAO()
@@ -71,7 +77,7 @@ class ReactionHandler:
         if not row:
             return jsonify(Error="Reaction Not Found"), 404
         else:
-            reaction = self.build(row)
+            reaction = self.buildDislike(row)
             return jsonify(Reaction=reaction)
 
     def getAllDislikes(self):
