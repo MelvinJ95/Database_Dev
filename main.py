@@ -64,6 +64,10 @@ def addReaction(pid, reaction):
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/GramChat/posts/all', methods = ['GET'])
+def getAllPostsWebsite():
+    return PostHandler().getAllPostWebsite()
+
 @app.route('/GramChat/posts/user/<int:uid>')
 def getPostsByUser(uid):
     return PostHandler().getPostsByUser(uid)
@@ -287,6 +291,10 @@ def getNumberOfPostsPerDay(date):
 @app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
 def reply(post):
     return PostHandler().getAllReplies(post)
+
+@app.route('/GramChat/posts/insert', methods =['POST'])
+def insert():
+    return PostHandler().insertPostJson(request.json)
 
 @app.route('/GramChat/users/reaction/like', methods=['GET'])
 def getUsersLike():

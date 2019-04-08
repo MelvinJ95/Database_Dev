@@ -13,7 +13,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             //thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
               //  "like" : 11, "nolike" : 12});
 
-              var url = "http://127.0.0.1:5000/GramChat/posts"
+              var url = "http://127.0.0.1:5000/GramChat/posts/all"
               $http.get(url).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
@@ -49,7 +49,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             // Need to figure out who I am
             var author = "Me";
             var nextId = thisCtrl.counter++;
-            thisCtrl.messageList.unshift({"id": nextId, "text" : msg, "author" : author, "like" : 0, "nolike" : 0});
+            thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
             thisCtrl.newText = "";
         };
 

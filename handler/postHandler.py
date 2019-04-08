@@ -45,6 +45,16 @@ class PostHandler:
         result['cid'] = cid
         return result
 
+    def build_post_query(self, row):
+        result = {}
+        result['pid'] = row[0]
+        result['user'] = row[1]
+        result['pmedia'] = row[2]
+        result['pcaption'] = row[3]
+        result['like'] = row[4]
+        result['dislike'] = row[5] 
+        return result 
+
     def build_post_Alpha(self, row,reaction):
         result = {}
         result['pid'] = row[0]
@@ -282,3 +292,11 @@ class PostHandler:
         for r in result:
             replies.append(self.build_post_dict(r))
         return jsonify(Replies=replies)
+
+    def getAllPostWebsite(self):
+        dao = PostsDAO()
+        result = dao.getAllPostWebsite()
+        posts = []
+        for r in result:
+            posts.append(self.build_post_query(r))
+        return jsonify(Posts=posts)

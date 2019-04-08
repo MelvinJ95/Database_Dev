@@ -17,6 +17,18 @@ class PostsDAO:
         for row in cursor:
             result.append(row)
         return result
+    
+    def getAllPostWebsite(self):
+        cursor = self.conn.cursor()
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end), sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid group by first_name, pcaption, pmedia,p.pid;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        print result
+        return result
+
+
 
     def getPostById(self, pid):
         cursor = self.conn.cursor()
@@ -101,6 +113,8 @@ class PostsDAO:
         query = "insert into posts(pcaption, pdate, pmedia, uid, cid) values (%s, %s, %s, %s, %s) returning pid;"
         cursor.execute(query, (pcaption, pdate, pmedia, uid, cid,))
         pid = cursor.fetchone()[0]
+        query_T = "insert into reactions(rdate,reaction,pid,uid) values (%s,%s,%s,%s);"
+        cursor.execute(query_T, (pdate,None,pid, None,))
         self.conn.commit()
         return pid
 
