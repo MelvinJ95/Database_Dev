@@ -27,8 +27,6 @@ The application is organized in three broad layers:
    - uPassword - variable to log in the user's account
    - uPhone - user's phone number
    - uEmail - user's email
-   - uBirthday - user's birthday (used to derive age)
-   - uSex - user's sex (not required)
    Users possess a contacts list in which they can add or remove other users by their phone or email.
  #### Group Chat
    In order to see posts and messages, a user must be part of at least 1 group. A group can only have 1 admin but is not limited in the amount of members. An admin must be part of the group it administrates. Inside a group a user will be able to post an see the posts of every member in the group. 
