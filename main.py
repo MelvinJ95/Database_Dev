@@ -298,9 +298,9 @@ def insert():
     return PostHandler().insertPostJson(request.json)
 
 
-@app.route('/GramChat/users/reaction/like', methods=['GET'])
+@app.route('/GramChat/users/reaction/like/<int:pid>', methods=['GET'])
 def getUsersLike():
-    return UserHandler().getUserLikeMessage()
+    return UserHandler().getUserLikeMessage(pid)
 
 
 @app.route('/GramChat/users/reaction/dislike/<int:pid>', methods=['GET'])

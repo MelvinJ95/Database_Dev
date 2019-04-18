@@ -1,0 +1,28 @@
+<div ng-cloak style="align-content: center">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card teal darken-1">
+                <div class="card-content ">
+                    <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">First name:</span>
+                     <textarea style="background: white" id="textarea1" class="materialize-textarea" ng-model="vm.UFirst_name"></textarea>
+                </div>
+                <div class="card-content ">
+                    <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">Last name:</span>
+                     <textarea style="background: white" id="textarea2" class="materialize-textarea" ng-model="vm.ULast_name"></textarea>
+                </div>
+                <div class="card-content ">
+                    <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">Phone:</span>
+                     <textarea style="background: white" id="textarea3" class="materialize-textarea" ng-model="vm.UPhone"></textarea>
+                </div>
+                <div class="card-content ">
+                    <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">Email:</span>
+                     <textarea style="background: white" id="textarea4" class="materialize-textarea" ng-model="vm.UEmail"></textarea>
+                </div>
+                
+                <div class="card-action white">
+                    <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.addNewContact()">Add New Contact </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
