@@ -18,7 +18,7 @@
         function Login(username, password, callback) {
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
+             ----------------------------------------------
             $timeout(function () {
                 var response;
                 UserService.GetByUsername(username)
@@ -30,15 +30,18 @@
                         }
                         callback(response);
                     });
-            }, 1000);
+            }, 1000); */
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
-
+           
+            $http.post('http://localhost:5000/GramChat/login', { username: username, password: password }).then(function (response) {
+                    response = {success: true};
+                    callback(response);
+                }, function(response){
+                    response = { success: false, message: 'Username or password is incorrect' };
+                    callback(response);
+                });
         }
 
         function SetCredentials(username, password) {
@@ -67,6 +70,15 @@
         }
     }
 
+    function handleSuccess(res) {
+        return res.data;
+    }
+
+    function handleError(error) {
+        return function () {
+            return { success: false, message: error };
+        };
+    }
     // Base64 encoding service used by AuthenticationService
     var Base64 = {
 

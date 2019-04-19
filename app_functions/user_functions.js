@@ -27,7 +27,7 @@
         }
 
         function GetByUsername(username) {
-            return $http.get('/api/users/' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('http://localhost:5000/GramChat/users/info/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function Create(user) {

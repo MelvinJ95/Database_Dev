@@ -41,10 +41,23 @@ class UserHandler:
         result['date of reaction'] = row[3]
         return result
 
+    def build_user_chats(self, row): 
+        result = {}
+        result['cname'] = row[0]
+        return result 
+        
+
     #inclomplete
-    def authorize(self, form):
-        username = form['username']
-        password = form['password']
+    def authorize(self, json):
+        dao = UsersDAO()
+        username = json['username']
+        password = json['password']
+        result = dao.authorize(username, password)
+        if result == None:
+            return jsonify(Error="Invalid Login"), 404
+        else:
+            return jsonify(Login=1)
+
 #         if username and password:
 #             needs use of dao
 #                 if auth:
@@ -242,3 +255,12 @@ class UserHandler:
             result = self.build_members(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+
+    def getUserChats(self,uid):
+        dao = UsersDAO()
+        user_list = dao.getUserChats(uid)
+        result_list = []
+        for row in user_list:
+            result = self.build_user_chats(row)
+            result_list.append(result)
+        return jsonify(Chats=result_list)

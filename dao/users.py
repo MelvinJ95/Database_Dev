@@ -110,3 +110,19 @@ class UsersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getUserChats(self,uid):
+        cursor = self.conn.cursor()
+        query = "select cname from users natural inner join chats where uid = user_id and uid = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def authorize(self,username,password):
+        cursor = self.conn.cursor()
+        query = "select username, upassword from users where username = %s and upassword = %s;"
+        cursor.execute(query, (username, password, ))
+        result = cursor.fetchone()
+        return result

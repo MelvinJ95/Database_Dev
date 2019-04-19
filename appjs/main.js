@@ -27,7 +27,7 @@
                 controllerAs: 'vm'
             })
 
-	    .when('/main', {
+	    .when('/main/:uid', {
                 controller: 'MainPageController',
                 templateUrl: 'pages/mainpage.html',
                 controllerAs: 'vm'

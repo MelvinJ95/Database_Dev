@@ -85,9 +85,9 @@ def getPostsByChatIdAndUser(cid, uid):
 
 # ------------------- USERS and CONTACTS ---------------------------
 
-# @app.route('/GramChat/login', methods=['POST'])
-# def login():
-#     return UserHandler.authorize(request.json)
+@app.route('/GramChat/login', methods=['POST'])
+def login():
+     return UserHandler().authorize(request.json)
 #
 #
 # @app.route('/GramChat/register', methods=['POST'])
@@ -130,12 +130,12 @@ def getUserById(pid):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/GramChat/users/info/<int:uid>')
+@app.route('/GramChat/users/info/<int:uid>', methods=['GET'])
 def getInfoById(uid):
     return UserHandler().getInfoById(uid)
 
 
-@app.route('/GramChat/users/info/<string:username>')
+@app.route('/GramChat/users/info/<string:username>', methods=['GET'])
 def getInfoByUsername(username):
     return UserHandler().getInfoByUsername(username)
 
@@ -144,6 +144,10 @@ def getInfoByUsername(username):
 def deleteUser(uid):
     return UserHandler().deleteUser(uid)
 
+
+@app.route('/GramChat/users/chats/<int:uid>', methods=['GET', 'POST'])
+def userChats(uid):
+    return UserHandler().getUserChats(uid)
 
 @app.route('/GramChat/contacts/<int:owner>', methods=['GET'])
 def getAllContacts(owner):
@@ -185,6 +189,7 @@ def getAllChats():
             return ChatHandler().getAllChats()
         else:
             return ChatHandler().searchChats(request.args)
+            
 
 @app.route('/GramChat/chat/createchat/', methods=['POST'])
 def createNewChat():
