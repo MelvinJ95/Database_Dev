@@ -33,13 +33,13 @@
                 controllerAs: 'vm'
             })
         
-        .when('/addChat', {
+        .when('/addChat/:uid', {
                 controller: 'AddChatController',
                 templateUrl: 'pages/addChat.html',
                 controllerAs: 'vm'
             })
         
-        .when('/addContact', {
+        .when('/addContact/:uid', {
                 controller: 'AddContactController',
                 templateUrl: 'pages/addContact.html',
                 controllerAs: 'vm'
@@ -70,7 +70,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/main','/chat', '/login', '/register','/addChat','/addContact','/reply']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/main/:uid','/chat', '/login', '/register','/addContact','/addChat/:uid','/reply']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

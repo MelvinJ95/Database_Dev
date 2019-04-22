@@ -37,7 +37,7 @@ class ChatDAO:
 
     def insert(self, cname, uid):
         cursor = self.conn.cursor()
-        query = "insert into chats(cname, uid) values (%s, %s) returning cid;"
+        query = "insert into chats(cname, user_id) values (%s, %s) returning cid;"
         cursor.execute(query, (cname, uid,))
         cid = cursor.fetchone()[0]
         self.conn.commit()

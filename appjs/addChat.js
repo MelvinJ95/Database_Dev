@@ -3,13 +3,13 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
         var thisCtrl = this;
 	this.disp;
 	this.userid;
-	this.GName = "	Enter Chat Name"
+	this.cname = ""
 
         this.addChatGroup = function(){
-            var reqURL = "http://localhost:5000/GramChat/GroupChats?GName="+thisCtrl.GName+"&UID="+thisCtrl.userid;
+            var reqURL = "http://localhost:5000/GramChat/chat/createchat/";
             console.log("reqURL: " + reqURL);
-	    var empty = {};
-            $http.post(reqURL,empty).then(
+            console.log("UID: "+thisCtrl.uid);
+            $http.post(reqURL,{cname: thisCtrl.cname, uid: thisCtrl.uid}).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
                     thisCtrl.returnToMainPage();
@@ -37,15 +37,15 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
         };
 
 	this.returnToMainPage = function(){
-		$location.url('/mainpage/'+ thisCtrl.disp);
+		$location.path('/main/'+ thisCtrl.uid);
 	}
 
 	this.loadUID = function(){
-	    var author = thisCtrl.disp;
+	    var user = thisCtrl.uid;
 	    var UserInfo;
 	    var UserID = 0;
-	    console.log("Using dispname: " + thisCtrl.disp);
-  	    var url = "http://localhost:5000/GramChat/Users/Username/"+ author;
+	    console.log("Using dispname: " + thisCtrl.uid);
+  	    var url = "http://localhost:5000/GramChat/users/"+ user;
             $http.get(url).then(
                 function (response){
                     console.log("response: " + JSON.stringify(response));
@@ -63,25 +63,25 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
                 // Verify which was the cause and show an alert.
                 var status = response.status;
                 if (status == 0){
-                    alert("No hay conexion a Internet");
+                    alert("No internet connection");
                 }
                 else if (status == 401){
-                    alert("Su sesion expiro. Conectese de nuevo.");
-                }		
+                    alert("Session has expired");
+                }
                 else if (status == 403){
-                    alert("No esta autorizado a usar el sistema.");
+                    alert("Authorization required");
                 }
                 else if (status == 404){
-                    alert("No se encontro la informacion solicitada.");
+                    alert("Page not found");
                 }
                 else {
-                    alert("Error interno del sistema.");
+                    alert("Internal system error has occurred");
                 }
             });
 	}
 
 	this.loadVar = function(){
-		thisCtrl.disp = $routeParams.UDispName;
+		thisCtrl.uid = $routeParams.uid;
 		
 	}
 

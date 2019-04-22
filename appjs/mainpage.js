@@ -39,16 +39,16 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
         };
 
 	this.goToAddChatPage = function(){
-		$location.url('/addChat/'+thisCtrl.uid);
+		$location.path('/addChat/'+thisCtrl.uid);
 	}
 	
 	this.goToAddContactPage = function(){
-		$location.url('/addContact/'+thisCtrl.uid);
+		$location.path('/addContact/'+thisCtrl.uid);
 	}
 
 	this.chatpage = function (gid){
 	        console.log("Going to message page for group: " + gid);
-            $location.url('/chat/' + thisCtrl.uid + '/' + gid);
+            $location.path('/chat/' + thisCtrl.uid + '/' + gid);
         }
 
 	this.loadMainPage();

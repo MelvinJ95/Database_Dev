@@ -153,6 +153,9 @@ def userChats(uid):
 def getAllContacts(owner):
     return ContactHandler().getContactListbyUser(owner)
 
+@app.route('/GramChat/contacts/addContact/<int:owner>', methods=['PUT', 'POST'])
+def addContact(owner):
+    return ContactHandler().addContactJSON(request.json, owner)
 
 @app.route('/GramChat/contacts/addContact/byPhone/<int:owner>', methods=['PUT', 'POST'])
 def addContactbyPhone(owner):
