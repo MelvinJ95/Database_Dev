@@ -43,7 +43,8 @@ class UserHandler:
 
     def build_user_chats(self, row): 
         result = {}
-        result['cname'] = row[0]
+        result['cid'] = row[0]
+        result['cname'] = row[1]
         return result 
         
 

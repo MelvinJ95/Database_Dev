@@ -20,14 +20,14 @@ class PostsDAO:
     
     def getAllPostWebsite(self):
         cursor = self.conn.cursor()
-        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end), sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid group by first_name, pcaption, pmedia,p.pid;"
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid group by first_name, pcaption, pmedia,p.pid;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-
+    
 
     def getPostById(self, pid):
         cursor = self.conn.cursor()
@@ -38,7 +38,8 @@ class PostsDAO:
 
     def getPostsByChatId(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from posts where cid = %s;"
+        #query = "select * from posts where cid = %s;"
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid  and p.cid = %s group by first_name, pcaption, pmedia,p.pid, p.cid;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:

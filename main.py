@@ -228,6 +228,9 @@ def replyPost():
 def getMembersOfChat(cid):
     return UserHandler().getChatMembers(cid)
 
+@app.route('/GramChat/chat/user/<int:cid>/<int:uid>', methods=['GET'])
+def getChatByUserIDandChatID(cid,uid):
+    return ChatHandler().getChatByUserIDandChatID(cid,uid)
 # ---------------- REACTIONS ---------------------
 
 @app.route('/GramChat/reactions', methods=['GET', 'POST'])

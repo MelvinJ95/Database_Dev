@@ -69,3 +69,11 @@ class ChatDAO:
         self.conn.commit()
         return cid
 
+    def getChatByUserIDandChatID(self,cid,uid):
+        cursor = self.conn.cursor()
+        query = "select cid, cname, uid from members as U natural inner join chats as C where U.uid=%s and C.uid = U.uid and C.cid = %s"
+        cursor.execute(query, (uid, cid,))
+        self.conn.commit()
+        return cid
+
+

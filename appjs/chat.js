@@ -1,5 +1,5 @@
-angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope',
-    function($http, $log, $scope) {
+angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$routeParams',
+    function($http, $log, $scope, $routeParams) {
         var thisCtrl = this;
 
         this.messageList = [];
@@ -13,8 +13,9 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             //thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
               //  "like" : 11, "nolike" : 12});
 
-
-              var url = "http://127.0.0.1:5000/GramChat/posts/all"
+              thisCtrl.cid = $routeParams.cid;
+              thisCtrl.uid = $routeParams.uid;
+              var url = "http://127.0.0.1:5000/GramChat/posts/chat/"+thisCtrl.cid;
               $http.get(url).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
@@ -35,7 +36,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                         alert("Authorization required");
                     }
                     else if (status == 404){
-                        alert("Page not found");
+                        continue;
                     }
                     else {
                         alert("Internal system error has occurred");

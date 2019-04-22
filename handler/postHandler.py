@@ -126,11 +126,10 @@ class PostHandler:
         row = dao.getPostsByChatId(cid)
         if not row:
             return jsonify(Error="No Posts in this Chat"), 404
-        else:
-            posts_list = dao.getPostsByChatId(cid)
+        else:         
             result_list = []
-            for row in posts_list:
-                result = self.build_posts_chat(row)
+            for rows in row:
+                result = self.build_post_query(rows)
                 result_list.append(result)
             return jsonify(Posts=result_list)
 

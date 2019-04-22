@@ -113,7 +113,7 @@ class UsersDAO:
 
     def getUserChats(self,uid):
         cursor = self.conn.cursor()
-        query = "select cname from users natural inner join chats where uid = user_id and uid = %s;"
+        query = "select cid, cname from users natural inner join chats where uid = user_id and uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
