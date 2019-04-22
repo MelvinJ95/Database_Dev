@@ -8,7 +8,7 @@ angular.module('AppChat').controller('AddParticipantController', ['$http', '$log
 
 
 	this.loadContacts = function(){
-		var url = "http://localhost:5000/GramChat/contacts/"+thisCtrl.userid;
+		var url = "http://localhost:5000/GramChat/contacts/"+thisCtrl.uid;
             $http.get(url).then(
                 function (response){
                     console.log("response: " + JSON.stringify(response));
@@ -38,7 +38,7 @@ angular.module('AppChat').controller('AddParticipantController', ['$http', '$log
 
         this.addParticipant = function(id){
             var empty = {};
-            var url = "http://localhost:5000/GramChat/GroupChat/Participants?GID="+thisCtrl.groupid+"&UID="+thisCtrl.userid+"&CUID="+id;
+            var url = "http://localhost:5000/GramChat/chat/adduser/"+thisCtrl.cid+"/"+id;
             console.log("reqURL: " + url);
 
             $http.post(url,empty).then(
@@ -69,14 +69,14 @@ angular.module('AppChat').controller('AddParticipantController', ['$http', '$log
 
         this.returnToChatPage = function(){
             console.log("Moving to chat page.");
-            $location.url('/chat/'+thisCtrl.disp+'/'+thisCtrl.groupid);
+            $location.path('/chat/'+thisCtrl.cid+'/'+thisCtrl.uid);
         }
 
 
 	this.loadVar = function(){
-		thisCtrl.groupid = $routeParams.gid;
-		thisCtrl.userid = $routeParams.uid;
-		thisCtrl.disp = $routeParams.disp;
+		thisCtrl.cid = $routeParams.cid;
+		thisCtrl.uid = $routeParams.uid;
+	
 		
 	}
 

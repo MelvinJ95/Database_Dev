@@ -198,6 +198,9 @@ def getAllChats():
 def createNewChat():
     return ChatHandler().insertChatJson(request.json)
 
+@app.route('/GramChat/chat/<int:cid>/posts/hashtag/<string:hashtag>', methods=['GET'])
+def postsByHashtag(cid, hashtag):
+    return PostHandler().getPostsByHashtag(cid, hashtag)
 
 @app.route('/GramChat/chat/removeUser/<int:cid>/<int:uid>', methods=['DELETE'])
 def removeUserFromChat(cid, uid):
@@ -206,7 +209,7 @@ def removeUserFromChat(cid, uid):
 
 @app.route('/GramChat/chat/adduser/<int:cid>/<int:uid>', methods=['POST'])
 def addUsertochat(cid, uid):
-    return ChatHandler().insertMember(request.json, cid, uid)
+    return ChatHandler().insertMember( cid, uid)
 
 
 @app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])

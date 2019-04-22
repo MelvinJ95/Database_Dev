@@ -45,7 +45,7 @@
                 controllerAs: 'vm'
             })
 
-        .when('/addParticipant/:uid', {
+        .when('/addParticipant/:cid/:uid', {
                 controller: 'AddParticipantController',
                 templateUrl: 'pages/addParticipant.html',
                 controllerAs: 'vm'
@@ -70,7 +70,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/main/:uid','/chat/:cid/:uid', '/login', '/register','/addContact','/addChat/:uid','/reply']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/main/:uid','/chat/:cid/:uid', '/login', '/register','/addContact','/addChat/:uid','/reply', 'addParticipant/:cid/:uid']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

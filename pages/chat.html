@@ -3,14 +3,18 @@
 
     <div class="card">
 		<div class="card-action">
-			<button class="btn waves-effect waves-light " type="submit" name="action" ng-click="chatCtrl.goToAddParticipant()">Add New Participant
+            <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goHome()">Home
+                <i class="material-icons right">link</i>
+                </button>
+        
+            <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goToAddParticipant()">Add New Participant
                     <i class="material-icons right">link</i>
                     </button>
             
-            <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="chatCtrl.searchByHashtag()">Search By Hashtag
+            <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.loadMessagesByHashtag()">Search By Hashtag
                         <i class="material-icons right">search</i>
                         </button>
-                        <textarea style="background: white" id="textarea2" class="materialize-textarea" ng-model="vm.hashText" ></textarea>
+                        <textarea style="background: white" id="textarea2" class="materialize-textarea" ng-model="vm.hashTag" ></textarea>
          <label for="form7">Hashtag</label>
                     </div>
 	</div>

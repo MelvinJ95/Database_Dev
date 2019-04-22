@@ -306,3 +306,15 @@ class PostHandler:
         for r in result:
             posts.append(self.build_post_query(r))
         return jsonify(Posts=posts)
+      
+    def getPostsByHashtag(self, cid, hashtag):
+        dao = PostsDAO()
+        row = dao.getPostsByHashtag(cid, hashtag)
+        if not row:
+            return jsonify(Error="No Posts in this Chat"), 404
+        else:         
+            result_list = []
+            for rows in row:
+                result = self.build_post_query(rows)
+                result_list.append(result)
+            return jsonify(Posts=result_list)

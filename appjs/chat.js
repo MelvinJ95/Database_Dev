@@ -1,18 +1,14 @@
-angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$routeParams',
-    function($http, $log, $scope, $routeParams) {
+angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$location','$routeParams',
+    function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
 
         this.messageList = [];
         this.counter  = 2;
-        this.newText = "";
+        this.newText = ""; 
+        this.hashTag = "";
 
         this.loadMessages = function(){
-            // Get the messages from the server through the rest api
-          //  thisCtrl.messageList.push({"id": 1, "text": "Hola Mi Amigo", "author" : "Bob",
-            //"like" : 4, "nolike" : 1});
-            //thisCtrl.messageList.push({"id": 2, "text": "Hello World", "author": "Joe",
-              //  "like" : 11, "nolike" : 12});
-
+  
               thisCtrl.cid = $routeParams.cid;
               thisCtrl.uid = $routeParams.uid;
               var url = "http://127.0.0.1:5000/GramChat/posts/chat/"+thisCtrl.cid;
@@ -55,11 +51,49 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             thisCtrl.newText = "";
         };
 
-	
-	this.like = function(){
-		
-	
+        this.loadMessagesByHashtag = function(){
+              thisCtrl.cid = $routeParams.cid;
+              thisCtrl.uid = $routeParams.uid;
+              var url = "http://127.0.0.1:5000/GramChat/chat/"+thisCtrl.cid+"/posts/hashtag/"+thisCtrl.hashTag;
+              $http.get(url).then(
+                function(response){
+                    console.log("Response: "+JSON.stringify(response));
+                    thisCtrl.messageList = response.data.Posts
+
+                },
+                function (response){
+                    console.log("Error response: "+JSON.stringify(response));
+                    var status = response.status;
+
+                    if (status == 0){
+                        alert("No internet connection");
+                    }
+                    else if (status == 401){
+                        alert("Session has expired");
+                    }
+                    else if (status == 403){
+                        alert("Authorization required");
+                    }
+                    else if (status == 404){
+                        continue;
+                    }
+                    else {
+                        alert("Internal system error has occurred");
+                    }
+                });
+
+            $log.error("Message Loaded: ", JSON.stringify(thisCtrl.messageList));
+        };
+
+    this.goToAddParticipant = function(){
+        thisCtrl.cid = $routeParams.cid;
+        thisCtrl.uid = $routeParams.uid;
+	    $location.path('/addParticipant/'+thisCtrl.cid+'/'+thisCtrl.uid);
 	};
+
+    this.goHome = function(){
         
+	    $location.path('/main/'+$routeParams.uid);
+	};
         this.loadMessages();
 }]);
