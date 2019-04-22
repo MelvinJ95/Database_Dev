@@ -18,7 +18,7 @@ class PostsDAO:
             result.append(row)
         return result
     
-    def getAllPostWebsite(self):
+    def getAllPostWebsite(self): #fixed query for like
         cursor = self.conn.cursor()
         query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid group by first_name, pcaption, pmedia,p.pid;"
         cursor.execute(query)
