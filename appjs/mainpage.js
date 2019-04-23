@@ -50,6 +50,10 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
 	        console.log("Going to message page for group: " + cid);
             $location.path('/chat/' + cid + '/' + thisCtrl.uid);
         }
+    this.removeContact = function(){
+        $location.path('/removeContact/'+thisCtrl.uid);
+
+    }
 
 	this.loadMainPage();
 }]);

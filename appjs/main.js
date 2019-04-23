@@ -56,7 +56,12 @@
                 templateUrl: 'pages/reply.html',
                 controllerAs: 'vm'
             })    
-
+         
+        .when('/removeContact/:uid', {
+                controller: 'removeContactController',
+                templateUrl: 'pages/removeContact.html',
+                controllerAs: 'vm'
+            })    
             .otherwise({ redirectTo: '/login' });
     }
 
