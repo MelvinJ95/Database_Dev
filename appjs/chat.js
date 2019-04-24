@@ -91,6 +91,12 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 	    $location.path('/addParticipant/'+thisCtrl.cid+'/'+thisCtrl.uid);
 	};
 
+    this.goToRemoveParticipant = function(){
+        thisCtrl.cid = $routeParams.cid;
+        thisCtrl.uid = $routeParams.uid;
+	    $location.path('/removeParticipant/'+thisCtrl.cid+'/'+thisCtrl.uid);
+	};
+
     this.goHome = function(){
         
 	    $location.path('/main/'+$routeParams.uid);

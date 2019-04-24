@@ -1,19 +1,21 @@
-angular.module('AppChat').controller('removeContactController', ['$http', '$log', '$scope', '$location', '$routeParams',
+angular.module('AppChat').controller('removeParticipantController', ['$http', '$log', '$scope', '$location', '$routeParams',
     function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
 	this.user;
-	this.uid;
+    this.uid;
+    this.cid;
 
-        this.removeContact = function(id){
+
+        this.removeMember = function(id){
             var empty = {};
             
-            var reqURL = "http://localhost:5000/GramChat/contacts/removeContact/"+thisCtrl.uid+"/"+id;
+            var reqURL = "http://localhost:5000/GramChat/chat/removeUser/"+thisCtrl.cid+"/"+id;
             console.log("reqURL: " + reqURL);
 
             $http.delete(reqURL,empty).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
- 		            thisCtrl.goToMainPage();
+ 		            thisCtrl.goToChatPage();
                 },
                 function(response){
                     var status = response.status;
@@ -40,11 +42,11 @@ angular.module('AppChat').controller('removeContactController', ['$http', '$log'
         this.load = function(){
 
             console.log("Using dispname: " + thisCtrl.uid);
-            var url = "http://localhost:5000/GramChat/contacts/"+thisCtrl.uid;
+            var url = "http://localhost:5000/GramChat/chat/members/"+thisCtrl.cid;
             $http.get(url).then(
                 function (response){
                     console.log("response: " + JSON.stringify(response));
-                    thisCtrl.contactList = response.data.Contacts;
+                    thisCtrl.contactList = response.data.Users;
                     $log.error("Contacts Loaded: ", JSON.stringify(thisCtrl.contactList));
 
                 }, // error callback
@@ -71,13 +73,14 @@ angular.module('AppChat').controller('removeContactController', ['$http', '$log'
             });
 	
     }
-        this.goToMainPage = function(){
+        this.goToChatPage = function(){
             console.log("Moving to main page.");
-            $location.url('/main/'+thisCtrl.uid);
+            $location.path('/chat/'+thisCtrl.cid+'/'+thisCtrl.uid);
         }
 
         this.loadVar = function(){
-	    thisCtrl.uid = $routeParams.uid;
+        thisCtrl.uid = $routeParams.uid;
+        thisCtrl.cid = $routeParams.cid;
         }
 
 	this.loadVar();

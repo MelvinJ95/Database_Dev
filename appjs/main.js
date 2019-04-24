@@ -62,6 +62,14 @@
                 templateUrl: 'pages/removeContact.html',
                 controllerAs: 'vm'
             })    
+        
+        .when('/removeParticipant/:cid/:uid', {
+                controller: 'removeParticipantController',
+                templateUrl: 'pages/removeParticipant.html',
+                controllerAs: 'vm'
+            })    
+
+
             .otherwise({ redirectTo: '/login' });
     }
 
