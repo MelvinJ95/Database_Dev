@@ -1,10 +1,10 @@
 angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scope', '$location', '$routeParams',
     function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
-        this.Message = "	Enter Reply";
-	this.Or_msg_ID;
-	this.groupid;
-	this.userid;
+        this.Message = "";
+	this.mid;
+	this.cid;
+	this.uid;
 	this.disp;
 
         this.postReply = function(){
@@ -39,13 +39,13 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
         };
 
 	this.returnToChat = function(){
-		$location.url('/chat/'+ thisCtrl.disp + '/' + thisCtrl.groupid);
+		$location.url('/chat/'+ thisCtrl.cid+ '/' + thisCtrl.uid);
 	}
 
 	this.loadVar = function(){
-		thisCtrl.Or_msg_ID = $routeParams.mid;
-		thisCtrl.groupid = $routeParams.gid;
-		thisCtrl.userid = $routeParams.uid;
+		thisCtrl.mid = $routeParams.mid;
+		thisCtrl.cid = $routeParams.cid;
+		thisCtrl.uid = $routeParams.uid;
 		thisCtrl.disp = $routeParams.disp;
 		
 	}

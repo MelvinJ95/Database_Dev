@@ -44,11 +44,77 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
         this.postMsg = function(){
             var msg = thisCtrl.newText;
-            // Need to figure out who I am
-            var author = "Me";
-            var nextId = thisCtrl.counter++;
-            thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
-            thisCtrl.newText = "";
+
+            var author = "";
+            var user;
+            var name=""; 
+            var url = "http://127.0.0.1:5000/GramChat/users/"+$routeParams.uid;
+            $http.get(url).then(
+                function(response){
+                    console.log("Response: "+JSON.stringify(response));
+                    user = response.data.User;
+                    name = user.first_name;
+                    author = name; 
+                    var nextId = thisCtrl.counter++;    
+                    thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
+                    thisCtrl.newText = "";
+                },
+                function (response){
+                    console.log("Error response: "+JSON.stringify(response));
+                    var status = response.status;
+
+                    if (status == 0){
+                        alert("No internet connection");
+                    }
+                    else if (status == 401){
+                        alert("Session has expired");
+                    }
+                    else if (status == 403){
+                        alert("Authorization required");
+                    }
+                    else if (status == 404){
+                        continue;
+                    }
+                    else {
+                        alert("Internal system error has occurred");
+                    }
+                });
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            today = dd + '-' + mm + '-' + yyyy;
+
+            var url_post = "http://127.0.0.1:5000/GramChat/posts";
+            
+            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:null, uid: $routeParams.uid, cid: $routeParams.cid }).then(
+                function(response){
+                    console.log("data: " + JSON.stringify(response.data));
+                    thisCtrl.returnToMainPage();
+                },
+                function(response){
+                    var status = response.status;
+
+                    if (status == 0){
+                        alert("No internet connection");
+                    }
+                    else if (status == 401){
+                        alert("Session has expired");
+                    }
+                    else if (status == 403){
+                        alert("Authorization required");
+                    }
+                    else if (status == 404){
+                        alert("Page not found");
+                    }
+                    else {
+                        alert("Internal system error has occurred");
+                    }
+                }
+            );
+    
+            
         };
 
         this.loadMessagesByHashtag = function(){
@@ -95,7 +161,12 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
         thisCtrl.cid = $routeParams.cid;
         thisCtrl.uid = $routeParams.uid;
 	    $location.path('/removeParticipant/'+thisCtrl.cid+'/'+thisCtrl.uid);
-	};
+    };
+    
+    this.replyToMessage = function(mid){
+	    $location.path('/reply/' + thisCtrl.uid + '/' + thisCtrl.cid + '/' + mid);
+	}
+
 
     this.goHome = function(){
         

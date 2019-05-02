@@ -191,7 +191,7 @@ class PostHandler:
             return jsonify(Error="Malformed post request"), 400
         else:
             pcaption = form['pname']
-            pdate = form['pprice']
+            pdate = form['pdate']
             pmedia = form['pmedia']
             uid = form['uid']
             cid = form['cid']
@@ -209,7 +209,7 @@ class PostHandler:
         pmedia = json['pmedia']
         uid = json['uid']
         cid = json['cid']
-        if pcaption and pdate and pmedia and uid and cid:
+        if pcaption and pdate or pmedia and uid and cid:
             dao = PostsDAO()
             pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
             result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
