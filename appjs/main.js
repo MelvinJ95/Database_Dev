@@ -27,48 +27,59 @@
                 controllerAs: 'vm'
             })
 
-	    .when('/main/:uid', {
+	        .when('/main/:uid', {
                 controller: 'MainPageController',
                 templateUrl: 'pages/mainpage.html',
                 controllerAs: 'vm'
             })
         
-        .when('/addChat/:uid', {
+            .when('/addChat/:uid', {
                 controller: 'AddChatController',
                 templateUrl: 'pages/addChat.html',
                 controllerAs: 'vm'
             })
         
-        .when('/addContact/:uid', {
+            .when('/addContact/:uid', {
                 controller: 'AddContactController',
                 templateUrl: 'pages/addContact.html',
                 controllerAs: 'vm'
             })
 
-        .when('/addParticipant/:cid/:uid', {
+            .when('/addParticipant/:cid/:uid', {
                 controller: 'AddParticipantController',
                 templateUrl: 'pages/addParticipant.html',
                 controllerAs: 'vm'
             })
             
-        .when('/reply', { ///reply/:disp/:uid/:gid/:mid
+            .when('/reply', { ///reply/:disp/:uid/:gid/:mid
                 controller: 'ReplyController',
                 templateUrl: 'pages/reply.html',
                 controllerAs: 'vm'
             })    
          
-        .when('/removeContact/:uid', {
+            .when('/removeContact/:uid', {
                 controller: 'removeContactController',
                 templateUrl: 'pages/removeContact.html',
                 controllerAs: 'vm'
             })    
         
-        .when('/removeParticipant/:cid/:uid', {
+            .when('/removeParticipant/:cid/:uid', {
                 controller: 'removeParticipantController',
                 templateUrl: 'pages/removeParticipant.html',
                 controllerAs: 'vm'
-            })    
+            })
 
+            .when('/likes/:pid', {
+                controller: 'LikesController',
+                templateUrl: 'pages/like.html',
+                controllerAs: 'likesCtrl'
+            })
+
+            .when('/dislikes/:pid', {
+                controller: 'DislikesController',
+                templateUrl: 'pages/dislike.html',
+                controllerAs: 'dislikesCtrl'
+            })
 
             .otherwise({ redirectTo: '/login' });
     }
