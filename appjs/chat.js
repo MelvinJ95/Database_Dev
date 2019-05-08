@@ -32,7 +32,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                         alert("Authorization required");
                     }
                     else if (status == 404){
-                        continue;
+                        return;
                     }
                     else {
                         alert("Internal system error has occurred");
@@ -73,7 +73,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                         alert("Authorization required");
                     }
                     else if (status == 404){
-                        continue;
+                        return;
                     }
                     else {
                         alert("Internal system error has occurred");
@@ -141,7 +141,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                         alert("Authorization required");
                     }
                     else if (status == 404){
-                        continue;
+                        return;
                     }
                     else {
                         alert("Internal system error has occurred");
