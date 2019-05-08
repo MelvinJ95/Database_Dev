@@ -10,6 +10,9 @@ angular.module('AppChat').controller('DislikesController', ['$http', '$log', '$s
             $http.get(url).then( // success call back
                 function (response){
                     console.log("data: " + JSON.stringify(response.data));
+
+                    //*** MISSING response.data TYPE ***\\
+                    thisCtrl.postList = response.data
             }, // error callback
             function (response){
                 console.log("Error response: " + JSON.stringify(response));
@@ -30,6 +33,7 @@ angular.module('AppChat').controller('DislikesController', ['$http', '$log', '$s
                     alert("Internal system error has occurred");
                 }
             });
+             $log.error("Posts Loaded: ", JSON.stringify(thisCtrl.postList));
         };
 
         this.goHome = function(){

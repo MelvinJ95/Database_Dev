@@ -10,6 +10,8 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
             $http.get(url).then( // success call back
                 function (response){
                     console.log("data: " + JSON.stringify(response.data));
+                     //*** MISSING response.data TYPE ***\\
+                    thisCtrl.postList = response.data
             }, // error callback
             function (response){
                 console.log("Error response: " + JSON.stringify(response));
@@ -31,7 +33,7 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
                 }
             });
 
-            $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
+             $log.error("Posts Loaded: ", JSON.stringify(thisCtrl.postList));
         };
 
         this.goHome = function(){
