@@ -1,5 +1,5 @@
 angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scope', '$rootScope', '$location','$routeParams',
-    function($http, $log, $scope, $rootScope, $location,$routeParams)  {
+    function($http, $log, $scope, $location, $routeParams)  {
 
         var thisCtrl = this;
         this.counter  = 2;
@@ -11,7 +11,7 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
                 function (response){
                     console.log("data: " + JSON.stringify(response.data));
                      //*** MISSING response.data TYPE ***\\
-                    thisCtrl.postList = response.data
+                    thisCtrl.postList = response.data.Reactions
             }, // error callback
             function (response){
                 console.log("Error response: " + JSON.stringify(response));

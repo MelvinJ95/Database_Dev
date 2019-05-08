@@ -51,7 +51,7 @@
                 controllerAs: 'vm'
             })
             
-            .when('/reply', { ///reply/:disp/:uid/:gid/:mid
+            .when('/reply/:uid/:cid/:mid', { ///reply/:disp/:uid/:gid/:mid
                 controller: 'ReplyController',
                 templateUrl: 'pages/reply.html',
                 controllerAs: 'vm'
@@ -72,13 +72,13 @@
             .when('/likes/:pid', {
                 controller: 'LikesController',
                 templateUrl: 'pages/like.html',
-                controllerAs: 'likesCtrl'
+                controllerAs: 'vm'
             })
 
             .when('/dislikes/:pid', {
                 controller: 'DislikesController',
                 templateUrl: 'pages/dislike.html',
-                controllerAs: 'dislikesCtrl'
+                controllerAs: 'vm'
             })
 
             .otherwise({ redirectTo: '/login' });
@@ -94,7 +94,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/main/:uid','/chat/:cid/:uid', '/login', '/register','/addContact','/addChat/:uid','/reply', 'addParticipant/:cid/:uid']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/main/:uid','/chat/:cid/:uid', '/login', '/register','/addContact','/addChat/:uid','/reply:uid/:cid/:mid', 'addParticipant/:cid/:uid']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');
