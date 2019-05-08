@@ -2,10 +2,10 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
     function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
         this.Message = "";
-	this.mid;
-	this.cid;
-	this.uid;
-	this.disp;
+	    this.mid;
+	    this.cid;
+	    this.uid;
+	    this.disp;
 
         this.postReply = function(){
             var reqURL = "http://localhost:5000/GramChat/GroupChat/Messages/Reply?Or_msg_ID=" + thisCtrl.Or_msg_ID + "&Message=" + thisCtrl.Message + "&UID=" + thisCtrl.userid + "&GID=" + thisCtrl.groupid;
@@ -40,7 +40,7 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
 
 	this.returnToChat = function(){
 		$location.url('/chat/'+ thisCtrl.cid+ '/' + thisCtrl.uid);
-	}
+	};
 
 	this.loadVar = function(){
 		thisCtrl.mid = $routeParams.mid;
@@ -48,7 +48,7 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
 		thisCtrl.uid = $routeParams.uid;
 		thisCtrl.disp = $routeParams.disp;
 		
-	}
+	};
 
         this.loadVar();
 }]);

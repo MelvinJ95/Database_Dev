@@ -2,16 +2,18 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
     function($http, $log, $scope, $location, $routeParams)  {
 
         var thisCtrl = this;
-        this.counter  = 2;
-        this.newText = "";
+        this.pid;
+	    this.cid;
+	    this.uid;
+	    this.react;
+	    this.date;
         this.showLikes = function(){
             thisCtrl.pid = $routeParams.pid;
             var url = "http://localhost:5000/GramChat/reactions/getLikes/" + thisCtrl.pid;
             $http.get(url).then( // success call back
                 function (response){
-                    console.log("data: " + JSON.stringify(response.data));
-                     //*** MISSING response.data TYPE ***\\
-                    thisCtrl.postList = response.data.Reactions
+                    console.log("data: " + JSON.stringify(response));
+                    thisCtrl.reactList = response.data.Reactions
             }, // error callback
             function (response){
                 console.log("Error response: " + JSON.stringify(response));
@@ -33,13 +35,21 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
                 }
             });
 
-             $log.error("Posts Loaded: ", JSON.stringify(thisCtrl.postList));
+             $log.error("Posts Loaded: ", JSON.stringify(thisCtrl.reactList));
         };
 
         this.goHome = function(){
 
 	    $location.path('/main/'+$routeParams.uid);
-	};
+	    };
+
+        this.loadVar = function(){
+		    thisCtrl.pid = $routeParams.pid;
+		    thisCtrl.cid = $routeParams.cid;
+		    thisCtrl.uid = $routeParams.uid;
+		    thisCtrl.react = $routeParams.react;
+		    thisCtrl.date = $routeParams.date;
+	    };
 
         this.showLikes();
 }]);
