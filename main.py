@@ -222,14 +222,18 @@ def postPost():
     return PostHandler().insertPost(request.json)
 
 
-@app.route('/GramChat/chat/<int:cid>/<int:mID>/reply', methods=['POST'])
-def replyPost():
-    return MessageHandler().insertMessage(request.json)
+@app.route('/GramChat/chat/reply/<int:pid>', methods=['POST'])
+def replyPost(pid):
+    return MessageHandler().insertMessageJson(request.json, pid)
 
 
 @app.route('/GramChat/chat/members/<int:cid>')
 def getMembersOfChat(cid):
     return UserHandler().getChatMembers(cid)
+
+@app.route('/GramChat/user/chats/<int:uid>')
+def geAllUserChats(uid):
+    return UserHandler().getAllUserChats(uid)
 
 @app.route('/GramChat/chat/user/<int:cid>/<int:uid>', methods=['GET'])
 def getChatByUserIDandChatID(cid,uid):

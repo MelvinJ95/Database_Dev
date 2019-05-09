@@ -52,7 +52,6 @@ class UsersDAO:
             result.append(row)
         return result
 
-
     def insert(self, username,first_name,last_name,upassword,uphone,uemail):
        cursor = self.conn.cursor()
        query = "insert into users(username,first_name,last_name,upassword,uphone,uemail) values (%s, %s, %s, %s, %s, %s) returning uid;"
@@ -114,6 +113,15 @@ class UsersDAO:
     def getUserChats(self,uid):
         cursor = self.conn.cursor()
         query = "select cid, cname from users natural inner join chats where uid = user_id and uid = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllUserChats(self, uid):
+        cursor = self.conn.cursor()
+        query = "select cid, cname from users natural inner join members natural inner join chats where uid = uid and uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
