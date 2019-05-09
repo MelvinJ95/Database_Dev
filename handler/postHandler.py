@@ -281,15 +281,14 @@ class PostHandler:
         temp = self.build_post_Alpha(result,reaction)
         return jsonify(Posts=temp)
 
-    def getNumberOfPostsPerDay(self, pdate):
+    def getNumberOfPostsPerDay(self):
         dao = PostsDAO()
-        post = dao.getNumberOfPostsPerDay(pdate)
+        post = dao.getNumberOfPostsPerDay()
         result_list = []
         for row in post:
             result = self.build_post_perday(row)
             result_list.append(result)
         return jsonify(Posts=result_list)
-
 
     def getAllReplies(self, pid):
         dao = PostsDAO()

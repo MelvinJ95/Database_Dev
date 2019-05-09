@@ -301,9 +301,13 @@ def getActiveUsers():
     return PostHandler().getActiveUsers()
 
 
-@app.route('/GramChat/posts/<string:date>')
-def getNumberOfPostsPerDay(date):
-    return PostHandler().getNumberOfPostsPerDay(date)
+# @app.route('/GramChat/posts/<string:date>')
+# # def getNumberOfPostsPerDay(date):
+# #     return PostHandler().getNumberOfPostsPerDay(date)
+
+@app.route('/GramChat/postsperday')
+def getNumberOfPostsPerDay():
+    return PostHandler().getNumberOfPostsPerDay()
 
 
 @app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
@@ -317,7 +321,7 @@ def insert():
 
 
 @app.route('/GramChat/users/reaction/like/<int:pid>', methods=['GET'])
-def getUsersLike():
+def getUsersLike(pid):
     return UserHandler().getUserLikeMessage(pid)
 
 

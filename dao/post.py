@@ -27,8 +27,6 @@ class PostsDAO:
             result.append(row)
         return result
 
-    
-
     def getPostById(self, pid):
         cursor = self.conn.cursor()
         query = "select * from posts where pid = %s;"
@@ -88,10 +86,10 @@ class PostsDAO:
         result = "Active users shown here."
         return result
 
-    def getNumberOfPostsPerDay(self, date):
+    def getNumberOfPostsPerDay(self):
         cursor = self.conn.cursor()
-        query = "select pdate, count(*) from posts where pdate = %s group by pdate;" #TO BE TESTED 
-        cursor.execute(query, (date,))
+        query = "select pdate, count(*) from posts group by pdate;" #TO BE TESTED
+        cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
@@ -106,7 +104,6 @@ class PostsDAO:
         for row in cursor:
             result.append(row)
         return result
-
 
     def insert(self, pcaption, pdate, pmedia, uid, cid):
         cursor = self.conn.cursor()
