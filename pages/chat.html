@@ -4,14 +4,14 @@
     <div class="card">
 		<div class="card-action">
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goHome()">Home
-                <i class="material-icons right">link</i>
+                <i class="material-icons right">home</i>
                 </button>
         
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goToAddParticipant()">Add New Participant
-                    <i class="material-icons right">link</i>
+                    <i class="material-icons right">add_circle</i>
                     </button>
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goToRemoveParticipant()">Remove Participant
-                    <i class="material-icons right">link</i>
+                    <i class="material-icons right">remove_circle</i>
                     </button>
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.loadMessagesByHashtag()">Search By Hashtag
                         <i class="material-icons right">search</i>
@@ -30,7 +30,7 @@
                      <textarea style="background: white" id="textarea1" class="materialize-textarea" ng-model="vm.newText"></textarea>
                 </div>
                 <div class="card-action white">
-                    <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Enviar
+                    <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Send
                     <i class="material-icons right">send</i>
                     </button>
                 </div>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="card-action">
                             <a class="btn-floating btn-small waves-effect waves-light blue">
-				<button class="btn-floating btn-small waves-effect waves-light blue" type="submit" name="action" ng-click="vm.like()"> 
+				<button class="btn-floating btn-small waves-effect waves-light blue" type="submit" name="action" ng-click="vm.react()">
 				<i class="material-icons">thumb_up</i>
 				</button>
 			    </a> 
@@ -75,7 +75,7 @@
                         <i class="material-icons right">reply</i>
                         </button>
                             <button class="btn waves-effect waves-light blue " type="submit" name="action" ng-click="vm.viewReaction(m.pid)">View
-                        <i class="material-icons right">view</i>
+                        <i class="material-icons right">open_in_new</i>
                         </button>
                         </div>
                     </div>
