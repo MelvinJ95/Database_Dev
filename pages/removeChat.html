@@ -1,0 +1,16 @@
+    <div ng-repeat="g in vm.grouplist">
+        <!-- This card prodives space for the message and Like/dislike buttons -->
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="card">
+                    <div class="card-content">
+                        <!-- Card Title is the name of the chat-->
+                        <span class="card-title"><b>{{g.cname}}</b></span>
+                    </div>
+                    <div class="card-action">
+                        <a ng-click="vm.removeChat(g.cid)"><i class="material-icons">remove_circle</i> Delete Chat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

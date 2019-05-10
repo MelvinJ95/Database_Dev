@@ -110,9 +110,16 @@ class UsersDAO:
             result.append(row)
         return result
 
+    def chatOwnerID(self, cid):
+        cursor = self.conn.cursor()
+        query = "select C.uid from users as U natural inner join chats as C where C.cid = %s and C.uid = U.uid;"
+        cursor.execute(query, (cid,))
+        result = cursor.fetchone()[0]
+        return result
+
     def getUserChats(self,uid):
         cursor = self.conn.cursor()
-        query = "select cid, cname from users natural inner join chats where uid = user_id and uid = %s;"
+        query = "select cid, cname from users natural inner join chats where uid = uid and uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:

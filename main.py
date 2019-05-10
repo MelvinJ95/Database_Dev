@@ -212,9 +212,9 @@ def addUsertochat(cid, uid):
     return ChatHandler().insertMember( cid, uid)
 
 
-@app.route('/GramChat/chat/deletechat/<int:cid>/<int:uid>', methods=['DELETE'])
+@app.route('/GramChat/chat/delete/<int:cid>/<int:uid>', methods=['DELETE'])
 def deleteChat(cid, uid):
-    return ChatHandler().removeChat(request.json, cid, uid)
+    return ChatHandler().removeChat(cid, uid)
 
 
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
@@ -233,13 +233,14 @@ def replyPost(pid):
 def getMembersOfChat(cid):
     return UserHandler().getChatMembers(cid)
 
-@app.route('/GramChat/user/chats/<int:uid>')
-def geAllUserChats(uid):
-    return UserHandler().getAllUserChats(uid)
-
 @app.route('/GramChat/chat/user/<int:cid>/<int:uid>', methods=['GET'])
 def getChatByUserIDandChatID(cid,uid):
     return ChatHandler().getChatByUserIDandChatID(cid,uid)
+
+@app.route('/GramChat/user/chats/<int:uid>')
+def getAllUserChats(uid):
+    return UserHandler().getAllUserChats(uid)
+
 # ---------------- REACTIONS ---------------------
 
 @app.route('/GramChat/reactions', methods=['GET', 'POST'])
