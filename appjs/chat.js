@@ -10,6 +10,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
         this.counter  = 2;
         this.newText = ""; 
         this.hashTag = "";
+        this.im = "";
         
 
         $scope.count_like = 0; 
@@ -50,7 +51,6 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
         this.postMsg = function(){
             var msg = thisCtrl.newText;
-
             var author = "";
             var user;
             var name=""; 
@@ -93,8 +93,18 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             today = dd + '-' + mm + '-' + yyyy;
 
             var url_post = "http://127.0.0.1:5000/GramChat/posts";
-            
-            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:null, uid: $routeParams.uid, cid: $routeParams.cid }).then(
+
+            if(this.im="") {
+                var image = null
+                console.log('the image is null')
+            }
+            else{
+                console.log('the image is not null')
+                console.log(image)
+                var fs = require('fs');
+                fs.createReadStream(this.im).pipe(fs.createWriteStream('/static'));
+            }
+            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:image, uid: $routeParams.uid, cid: $routeParams.cid }).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
                 
@@ -359,6 +369,11 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
     this.replyToMessage = function(mid){
 	    $location.path('/reply/' + thisCtrl.uid + '/' + thisCtrl.cid + '/' + mid);
 	};
+
+    // this.addImage = function(path) {
+    //
+    //
+    // };
 
     this.viewReaction = function(mid){
          $location.path('/likes/' + mid);

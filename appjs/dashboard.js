@@ -1,5 +1,6 @@
 angular.module('AppChat').controller('DashboardController', ['$http', '$log', '$scope', '$window',
     function($http, $log, $scope) {
+
         google.charts.load('current', {packages: ['corechart', 'bar']});
         google.charts.setOnLoadCallback(drawChart('users'));
         google.charts.setOnLoadCallback(drawChart('hashtags'));
