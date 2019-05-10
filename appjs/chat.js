@@ -157,7 +157,41 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             $log.error("Message Loaded: ", JSON.stringify(thisCtrl.messageList));
         };
 
-    this.like= function(index,pid){ //DOesn't work when clicking like consecutively on different posts each time 
+
+        this.update_like = function(index,pid, user){
+        
+            if($routeParams.uid == user && hasliked){ //user already hit like 
+                thisCtrl.messageList[index].like -= 1;
+                this.deleteLike_Dislike($routeParams.uid, pid); 
+                hasliked = false; 
+             }
+             else{
+                thisCtrl.messageList[index].like += 1;
+                this.insertLike_Dislike("like",pid);
+                hasliked = true; 
+             }
+    
+    
+        };
+
+    
+        this.update_dislike = function(index,pid, user){
+        
+            if($routeParams.uid == user && hasDisliked){ //user already hit like 
+                thisCtrl.messageList[index].dislike -= 1;
+                this.deleteLike_Dislike($routeParams.uid, pid); 
+                hasDisliked = false; 
+             }
+             else{
+                thisCtrl.messageList[index].dislike += 1;
+                this.insertLike_Dislike("dislike",pid);
+                hasDisliked = true; 
+             }
+    
+    
+        };
+
+        this.like= function(index,pid){ //DOesn't work when clicking like consecutively on different posts each time 
         console.log("ENTERED LIKE FUNCTION");
         console.log(hasliked);
        var url = "http://127.0.0.1:5000/GramChat/users/reaction/like/"+pid;
@@ -168,14 +202,17 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
              for(var i=0;i<thisCtrl.userList.length;i++){
                  if($routeParams.uid == thisCtrl.userList[i].uid){
                     user = thisCtrl.userList[i].uid; 
+                    thisCtrl.update_like(index,pid,user);
                  }
              }
              console.log("INSIDE"+user);
          },
-         function (response){
-             console.log("Error response: "+JSON.stringify(response));
-             var status = response.status;
 
+         function (response){
+            thisCtrl.update_like(index,pid,user);
+            console.log("Error response: "+JSON.stringify(response));
+             var status = response.status;
+             
              if (status == 0){
                  alert("No internet connection");
              }
@@ -186,27 +223,18 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                  alert("Authorization required");
              }
              else if (status == 404){
-                 continue;
+                 return;
              }
              else {
-                 continue; 
+                return; 
              }
+             
          });
-         console.log("OUTSIDE"+user);
-         if($routeParams.uid == user && hasliked){ //user already hit like 
-            this.messageList[index].like -= 1;
-            this.deleteLike_Dislike($routeParams.uid, pid); 
-            hasliked = false; 
-         }
-         else{
-            this.messageList[index].like += 1;
-            this.insertLike_Dislike("like",pid);
-            hasliked = true; 
-         }
-
+    
         };
 
-    this.dislike= function(index,pid){ //DOesn't work when clicking like consecutively on different posts each time 
+
+     this.dislike= function(index,pid){ //DOesn't work when clicking like consecutively on different posts each time 
         console.log("ENTERED DISLIKE FUNCTION");
 
        var url = "http://127.0.0.1:5000/GramChat/users/reaction/dislike/"+pid;
@@ -217,10 +245,12 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
              for(var i=0;i<thisCtrl.userList.length;i++){
                  if($routeParams.uid == thisCtrl.userList[i].uid){
                      user = thisCtrl.userList[i].uid; 
+                     thisCtrl.update_dislike(index,pid,user);
                  }
              }
          },
          function (response){
+             thisCtrl.update_dislike(index,pid,user);
              console.log("Error response: "+JSON.stringify(response));
              var status = response.status;
 
@@ -237,30 +267,14 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                  return;
              }
              else {
-                 continue; 
+                return; 
              }
          });
-            console.log(user);
-            if($routeParams.uid == user && hasDisliked){ //user already hit like 
-                this.messageList[index].dislike -= 1;
-                this.deleteLike_Dislike($routeParams.uid, pid); 
-                hasDisliked = false; 
-             }
-             else{
-                this.messageList[index].dislike += 1;
-                this.insertLike_Dislike("dislike",pid);
-                hasDisliked = true; 
-             }
-
         };    
 
-    
+   
 
-
-
-
-
-    this.insertLike_Dislike = function(reaction,pid){
+        this.insertLike_Dislike = function(reaction,pid){
         var url_post = "http://127.0.0.1:5000/GramChat/reactions";
         var today = new Date();
         var dd = today.getDate();
@@ -295,7 +309,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
     } 
 
-    this.deleteLike_Dislike = function(uid,pid){
+        this.deleteLike_Dislike = function(uid,pid){
         var empty = {};
             
         var reqURL = "http://localhost:5000/GramChat/reactions/delete/"+uid+"/"+pid;
