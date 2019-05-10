@@ -12,13 +12,11 @@ class UserHandler:
         result['upassword'] = row[4]
         result['uphone'] = row[5]
         result['uemail'] = row[6]
-        result['ubirthday'] = row[7]
-        result['usex'] = row[8]
         #result['ucontacts'] = row[9]
         return result
 
     def build_user_attributes(self, uid, username, first_name,last_name, upassword, 
-                              uphone,uemail,ubirthday,usex):
+                              uphone,uemail):
         result = {}
         result['uid'] = uid
         result['username'] = username
@@ -27,15 +25,40 @@ class UserHandler:
         result['upassword'] = upassword
         result['uphone'] = uphone
         result['uemail'] = uemail
-        result['ubirthday'] = ubirthday
-        result['usex'] = usex
         #result['ucontacts'] = contact
         return result
-    
+
+    def build_members(self,row):
+        result = {}
+        result['uid'] = row[0]
+        result['name'] = row[2] + " " + row[3]
+        return result
+
+    def build_user_reaction(self, row):
+        result = {}
+        result['uid'] = row[0]
+        result['name'] = row[1] + " " + row[2]
+        result['date of reaction'] = row[3]
+        return result
+
+    def build_user_chats(self, row): 
+        result = {}
+        result['cid'] = row[0]
+        result['cname'] = row[1]
+        return result 
+        
+
     #inclomplete
-    def authorize(self, form):
-        username = form['username']
-        password = form['password']
+    def authorize(self, json):
+        dao = UsersDAO()
+        username = json['username']
+        password = json['password']
+        result = dao.authorize(username, password)
+        if result == None:
+            return jsonify(Error="Invalid Login"), 404
+        else:
+            return jsonify(Login=1)
+
 #         if username and password:
 #             needs use of dao
 #                 if auth:
@@ -50,7 +73,7 @@ class UserHandler:
         user_list = dao.getAllUsers()
         result_list = []
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_members(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
@@ -82,10 +105,9 @@ class UserHandler:
             result_list.append(result)
         return jsonify(Users=result_list)
 
-
     def insertUser(self, form):
         print("form: ", form)
-        if len(form) != 8:
+        if len(form) != 6:
             return jsonify(Error = "Malformed post request"), 400
         else:
             username = form['username']
@@ -94,13 +116,11 @@ class UserHandler:
             upassword = form['upassword']
             uphone = form['uphone']
             uemail = form['uemail']
-            ubirthday = form['ubirthday']
-            usex = form['usex']
             #ucontacts = form['ucontacts']
-            if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
+            if username and first_name and last_name and upassword and uphone and uemail:
                 dao = UsersDAO()
-                uid = dao.insert(username,first_name,last_name,uphone,uemail,ubirthday,usex)
-                result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
+                uid = dao.insert(username,first_name,last_name,uphone,uemail)
+                result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail)
                 return jsonify(User=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -112,13 +132,11 @@ class UserHandler:
         upassword = json['upassword']
         uphone = json['uphone']
         uemail = json['uemail']
-        ubirthday = json['ubirthday']
-        usex = json['usex']
 #        ucontacts = json['ucontacts']
-        if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
+        if username and first_name and last_name and upassword and uphone and uemail:
             dao = UsersDAO()
-            uid = dao.insert(username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex)
-            result = self.build_user_attributes(uid,username,first_name,last_name,upassword,uphone,uemail,ubirthday,usex)
+            uid = dao.insert(username,first_name,last_name,upassword,uphone,uemail)
+            result = self.build_user_attributes(uid,username,first_name,last_name,upassword,uphone,uemail)
             return jsonify(User=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
@@ -136,7 +154,7 @@ class UserHandler:
         if not dao.getUserById(uid):
             return jsonify(Error = "User not found."), 404
         else:
-            if len(form) != 8:
+            if len(form) != 6:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 username = form['username']
@@ -145,12 +163,10 @@ class UserHandler:
                 upassword = form['upassword']
                 uphone = form['uphone']
                 uemail = form['uemail']
-                ubirthday = form['ubirthday']
-                usex = form['usex']
                 #ucontacts = form['ucontacts']
-                if username and first_name and last_name and upassword and uphone and uemail and ubirthday and usex:
-                    dao.update(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
-                    result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail,ubirthday,usex)
+                if username and first_name and last_name and upassword and uphone and uemail:
+                    dao.update(uid,username,first_name,last_name,uphone,uemail)
+                    result = self.build_user_attributes(uid,username,first_name,last_name,uphone,uemail)
                     return jsonify(User=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
@@ -172,24 +188,27 @@ class UserHandler:
         #print(self.build_User_counts(result))
         return jsonify(UserCounts = self.build_user_counts(result)), 200
 
-    def getUserLikeMessage(self):
+    def getUserLikeMessage(self, pid):
         dao = UsersDAO()
-        user_list = dao.getUserLikedMessage()
+        user_list = dao.getUserLikedMessage(pid)
         result_list = []
+        if not user_list:
+            return jsonify(Error="Post has no likes"), 404
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_user_reaction(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
-    def getUserDislikeMessage(self):
+    def getUserDislikeMessage(self, pid):
         dao = UsersDAO()
-        user_list = dao.getUserDislikedMessage
+        user_list = dao.getUserDislikedMessage(pid)
         result_list = []
+        if not user_list:
+            return jsonify(Error="Post has no dislikes"), 404
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_user_reaction(row)
             result_list.append(result)
         return jsonify(Users=result_list)
-
 
     def chatOwner(self, cid):
         dao = UsersDAO()
@@ -200,14 +219,14 @@ class UserHandler:
             result_list.append(result)
         return jsonify(Users=result_list)
 
-    def getUsersByChat(self, cid):
+    def getChatMembers(self, cid):
         dao = UsersDAO()
         user_list = dao.getUsersByChat(cid)
         if not user_list:
             return jsonify(Error = "Chat is Empty"), 404
         result_list = []
         for row in user_list:
-            result = self.build_user_dict(row)
+            result = self.build_members(row)
             result_list.append(result)
         return jsonify(Users=result_list)
 
@@ -228,3 +247,21 @@ class UserHandler:
         else:
             user = self.build_user_dict(row)
             return jsonify(User=user)
+
+    def chatOwner(self, cid):
+        dao = UsersDAO()
+        user_list = dao.chatOwner(cid)
+        result_list = []
+        for row in user_list:
+            result = self.build_members(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
+
+    def getUserChats(self,uid):
+        dao = UsersDAO()
+        user_list = dao.getUserChats(uid)
+        result_list = []
+        for row in user_list:
+            result = self.build_user_chats(row)
+            result_list.append(result)
+        return jsonify(Chats=result_list)

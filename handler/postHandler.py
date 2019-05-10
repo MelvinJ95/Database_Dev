@@ -24,6 +24,13 @@ class PostHandler:
         result['cid'] = row[5]
         return result
 
+    def build_posts_chat(self, row):
+        result = {};
+        result['pid'] = row[0]
+        result['pcaption'] = row[1]
+        result['uid'] = row[2]
+        return result
+
     # def build_post_attributes(self, pid, pcaption, pdate, pmedia, uid, like, dislike):
     #     result = {}
     #     result['pid'] = pid
@@ -44,6 +51,16 @@ class PostHandler:
         result['uid'] = uid
         result['cid'] = cid
         return result
+
+    def build_post_query(self, row):
+        result = {}
+        result['pid'] = row[0]
+        result['user'] = row[1]
+        result['pmedia'] = row[2]
+        result['pcaption'] = row[3]
+        result['like'] = row[4]
+        result['dislike'] = row[5] 
+        return result 
 
     def build_post_Alpha(self, row,reaction):
         result = {}
@@ -109,11 +126,10 @@ class PostHandler:
         row = dao.getPostsByChatId(cid)
         if not row:
             return jsonify(Error="No Posts in this Chat"), 404
-        else:
-            posts_list = dao.getPostsByChatId(cid)
+        else:         
             result_list = []
-            for row in posts_list:
-                result = self.build_post_dict(row)
+            for rows in row:
+                result = self.build_post_query(rows)
                 result_list.append(result)
             return jsonify(Posts=result_list)
 
@@ -175,7 +191,7 @@ class PostHandler:
             return jsonify(Error="Malformed post request"), 400
         else:
             pcaption = form['pname']
-            pdate = form['pprice']
+            pdate = form['pdate']
             pmedia = form['pmedia']
             uid = form['uid']
             cid = form['cid']
@@ -193,7 +209,7 @@ class PostHandler:
         pmedia = json['pmedia']
         uid = json['uid']
         cid = json['cid']
-        if pcaption and pdate and pmedia and uid and cid:
+        if pcaption and pdate or pmedia and uid and cid:
             dao = PostsDAO()
             pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
             result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
@@ -268,7 +284,6 @@ class PostHandler:
     def getNumberOfPostsPerDay(self, pdate):
         dao = PostsDAO()
         post = dao.getNumberOfPostsPerDay(pdate)
-        # print post
         result_list = []
         for row in post:
             result = self.build_post_perday(row)
@@ -283,3 +298,23 @@ class PostHandler:
         for r in result:
             replies.append(self.build_post_dict(r))
         return jsonify(Replies=replies)
+
+    def getAllPostWebsite(self):
+        dao = PostsDAO()
+        result = dao.getAllPostWebsite()
+        posts = []
+        for r in result:
+            posts.append(self.build_post_query(r))
+        return jsonify(Posts=posts)
+      
+    def getPostsByHashtag(self, cid, hashtag):
+        dao = PostsDAO()
+        row = dao.getPostsByHashtag(cid, hashtag)
+        if not row:
+            return jsonify(Error="No Posts in this Chat"), 404
+        else:         
+            result_list = []
+            for rows in row:
+                result = self.build_post_query(rows)
+                result_list.append(result)
+            return jsonify(Posts=result_list)

@@ -17,6 +17,17 @@ class PostsDAO:
         for row in cursor:
             result.append(row)
         return result
+    
+    def getAllPostWebsite(self): #fixed query for like
+        cursor = self.conn.cursor()
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid group by first_name, pcaption, pmedia,p.pid;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    
 
     def getPostById(self, pid):
         cursor = self.conn.cursor()
@@ -27,7 +38,8 @@ class PostsDAO:
 
     def getPostsByChatId(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from posts where cid = %s;"
+        #query = "select * from posts where cid = %s;"
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users as u where p.pid = r.pid and u.uid = p.uid  and p.cid = %s group by first_name, pcaption, pmedia,p.pid, p.cid;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:
@@ -101,6 +113,8 @@ class PostsDAO:
         query = "insert into posts(pcaption, pdate, pmedia, uid, cid) values (%s, %s, %s, %s, %s) returning pid;"
         cursor.execute(query, (pcaption, pdate, pmedia, uid, cid,))
         pid = cursor.fetchone()[0]
+        query_T = "insert into reactions(rdate,reaction,pid,uid) values (%s,%s,%s,%s);"
+        cursor.execute(query_T, (pdate,None,pid, None,))
         self.conn.commit()
         return pid
 
@@ -128,3 +142,13 @@ class PostsDAO:
         print(result)
         return result
         
+    def getPostsByHashtag(self,cid,hashtag):
+        cursor = self.conn.cursor()
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike " \
+        "from posts as p, reactions as r, users as u, hashtags as h natural inner join tagged as t " \
+        "where p.pid = r.pid and u.uid = p.uid and p.pid = t.pid and htext = %s and p.cid = %s group by first_name, pcaption, pmedia,p.pid;"
+        cursor.execute(query, (hashtag,cid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result 

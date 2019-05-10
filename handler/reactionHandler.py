@@ -34,7 +34,6 @@ class ReactionHandler:
         result['dislikes'] = row[1]
         return result
 
-
     def getAllReactions(self):
         dao = ReactionsDAO()
         reaction_list = dao.getAllReactions()
@@ -65,6 +64,7 @@ class ReactionHandler:
     def getLikesByPostId(self, pid):
         dao = ReactionsDAO()
         row = dao.getLikesByPostId(pid)
+        print(row)
         if not row:
             return jsonify(Error="Reaction Not Found"), 404
         else:
@@ -88,8 +88,6 @@ class ReactionHandler:
             result = self.build_reaction_dict(row)
             result_list.append(result)
         return jsonify(Reactions=result_list)
-
-
 
     #might be missing like/dislike in if conditions
     def searchreaction(self, args):
@@ -148,6 +146,11 @@ class ReactionHandler:
         else:
             dao.delete(rid)
             return jsonify(DeleteStatus = "OK"), 200
+
+    def deleteReactionByPidAndUid(self, pid,uid):
+        dao = ReactionsDAO()
+        dao.deleteReactionByPidAndUid(pid, uid)
+        return jsonify(DeleteStatus = "OK"), 200
 
     def updatereaction(self, rid, form):
         dao = ReactionsDAO()

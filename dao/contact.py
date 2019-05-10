@@ -23,7 +23,8 @@ class ContactDAO:
     def getContactListByUser(self, usrID):
         cursor = self.conn.cursor()
        # query = "select * from(select * from users natural inner join contacts where uid = %s) as T1 natural inner join users as T2 where T1.cid=T2.uid);"
-        query = "select * from users natural inner join contacts where uid = contact and user_id = %s;"
+       #  query = "select * from users natural inner join contacts where uid = contact and user_id = %s;"
+        query = "select * from users natural inner join contacts where uid = contact and owner = %s;"
         cursor.execute(query,(usrID,))
         result = []
         for row in cursor:
@@ -31,6 +32,17 @@ class ContactDAO:
         return result
  
  
+    def addContact(self,usrID,first_name,last_name,phone,email):
+        cursor = self.conn.cursor()
+        query = "select * from users where first_name = %s and last_name = %s and uphone = %s or uemail = %s;"
+        cursor.execute(query, (first_name,last_name,phone,email,)) 
+        cid = cursor.fetchone()[0]
+        query_T = "insert into contacts(contact,user_id) values (%s, %s) returning contact;"
+        cursor.execute(query_T, (cid,usrID,))
+        self.conn.commit()
+        return cid
+
+
     def addContactByPhone(self,usrID,first_name,last_name,phone):
         cursor = self.conn.cursor()
         query = "select * from users where first_name = %s and last_name = %s and uphone = %s;"

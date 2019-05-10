@@ -33,16 +33,15 @@ class ChatHandler:
     
     def buildChatAlpha(self, row):
         chat = {}
-        chat['Chat id'] = row[0]
-        chat['Chat Name'] = row[1]
-        chat['Chat Admin'] = row[2]
-        #chat['Chat Admin'] = row[2] + " " + row[3]
+        chat['id'] = row[0]
+        chat['Name'] = row[1]
+        chat['Admin'] = row[2]
         return chat
 
-    def buildChatMembers(self, row):
-        members = {}
-        members['Name'] = row[0] + " " + row[1]
-        return members
+    # def buildChatMembers(self, row):
+    #     members = {}
+    #     members['Name'] = row[0] + " " + row[1]
+    #     return members
     
     def buildChatID(self, row):
         chats = {}
@@ -70,8 +69,14 @@ class ChatHandler:
 #     def getChatsByName(self,name):
 #         return 
 #     
-#     def getChatsById(self,gid):
-#         return 
+    def getChatsById(self,cid):
+       dao = UsersDAO()
+       chat_list = dao.getChatByID(cid)
+       if not chat_list:
+            return jsonify(Error = "Chat Not Found"), 404
+       else:
+            chat = self.build_chat_attributes(chat_list)
+            return jsonify(User = user)
 #     
 #     def getChatsByUsername(self,name):
 #         return 
@@ -151,3 +156,12 @@ class ChatHandler:
             result = self.build_user_dict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+
+    def getChatByUserIDandChatID(self,cid,uid):
+       dao = ChatDAO()
+       chat_list = dao.getChatByUserIDandChatID(uid, cid)
+       if not chat_list:
+         return jsonify(Error = "Chat Not Found"), 404
+       else:
+         chat = self.build_chat_attributes(chat_list)
+         return jsonify(Chat = chat_list)

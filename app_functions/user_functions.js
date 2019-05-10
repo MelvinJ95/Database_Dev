@@ -27,11 +27,11 @@
         }
 
         function GetByUsername(username) {
-            return $http.get('/api/users/' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('http://localhost:5000/GramChat/users/info/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function Create(user) {
-            return $http.post('/api/users', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post('http://localhost:5000/GramChat/users', user).then(handleSuccess, handleError('Error creating user'));
         }
 
         function Update(user) {
@@ -45,7 +45,7 @@
         // private functions
 
         function handleSuccess(res) {
-            return res.data;
+            return {success: true};
         }
 
         function handleError(error) {
