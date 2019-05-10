@@ -147,6 +147,11 @@ class ReactionHandler:
             dao.delete(rid)
             return jsonify(DeleteStatus = "OK"), 200
 
+    def deleteReactionByPidAndUid(self, pid,uid):
+        dao = ReactionsDAO()
+        dao.deleteReactionByPidAndUid(pid, uid)
+        return jsonify(DeleteStatus = "OK"), 200
+
     def updatereaction(self, rid, form):
         dao = ReactionsDAO()
         if not dao.getReactionsById(rid):

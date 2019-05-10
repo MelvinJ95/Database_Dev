@@ -264,9 +264,10 @@ def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
 
 
-@app.route('/GramChat/reactions/getDislikes/<int:PID>', methods=['GET'])
-def getDislikesbyPostID(PID):
-    return ReactionHandler().getDislikesByPostId(PID)
+@app.route('/GramChat/reactions/delete/<int:uid>/<int:pid>', methods=['DELETE'])
+def deleteReaction(pid,uid):
+    return ReactionHandler().deleteReactionByPidAndUid(pid,uid)
+
 
 
 # -------------- ETC -----------------------------
@@ -314,7 +315,7 @@ def insert():
 
 
 @app.route('/GramChat/users/reaction/like/<int:pid>', methods=['GET'])
-def getUsersLike():
+def getUsersLike(pid):
     return UserHandler().getUserLikeMessage(pid)
 
 

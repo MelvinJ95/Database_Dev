@@ -113,3 +113,12 @@ class ReactionsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def deleteReactionByPidAndUid(self,pid,uid):
+        cursor = self.conn.cursor()
+        query = "delete from reactions where pid = %s and uid = %s;"
+        cursor.execute(query, (pid,uid,))
+        self.conn.commit()
+        return "OK"
+
+    
