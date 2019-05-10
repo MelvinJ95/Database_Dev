@@ -70,7 +70,7 @@ class UsersDAO:
 
     def getUsersByChat(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from users natural inner join members where cid = %s;"
+        query = "select * from users, members where users.uid = members.user_id and cid = %s;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:
