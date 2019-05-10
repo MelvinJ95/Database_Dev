@@ -53,7 +53,7 @@ angular.module('AppChat').controller('DashboardController', ['$http', '$log', '$
                 data.addColumn('string', 'Trend Hashtag');
                 data.addColumn('number', 'Message number');
                 data.addRows(format(JSON.parse(jsonData), trendtype));
-                id = 'chart_div2'
+                id = 'chart_div'
             }
             else if (trendtype=='users'){
                 data.addColumn('string', 'Trend User');
