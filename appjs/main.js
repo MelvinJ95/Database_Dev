@@ -81,6 +81,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/dashboard', {
+                controller: 'DashboardController',
+                templateUrl: 'pages/dashboard.html',
+                controllerAs: 'vm'
+            })
+
             .otherwise({ redirectTo: '/login' });
     }
 
