@@ -45,7 +45,7 @@ class ChatDAO:
     
     def insertMember(self, cid, uid):
         cursor = self.conn.cursor()
-        query = "insert into members(cid,uid) values (%s, %s) returning cid;"
+        query = "insert into members(cid,user_id) values (%s, %s) returning cid;"
         cursor.execute(query, (cid, uid,))
         result = [uid,cid]
         self.conn.commit()
@@ -71,7 +71,7 @@ class ChatDAO:
 
     def getChatByUserIDandChatID(self,cid,uid):
         cursor = self.conn.cursor()
-        query = "select cid, cname, uid from members as U natural inner join chats as C where U.uid=%s and C.uid = U.uid and C.cid = %s"
+        query = "select cid, cname, uid from members as U natural inner join chats as C where U.user_id=%s and C.uid = U.user_id and C.cid = %s"
         cursor.execute(query, (uid, cid,))
         self.conn.commit()
         return cid

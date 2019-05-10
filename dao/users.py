@@ -52,6 +52,7 @@ class UsersDAO:
             result.append(row)
         return result
 
+
     def insert(self, username,first_name,last_name,upassword,uphone,uemail):
        cursor = self.conn.cursor()
        query = "insert into users(username,first_name,last_name,upassword,uphone,uemail) values (%s, %s, %s, %s, %s, %s) returning uid;"
@@ -110,25 +111,9 @@ class UsersDAO:
             result.append(row)
         return result
 
-    def chatOwnerID(self, cid):
-        cursor = self.conn.cursor()
-        query = "select C.uid from users as U natural inner join chats as C where C.cid = %s and C.uid = U.uid;"
-        cursor.execute(query, (cid,))
-        result = cursor.fetchone()[0]
-        return result
-
     def getUserChats(self,uid):
         cursor = self.conn.cursor()
         query = "select cid, cname from users natural inner join chats where uid = uid and uid = %s;"
-        cursor.execute(query, (uid,))
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
-
-    def getAllUserChats(self, uid):
-        cursor = self.conn.cursor()
-        query = "select cid, cname from users natural inner join members natural inner join chats where uid = uid and uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
@@ -140,4 +125,13 @@ class UsersDAO:
         query = "select username, upassword from users where username = %s and upassword = %s;"
         cursor.execute(query, (username, password, ))
         result = cursor.fetchone()
+        return result
+
+    def getAllUserChats(self, uid):
+        cursor = self.conn.cursor()
+        query = "select cid, cname from chats natural inner join members where user_id = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
