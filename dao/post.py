@@ -143,10 +143,11 @@ class PostsDAO:
         return result
         
     def getPostsByHashtag(self,cid,hashtag):
+        hashtag = '#'+hashtag
         cursor = self.conn.cursor()
         query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, sum(case when reaction='dislike' then 1 else 0 end) as dislike " \
         "from posts as p, reactions as r, users as u, hashtags as h natural inner join tagged as t " \
-        "where p.pid = r.pid and u.uid = p.uid and p.pid = t.pid and htext = %s and p.cid = %s group by first_name, pcaption, pmedia,p.pid;"
+        "where p.pid = r.pid and u.uid = p.uid and p.pid = t.pid and %s = ANY(htext) and p.cid = %s group by first_name, pcaption, pmedia,p.pid;"
         cursor.execute(query, (hashtag,cid,))
         result = []
         for row in cursor:

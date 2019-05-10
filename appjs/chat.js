@@ -97,7 +97,8 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             $http.post(url_post,{pcaption: msg, pdate: today, pmedia:null, uid: $routeParams.uid, cid: $routeParams.cid }).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
-                
+                    pid = response.data.Post.pid;
+                    thisCtrl.checkForHashtag(msg,pid); 
                 },
                 function(response){
                     var status = response.status;
@@ -123,15 +124,20 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             
         };
 
-        this.loadMessagesByHashtag = function(){
-              thisCtrl.cid = $routeParams.cid;
-              thisCtrl.uid = $routeParams.uid;
-              var url = "http://127.0.0.1:5000/GramChat/chat/"+thisCtrl.cid+"/posts/hashtag/"+thisCtrl.hashTag;
-              $http.get(url).then(
+
+        this.checkForHashtag = function(message, pid){
+            thisCtrl.cid = $routeParams.cid;
+            thisCtrl.uid = $routeParams.uid;
+            
+                message = message.match(/#[a-z-_]+/ig); 
+                
+            if(message != null){
+                console.log(message);           
+                var url = "http://127.0.0.1:5000/GramChat/hashtags";
+                $http.post(url,{ htext:message, pid:pid}).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
-                    thisCtrl.messageList = response.data.Posts
-
+                    
                 },
                 function (response){
                     console.log("Error response: "+JSON.stringify(response));
@@ -153,7 +159,44 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                         alert("Internal system error has occurred");
                     }
                 });
+            }
+           
+          $log.error("Message Loaded: ", JSON.stringify(thisCtrl.messageList));
+      };
 
+
+        this.loadMessagesByHashtag = function(){
+            thisCtrl.cid = $routeParams.cid;
+            thisCtrl.uid = $routeParams.uid;
+            if(thisCtrl.hashTag != null){
+                var url = "http://127.0.0.1:5000/GramChat/chat/"+thisCtrl.cid+"/posts/hashtag/"+thisCtrl.hashTag;
+                $http.get(url).then(
+                    function(response){
+                        console.log("Response: "+JSON.stringify(response));
+                        thisCtrl.messageList = response.data.Posts
+
+                    },
+                    function (response){
+                        console.log("Error response: "+JSON.stringify(response));
+                        var status = response.status;
+
+                        if (status == 0){
+                            alert("No internet connection");
+                            }
+                        else if (status == 401){
+                            alert("Session has expired");
+                            }
+                        else if (status == 403){
+                            alert("Authorization required");
+                            }
+                        else if (status == 404){
+                            return;
+                            }
+                        else {
+                            thisCtrl.loadMessages()
+                            }
+                        });
+            }   
             $log.error("Message Loaded: ", JSON.stringify(thisCtrl.messageList));
         };
 
