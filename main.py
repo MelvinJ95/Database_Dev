@@ -6,6 +6,7 @@ from handler.messageHandler import MessageHandler
 from handler.contactHandler import ContactHandler
 from handler.hashtagHandler import HashtagHandler
 from handler.reactionHandler import ReactionHandler
+from handler.dashboardHandler import DashboardHandler
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -30,7 +31,6 @@ def getAllPosts():
         else:
             return PostHandler().searchPosts(request.args)
 
-
 @app.route('/GramChat/posts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getPostById(pid):
     if request.method == 'GET':
@@ -41,7 +41,6 @@ def getPostById(pid):
         return PostHandler().deletePost(pid)
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 @app.route('/GramChat/posts/date/<string:pdate>', methods=['GET', 'PUT', 'DELETE'])
 def getPostsByDate(pdate):
@@ -54,7 +53,6 @@ def getPostsByDate(pdate):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
 @app.route('/GramChat/posts/<int:pid>/<string:reaction>', methods=['GET'])
 def addReaction(pid, reaction):
     if request.method == 'GET':
@@ -62,7 +60,6 @@ def addReaction(pid, reaction):
         return PostHandler().getReactionsByPost(pid, reaction)
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 @app.route('/GramChat/posts/all', methods = ['GET'])
 def getAllPostsWebsite():
@@ -72,11 +69,9 @@ def getAllPostsWebsite():
 def getPostsByUser(uid):
     return PostHandler().getPostsByUser(uid)
 
-
 @app.route('/GramChat/posts/chat/<int:cid>')
 def getPostsByChatId(cid):
     return PostHandler().getPostsByChatId(cid)
-
 
 @app.route('/GramChat/posts/chat/<int:cid>/user/<int:uid>')
 def getPostsByChatIdAndUser(cid, uid):
@@ -129,21 +124,17 @@ def getUserById(pid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
 @app.route('/GramChat/users/info/<int:uid>', methods=['GET'])
 def getInfoById(uid):
     return UserHandler().getInfoById(uid)
-
 
 @app.route('/GramChat/users/info/<string:username>', methods=['GET'])
 def getInfoByUsername(username):
     return UserHandler().getInfoByUsername(username)
 
-
 @app.route('/GramChat/users/delete/<int:uid>', methods=['GET', 'POST'])
 def deleteUser(uid):
     return UserHandler().deleteUser(uid)
-
 
 @app.route('/GramChat/users/chats/<int:uid>', methods=['GET', 'POST'])
 def userChats(uid):
@@ -161,11 +152,9 @@ def addContact(owner):
 def addContactbyPhone(owner):
     return ContactHandler().addContactByPhone(request.form, owner)
 
-
 @app.route('/GramChat/contacts/addContact/byEmail/<int:owner>', methods=['PUT', 'POST'])
 def addContactbyEmail(owner):
     return ContactHandler().addContactByEmail(request.form, owner)
-
 
 @app.route('/GramChat/contacts/removeContact/<int:owner>/<int:contact>', methods=['DELETE'])
 def removeUserFromContactList(owner, contact):
@@ -193,7 +182,6 @@ def getAllChats():
         else:
             return ChatHandler().searchChats(request.args)
             
-
 @app.route('/GramChat/chat/createchat/', methods=['POST'])
 def createNewChat():
     return ChatHandler().insertChatJson(request.json)
@@ -206,25 +194,22 @@ def postsByHashtag(cid, hashtag):
 def removeUserFromChat(cid, uid):
     return ChatHandler().removeMember(cid, uid)
 
-
 @app.route('/GramChat/chat/adduser/<int:cid>/<int:uid>', methods=['POST'])
 def addUsertochat(cid, uid):
     return ChatHandler().insertMember( cid, uid)
-
 
 @app.route('/GramChat/chat/delete/<int:cid>/<int:uid>', methods=['DELETE'])
 def deleteChat(cid, uid):
     return ChatHandler().removeChat(cid, uid)
 
-
 @app.route('/GramChat/chat/<int:cid>/postmsg', methods=['POST'])
 def postPost():
     return PostHandler().insertPost(request.json)
 
-
 # @app.route('/GramChat/chat/reply/<int:pid>', methods=['POST'])
 # def replyPost(pid):
 #     return MessageHandler().insertMessageJson(request.json, pid)
+
 @app.route('/GramChat/chat/reply/<int:pid>', methods=['POST'])
 def replyPost(pid):
     return PostHandler().insertPostReplyJson(request.json, pid)
@@ -254,29 +239,27 @@ def getAllReactions():
         else:
             return ReactionHandler().searchReactions(request.args)
 
-
 @app.route('/GramChat/reactions/likes')
 def getAllLikes():
     return ReactionHandler().getAllLikes()
-
 
 @app.route('/GramChat/reactions/dislikes')
 def getAllDislikes():
     return ReactionHandler().getAllDislikes()
 
-
 @app.route('/GramChat/reactions/getLikes/<int:PID>', methods=['GET'])
 def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
-
 
 @app.route('/GramChat/reactions/getDislikes/<int:PID>', methods=['GET'])
 def getDislikesbyPostID(PID):
     return ReactionHandler().getDislikesByPostId(PID)
 
-
 # -------------- ETC -----------------------------
 
+@app.route('/GramChat/dashboard')
+def dashboard():
+    return DashboardHandler().dashboard()
 
 @app.route('/GramChat/trends', methods=['GET'])
 def getTrends():
@@ -285,7 +268,6 @@ def getTrends():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
 @app.route('/GramChat/hashtags', methods=['GET', 'POST'])
 def getHashtags():
     if request.method == 'POST':
@@ -293,16 +275,13 @@ def getHashtags():
     else:
         return HashtagHandler().getAllHashtags()
 
-
 @app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
 def getPostsPerDayByUser(uid, date):
     return PostHandler().getPostsPerDayByUser(uid, date)
 
-
 @app.route('/GramChat/users/active')
 def getActiveUsers():
     return PostHandler().getActiveUsers()
-
 
 # @app.route('/GramChat/posts/<string:date>')
 # # def getNumberOfPostsPerDay(date):
@@ -312,31 +291,25 @@ def getActiveUsers():
 def getNumberOfPostsPerDay():
     return PostHandler().getNumberOfPostsPerDay()
 
-
 @app.route('/GramChat/posts/reply/<int:post>', methods=['GET'])
 def reply(post):
     return PostHandler().getAllReplies(post)
-
 
 @app.route('/GramChat/posts/insert', methods =['POST'])
 def insert():
     return PostHandler().insertPostJson(request.json)
 
-
 @app.route('/GramChat/users/reaction/like/<int:pid>', methods=['GET'])
 def getUsersLike(pid):
     return UserHandler().getUserLikeMessage(pid)
-
 
 @app.route('/GramChat/users/reaction/dislike/<int:pid>', methods=['GET'])
 def getUsersDislike(pid):
     return UserHandler().getUserDislikeMessage(pid)
 
-
 @app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
 def chatOwner(cid):
     return UserHandler().chatOwner(cid)
-
 
 if __name__ == '__main__':
     app.run()
