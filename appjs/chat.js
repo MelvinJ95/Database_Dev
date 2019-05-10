@@ -1,8 +1,8 @@
 angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$location','$routeParams',
     function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
-        var hasliked = false; 
-        var hasDisliked = false;  
+        this.hasliked = false; 
+        this.hasDisliked = false;  
         var user = 0;
 
         this.messageList = [];
@@ -203,15 +203,18 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
         this.update_like = function(index,pid, user){
         
-            if($routeParams.uid == user && hasliked){ //user already hit like 
+            if($routeParams.uid == user && thisCtrl.hasliked){ //user already hit like 
+                console.log(user);
                 thisCtrl.messageList[index].like -= 1;
                 this.deleteLike_Dislike($routeParams.uid, pid); 
-                hasliked = false; 
+                thisCtrl.hasliked = false; 
+             
              }
              else{
+                
                 thisCtrl.messageList[index].like += 1;
                 this.insertLike_Dislike("like",pid);
-                hasliked = true; 
+                thisCtrl.hasliked = false; 
              }
     
     
@@ -220,15 +223,15 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
     
         this.update_dislike = function(index,pid, user){
         
-            if($routeParams.uid == user && hasDisliked){ //user already hit like 
+            if($routeParams.uid == user && thisCtrl.hasDisliked){ //user already hit like 
                 thisCtrl.messageList[index].dislike -= 1;
                 this.deleteLike_Dislike($routeParams.uid, pid); 
-                hasDisliked = false; 
+                thisCtrl.hasDisliked = false; 
              }
              else{
                 thisCtrl.messageList[index].dislike += 1;
                 this.insertLike_Dislike("dislike",pid);
-                hasDisliked = true; 
+                thisCtrl.hasDisliked = false; 
              }
     
     
@@ -236,7 +239,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
         this.like= function(index,pid){ //DOesn't work when clicking like consecutively on different posts each time 
         console.log("ENTERED LIKE FUNCTION");
-        console.log(hasliked);
+        console.log(thisCtrl.hasliked);
        var url = "http://127.0.0.1:5000/GramChat/users/reaction/like/"+pid;
        $http.get(url).then(
          function(response){
@@ -244,7 +247,9 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
              thisCtrl.userList = response.data.Users;
              for(var i=0;i<thisCtrl.userList.length;i++){
                  if($routeParams.uid == thisCtrl.userList[i].uid){
-                    user = thisCtrl.userList[i].uid; 
+                    user = thisCtrl.userList[i].uid;
+                    console.log(user); 
+                    thisCtrl.hasliked = true; 
                     thisCtrl.update_like(index,pid,user);
                  }
              }
@@ -288,6 +293,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
              for(var i=0;i<thisCtrl.userList.length;i++){
                  if($routeParams.uid == thisCtrl.userList[i].uid){
                      user = thisCtrl.userList[i].uid; 
+                     thisCtrl.hasDisliked = true;
                      thisCtrl.update_dislike(index,pid,user);
                  }
              }
