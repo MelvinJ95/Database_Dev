@@ -56,6 +56,9 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
     this.removeChat = function(){
         $location.path('/removeChat/'+thisCtrl.uid);
     };
+    this.goToDashboard = function () {
+        $location.path('/dashboard')
+    };
 
 	this.loadMainPage();
 }]);
