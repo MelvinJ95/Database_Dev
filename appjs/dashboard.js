@@ -1,15 +1,31 @@
 angular.module('AppChat').controller('DashboardController', ['$http', '$log', '$scope', '$location', '$routeParams',
     function($http, $log, $scope, $location, $routeParams) {
-    var thisCtrl = this;
+        var thisCtrl = this;
         var hasliked = false;
         var hasDisliked = false;
         var user = 0;
 
         this.pList = [];
         this.userList = [];
-        this.counter  = 2;
+        this.counter = 2;
         this.newText = "";
         this.hashTag = "";
+
+        var url = "http://127.0.0.1:5000/GramChat/postsperday";
+        var likesList = {};
+        $http.get(url).then(
+            function (response) {
+                console.log("Response: " + JSON.stringify(response));
+                this.likesList = response.data.Likes
+                var chart = c3.generate({
+                    data: {
+                        url: '/static/file.csv',
+                        type: 'line'
+                    }
+                })
+            }
+        );
+
 
     this.loadP = function(){
 

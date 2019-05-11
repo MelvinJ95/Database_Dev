@@ -10,7 +10,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
         this.counter  = 2;
         this.newText = ""; 
         this.hashTag = "";
-        
+        this.im = "";
 
         $scope.count_like = 0; 
         this.loadMessages = function(){
@@ -53,14 +53,15 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
             var author = "";
             var user;
-            var name=""; 
+            var name="";
+            var im = "";
             var url = "http://127.0.0.1:5000/GramChat/users/"+$routeParams.uid;
             $http.get(url).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
                     user = response.data.User;
                     name = user.first_name;
-                    author = name; 
+                    author = name;
                     var nextId = thisCtrl.counter++;    
                     thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
                     thisCtrl.newText = "";
@@ -93,8 +94,8 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             today = dd + '-' + mm + '-' + yyyy;
 
             var url_post = "http://127.0.0.1:5000/GramChat/posts";
-            
-            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:null, uid: $routeParams.uid, cid: $routeParams.cid }).then(
+
+            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:im, uid: $routeParams.uid, cid: $routeParams.cid }).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
                     pid = response.data.Post.pid;
