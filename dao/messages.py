@@ -8,7 +8,6 @@ class MessagesDAO:
                                                             pg_config['passwd'])
         self.conn = psycopg2._connect(connection_url)
 
-
     def getAllMessages(self):
         cursor = self.conn.cursor()
         query = "select * from messages;"
@@ -33,8 +32,7 @@ class MessagesDAO:
         for row in cursor:
             result.append(row)
         return result
-  
-        
+
     def getMessageByDate(self, date):
         cursor = self.conn.cursor()
         query = "select * from messages where date = %s;"
@@ -49,7 +47,6 @@ class MessagesDAO:
         mid = cursor.fetchone()[0]
         self.conn.commit()
         return mid  
-        
 
     def delete(self, mid):
         cursor = self.conn.cursor()
@@ -57,7 +54,6 @@ class MessagesDAO:
         cursor.execute(query, (mid,))
         self.conn.commit()
         return mid
-         
     
     def getReactionsByMessage(self, pid, reaction):
         cursor = self.conn.cursor()

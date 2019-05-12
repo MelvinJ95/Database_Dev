@@ -1,0 +1,13 @@
+#Databse configuration information
+
+pg_config = {
+<<<<<<< HEAD
+    'user' : 'appusr',
+    'passwd' : 'Number78',
+    'dbname' : 'appdb'
+=======
+    'user' : 'carlos',
+    'passwd' : 'db_app',
+    'dbname' : 'db_app'
+>>>>>>> 2cf09b141d95f211476e7f14708cf87836686372
+}

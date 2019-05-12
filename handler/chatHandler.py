@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.chat import ChatDAO
+from dao.chat import UsersDAO
 
 class ChatHandler:
     
@@ -14,6 +15,11 @@ class ChatHandler:
         chats = {}
         chats['chatName'] = row[0]
         return chats
+
+    def build_owner_dict(self, row):
+        user = {}
+        user['Chat id'] = row[0]
+        return user
 
     def buildChatAdmin(self, row):
         chats = {}
@@ -76,7 +82,7 @@ class ChatHandler:
             return jsonify(Error = "Chat Not Found"), 404
        else:
             chat = self.build_chat_attributes(chat_list)
-            return jsonify(User = user)
+            return jsonify(Chat = chat)
 #     
 #     def getChatsByUsername(self,name):
 #         return 
@@ -139,14 +145,15 @@ class ChatHandler:
     
     def removeChat(self, cID, ownerID):
         result = ChatDAO()
+        user = UsersDAO()
         if not result.getChatByID(cID):
-            return jsonify(Error = "Chat not found."), 404
+            return jsonify(Error="Chat not found."), 404
         else:
-            if ownerID == result.getChatAdmin(cID):
+            if ownerID == user.chatOwnerID(cID):
                 result.delete(cID)
-                return jsonify(DeleteStatus = "OK"), 200
+                return jsonify(DeleteStatus="OK"), 200
             else: 
-                return jsonify(Error = "Not chat admin")
+                return jsonify(Error="Not chat admin")
     
     def chatOwner(self, cid):
         dao = UsersDAO()
@@ -156,6 +163,15 @@ class ChatHandler:
             result = self.build_user_dict(row)
             result_list.append(result)
         return jsonify(Users=result_list)
+
+    def chatOwnerId(self, cid):
+        dao = ChatDAO()
+        row = dao.getChatByID(cid)
+        if not row:
+            return jsonify(Error="Chat Not Found"), 404
+        else:
+            user = self.build_owner_dict(row)
+            return jsonify(User=user)
 
     def getChatByUserIDandChatID(self,cid,uid):
        dao = ChatDAO()

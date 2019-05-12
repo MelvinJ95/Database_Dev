@@ -27,8 +27,6 @@ class PostsDAO:
             result.append(row)
         return result
 
-    
-
     def getPostById(self, pid):
         cursor = self.conn.cursor()
         query = "select * from posts where pid = %s;"
@@ -88,10 +86,10 @@ class PostsDAO:
         result = "Active users shown here."
         return result
 
-    def getNumberOfPostsPerDay(self, date):
+    def getNumberOfPostsPerDay(self):
         cursor = self.conn.cursor()
-        query = "select pdate, count(*) from posts where pdate = %s group by pdate;" #TO BE TESTED 
-        cursor.execute(query, (date,))
+        query = "select pdate, count(*) from posts group by pdate;" #TO BE TESTED
+        cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
@@ -106,7 +104,6 @@ class PostsDAO:
         for row in cursor:
             result.append(row)
         return result
-
 
     def insert(self, pcaption, pdate, pmedia, uid, cid):
         cursor = self.conn.cursor()
@@ -134,13 +131,26 @@ class PostsDAO:
 
     def getAllReplies(self, pid):
         cursor = self.conn.cursor()
-        query = "select * from posts natural inner join reply where pid = rid and post_id = %s;"
-        cursor.execute(query, (pid,))   
+        # query = "select * from posts natural inner join reply natural inner join users where pid = rid and post_id = %s;"
+        query = "select p.pid, first_name, pmedia, pcaption, sum(case when reaction ='like' then 1 else 0 end) as like, " \
+                "sum(case when reaction='dislike' then 1 else 0 end) as dislike from posts as p, reactions as r, users " \
+                "as u, reply as rp where p.pid = r.pid and u.uid = p.uid and p.pid = rp.rid and rp.post_id = %s group by first_name, pcaption, pmedia,p.pid, p.cid;"
+        cursor.execute(query, (pid,))
         result =[]
         for row in cursor:
             result.append(row)
         print(result)
         return result
+
+    # def getAllReplies(self, pid):
+    #     cursor = self.conn.cursor()
+    #     query = "select * from posts natural inner join reply where pid = rid and post_id = %s;"
+    #     cursor.execute(query, (pid,))
+    #     result =[]
+    #     for row in cursor:
+    #         result.append(row)
+    #     print(result)
+    #     return result
         
     def getPostsByHashtag(self,cid,hashtag):
         hashtag = '#'+hashtag
@@ -152,4 +162,11 @@ class PostsDAO:
         result = []
         for row in cursor:
             result.append(row)
-        return result 
+        return result
+
+    def reply(self, pid, rid):
+        cursor = self.conn.cursor()
+        query = "insert into reply(post_id, rid) values (%s, %s) returning reply.rid;"
+        cursor.execute(query, (pid, rid))
+        self.conn.commit()
+        return rid

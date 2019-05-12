@@ -1,5 +1,5 @@
-angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$location','$routeParams',
-    function($http, $log, $scope, $location, $routeParams) {
+angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope', '$location','$routeParams', '$timeout',
+    function($http, $log, $scope, $location, $routeParams, $timeout) {
         var thisCtrl = this;
         this.hasliked = false; 
         this.hasDisliked = false;  
@@ -10,7 +10,8 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
         this.counter  = 2;
         this.newText = ""; 
         this.hashTag = "";
-        
+        this.im = "";
+        this.filename = "";
 
         $scope.count_like = 0; 
         this.loadMessages = function(){
@@ -50,19 +51,20 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 
         this.postMsg = function(){
             var msg = thisCtrl.newText;
-
             var author = "";
             var user;
-            var name=""; 
+            var name="";
+            var im = "";
             var url = "http://127.0.0.1:5000/GramChat/users/"+$routeParams.uid;
+            
             $http.get(url).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
                     user = response.data.User;
                     name = user.first_name;
-                    author = name; 
+                    author = name;
                     var nextId = thisCtrl.counter++;    
-                    thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
+                    thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "pmedia": $scope.pmedia,"user" : author, "like" : 0, "dislike" : 0});
                     thisCtrl.newText = "";
                 },
                 function (response){
@@ -91,10 +93,41 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             var mm = today.getMonth()+1; //January is 0!
             var yyyy = today.getFullYear();
             today = dd + '-' + mm + '-' + yyyy;
-
+            media = '';
             var url_post = "http://127.0.0.1:5000/GramChat/posts";
-            
-            $http.post(url_post,{pcaption: msg, pdate: today, pmedia:null, uid: $routeParams.uid, cid: $routeParams.cid }).then(
+            if(thisCtrl.filename != null && thisCtrl.filename != '' && thisCtrl.filename != ' '){
+                
+                media = "http://localhost:5000/static/"+thisCtrl.filename;
+                $http.post(url_post,{pcaption: msg, pdate: today, uid: $routeParams.uid, cid: $routeParams.cid, pmedia: media }).then(
+                    function(response){
+                        console.log("data: " + JSON.stringify(response.data));
+                        pid = response.data.Post.pid;
+                        thisCtrl.checkForHashtag(msg,pid); 
+                    },
+                    function(response){
+                        var status = response.status;
+    
+                        if (status == 0){
+                            alert("No internet connection");
+                        }
+                        else if (status == 401){
+                            alert("Session has expired");
+                        }
+                        else if (status == 403){
+                            alert("Authorization required");
+                        }
+                        else if (status == 404){
+                            alert("Page not found");
+                        }
+                        else {
+                            alert("Internal system error has occurred");
+                        }
+                    }
+                );
+            }
+
+           else{
+            $http.post(url_post,{pcaption: msg, pdate: today, uid: $routeParams.uid, cid: $routeParams.cid, pmedia:null }).then(
                 function(response){
                     console.log("data: " + JSON.stringify(response.data));
                     pid = response.data.Post.pid;
@@ -120,6 +153,8 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
                     }
                 }
             );
+
+           }
     
             
         };
@@ -415,6 +450,29 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
     this.goHome = function(){
         
 	    $location.path('/main/'+$routeParams.uid);
-	};
-        this.loadMessages();
+    };
+    
+    $scope.thumbnail = [];
+    // Read the image using the filereader 
+    $scope.fileReaderSupported = window.FileReader != null;
+    $scope.photoChanged = function(files) {
+      if (files != null) {
+        var file = files[0];
+        if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
+          $timeout(function() {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(file); // convert the image to data url. 
+            fileReader.onload = function(e) {
+              $timeout(function() {
+               console.log(file.name); // Retrieve the image. 
+               thisCtrl.filename = file.name;
+               $scope.pmedia = e.target.result; 
+              });
+            }
+          });
+        }
+      }
+    };
+      
+    this.loadMessages();
 }]);

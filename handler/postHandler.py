@@ -218,6 +218,22 @@ class PostHandler:
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
+    def insertPostReplyJson(self, json, post_id):
+        pcaption = json['pcaption']
+        pdate = json['pdate']
+        pmedia = json['pmedia']
+        uid = json['uid']
+        cid = json['cid']
+        if pcaption and pdate or pmedia and uid and cid:
+            dao = PostsDAO()
+            pid = dao.insert(pcaption, pdate, pmedia, uid, cid)
+            dao.reply(post_id, pid)
+            result = self.build_post_attributes(pid, pcaption, pdate, pmedia, uid, cid)
+
+            return jsonify(Post=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
     def deletePost(self, pid):
         dao = PostsDAO()
         if not dao.getPostById(pid):
@@ -281,22 +297,21 @@ class PostHandler:
         temp = self.build_post_Alpha(result,reaction)
         return jsonify(Posts=temp)
 
-    def getNumberOfPostsPerDay(self, pdate):
+    def getNumberOfPostsPerDay(self):
         dao = PostsDAO()
-        post = dao.getNumberOfPostsPerDay(pdate)
+        post = dao.getNumberOfPostsPerDay()
         result_list = []
         for row in post:
             result = self.build_post_perday(row)
             result_list.append(result)
         return jsonify(Posts=result_list)
 
-
     def getAllReplies(self, pid):
         dao = PostsDAO()
         result = dao.getAllReplies(pid)
         replies = []
         for r in result:
-            replies.append(self.build_post_dict(r))
+            replies.append(self.build_post_query(r))
         return jsonify(Replies=replies)
 
     def getAllPostWebsite(self):

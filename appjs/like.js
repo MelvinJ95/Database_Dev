@@ -38,10 +38,9 @@ angular.module('AppChat').controller('LikesController', ['$http', '$log', '$scop
              $log.error("Posts Loaded: ", JSON.stringify(thisCtrl.reactList));
         };
 
-        this.goHome = function(){
-
-	    $location.path('/main/'+$routeParams.uid);
-	    };
+    this.goHome = function(){
+    $location.path('/main/'+$routeParams.uid);
+	};
 
         this.loadVar = function(){
 		    thisCtrl.pid = $routeParams.pid;

@@ -79,13 +79,13 @@ class MessageHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
-    def insertmessageJson(self, json):
+    def insertMessageJson(self, json, pid):
         mtext = json['mtext']
         mdate = json['mdate']
-       
         if mtext and mdate:
             dao = MessagesDAO()
             mid = dao.insert(mtext, mdate)
+            dao.reply(pid, mid)
             result = self.build_message_attributes(mid, mtext, mdate)
             return jsonify(Message=result), 201
         else:
