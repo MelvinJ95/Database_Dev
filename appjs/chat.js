@@ -466,6 +466,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
               $timeout(function() {
                console.log(file.name); // Retrieve the image. 
                thisCtrl.filename = file.name;
+               $scope.filename = file.name; 
                $scope.pmedia = e.target.result; 
               });
             }

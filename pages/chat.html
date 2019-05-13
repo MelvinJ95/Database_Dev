@@ -41,7 +41,7 @@
                         <form action=" http://localhost:5000/GramChat/upload" method="POST" target="hiddenFrame" enctype="multipart/form-data">
                         <label class="btn btn-default btn-file">
                             Browse <input type="file" name="file" id = "file" onchange="angular.element(this).scope().photoChanged(this.files)" style="display: none;">
-                        </label>
+                        </label>{{filename}}
                     <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Send
                     <i class="material-icons right">send</i>
                     </button>
