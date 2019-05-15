@@ -1,134 +1,476 @@
+/**
+ * Created by manuel on 5/8/18.
+ */
+
 angular.module('AppChat').controller('DashboardController', ['$http', '$log', '$scope', '$location', '$routeParams',
     function($http, $log, $scope, $location, $routeParams) {
         var thisCtrl = this;
-        var hasliked = false;
-        var hasDisliked = false;
-        var user = 0;
 
-        this.pList = [];
-        this.userList = [];
-        this.counter = 2;
-        this.newText = "";
-        this.hashTag = "";
+// Load the Visualization API and the piechart package.
+google.charts.load('current', {'packages': ['corechart', 'bar', 'table', 'linechart']});
 
-        var url = "http://127.0.0.1:5000/GramChat/postsperday";
-        var likesList = {};
-        $http.get(url).then(
-            function (response) {
-                console.log("Response: " + JSON.stringify(response));
-                this.likesList = response.data.Likes
-                var chart = c3.generate({
-                    data: {
-                        url: '/static/file.csv',
-                        type: 'line'
-                    }
-                })
-            }
-        );
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawHashtagsChart);
+google.charts.setOnLoadCallback(drawPostChart);
+google.charts.setOnLoadCallback(drawRepliesChart);
+google.charts.setOnLoadCallback(drawLikesChart);
+google.charts.setOnLoadCallback(drawDislikesChart);
+// // google.charts.setOnLoadCallback(drawRepliesPerPostChart);
+// google.charts.setOnLoadCallback(drawLikesPerPostChart);
+// google.charts.setOnLoadCallback(drawDislikesPerPostChart);
+// google.charts.setOnLoadCallback(drawTopThreeActiveUsersChart);
 
+// Hashtags
+function reformatHashtagsData(jsonData){
+    var temp = jsonData.Trends; //Aqui va Dashboard?
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
 
-    this.loadP = function(){
+    var result = [];
+    var i;
 
-              thisCtrl.cid = $routeParams.cid;
-              thisCtrl.uid = $routeParams.uid;
-              var url = "http://127.0.0.1:5000/GramChat/postsperday";
-              $http.get(url).then(
-                function(response){
-                    console.log("Response: "+JSON.stringify(response));
-                    thisCtrl.pList = response.data.Posts
-
-                },
-                function (response){
-                    console.log("Error response: "+JSON.stringify(response));
-                    var status = response.status;
-
-                    if (status == 0){
-                        alert("No internet connection");
-                    }
-                    else if (status == 401){
-                        alert("Session has expired");
-                    }
-                    else if (status == 403){
-                        alert("Authorization required");
-                    }
-                    else if (status == 404){
-                        return;
-                    }
-                    else {
-                        alert("Internal system error has occurred");
-                    }
-                });
-
-            $log.error("Message Loaded: ", JSON.stringify(thisCtrl.pList));
-        };
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["hashtag"]);
+        dataElement.push(temp[i]["position"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
 
 
+function drawHashtagsChart()
+{
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/trends",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'hashtag');
+    data.addColumn('number', 'position');
+    data.addRows(reformatHashtagsData(JSON.parse(jsonData)));
+
+    var options = {
+        title: 'Trending Hashtags',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Trending Hashtags',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Hashtag'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('trending_hashtags'));
+    chart.draw(data, options);
+}
+
+// Post
+function reformatPostData(jsonData)
+{
+    var temp = jsonData.Posts; //Aqui va Dashboard?
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+    var result = [];
+    var i;
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["day"]);
+        dataElement.push(temp[i]["posts"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+function drawPostChart() {
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/postsperday",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Days');
+    data.addColumn('number', 'Number of Post');
+    data.addRows(reformatPostData(JSON.parse(jsonData)));
+    var options = {
+        title: 'Posts per day',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Total Posts',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Day'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('postPerDay'));
+    chart.draw(data, options);
+}
+
+//Replies
+function reformatRepliesData(jsonData){
+    var temp = jsonData.Posts; //Aqui va Dashboard?
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+    var result = [];
+    var i;
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["date"]);
+        dataElement.push(temp[i]["replies"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+function drawRepliesChart() {
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/replies/date",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Days');
+    data.addColumn('number', 'Number of Replies');
+    data.addRows(reformatRepliesData(JSON.parse(jsonData)));
+    var options = {
+        title: 'Replies per day',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Total Replies',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Day'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('repliesPerDay'));
+    chart.draw(data, options);
+}
+
+//Likes
+function reformatLikesData(jsonData){
+    var temp = jsonData.Reactions;
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+
+    var result = [];
+    var i;
+
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["date"]);
+        dataElement.push(temp[i]["likes"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+function drawLikesChart() {
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/likes/date",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Days');
+    data.addColumn('number', 'Number of Likes');     //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+    data.addRows(reformatLikesData(JSON.parse(jsonData)));
+
+    var options = {
+        title: 'Likes per day',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Total Likes',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Day'
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('likesPerDay'));
+
+    chart.draw(data, options);
+
+}
 
 
+//Dislikes
+function reformatDislikesData(jsonData){
+    var temp = jsonData.Reactions;
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+
+    var result = [];
+    var i;
+
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["date"]);
+        dataElement.push(temp[i]["dislikes"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
 
 
+function drawDislikesChart() {
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/dislikes/date",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
 
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Days');
+    data.addColumn('number', 'Number of Dislikes');
+    data.addRows(reformatDislikesData(JSON.parse(jsonData)));
 
+    var options = {
+        title: 'Dislikes per day',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Total Dislikes',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Day'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('dislikesPerDay'));
+    chart.draw(data, options);
+}
 
-
-
-//     var url = "http://127.0.0.1:5000/GramChat/postsperday";
-//     var list = [];
-//     $http.get(url).then(
-//                 function(response) {
-//                    console.log(JSON.stringify(response));
-//                    var list2 = JSON.stringify(response);
-//                     list = response.data.Replies;
-//                     var chart = c3.generate({
-//                      data: {
-//                          columns: list2.search('total'),
-//                          rows: list2.search('date')
-//                      }
-//     } );
-//
-//                     return list2;
-//                 });
-//
-//     console.log();
-//         console.log(d3.json(url));
-// //      var chart = c3.generate({
-// //     data: {
-// //         // columns: [
-// //         //     ['data1', 30, 200, 100, 400, 150, 250],
-// //         //     ['data2', 50, 20, 10, 40, 15, 25]
-// //         // ]
-// //         json: 'http://127.0.0.1:5000/GramChat/postsperday'
-// //         // type: 'json'
-// //         //json: JSON.parse('http://127.0.0.1:5000/GramChat/posts')
-// //         // type: 'line'
+// //Todavia no hemos hecho esto
+// //RepliesPerPost
+// // function reformatRepliesPerPostData(jsonData){
+// //     var temp = jsonData.RepliesPerPost;
+// //     console.log(temp)
+// //     console.log("temp: " + JSON.stringify(temp));
 // //
+// //     var result = [];
+// //     var i;
+// //
+// //     for(i=0; i < temp.length && i < 10; i++) {
+// //         dataElement = [];
+// //         dataElement.push(temp[i]["post"]);
+// //         dataElement.push(temp[i]["replies"]);
+// //         result.push(dataElement);
 // //     }
+// //     console.log(result);
+// //     return result;
 // // }
-// // );
+// //
+// //
+// // function drawRepliesPerPostChart() {
+// //     var jsonData = $.ajax({
+// //         url: "http://127.0.0.1:5000/Pictochat/dashboard/post/replies",
+// //         dataType: "json",
+// //         async: false
+// //     }).responseText;
+// //     console.log(jsonData);
+// //     console.log("jsonData: " + JSON.parse(jsonData));
+// //
+// //     // Create our data table out of JSON data loaded from server.
+// //     var data = new google.visualization.DataTable();
+// //     data.addColumn('string', 'post_name');
+// //     data.addColumn('number', 'total_replies');
+// //     data.addRows(reformatRepliesPerPostData(JSON.parse(jsonData)));
+// //
+// //     var options = {
+// //         title: 'Replies Per Post',
+// //         chartArea: {width: '800px'},
+// //         hAxis: {
+// //             title: 'Replies Per Post',
+// //             minValue: 0
+// //         },
+// //         vAxis: {
+// //             title: 'RepliesPerPost'
+// //         }
+// //     };
+// //
+// //     var chart = new google.charts.Bar(document.getElementById('repliesPerPost'));
+// //
+// //     chart.draw(data, options);
+// //
+// // }
 //
-// // setTimeout(function () {
-// //     chart.load({
-// //         columns: [
-// //             ['data1', 230, 190, 300, 500, 300, 400]
-// //         ]
-// //     });
-// // }, 1000);
-// //
-// // setTimeout(function () {
-// //     chart.load({
-// //         columns: [
-// //             ['data3', 130, 150, 200, 300, 200, 100]
-// //         ]
-// //     });
-// // }, 1500);
-// //
-// // setTimeout(function () {
-// //     chart.unload({
-// //         ids: 'data1'
-// //     });
-// // }, 2000);
-
-        this.loadP();
+// //Likes Per Post
+// function reformatLikesPerPostData(jsonData){
+//     var temp = jsonData.Reaction;
+//     console.log(temp)
+//     console.log("temp: " + JSON.stringify(temp));
+//
+//     var result = [];
+//     var i;
+//
+//     for(i=0; i < temp.length && i < 10; i++) {
+//         dataElement = [];
+//         dataElement.push(temp[i]["pid"]);
+//         dataElement.push(temp[i]["likes"]);
+//         result.push(dataElement);
+//     }
+//     console.log(result);
+//     return result;
+// }
+//
+//
+// function drawLikesPerPostChart() {
+//     var jsonData = $.ajax({
+//         url: "http://localhost:5000/chatGroup/Likes/Post",
+//         dataType: "json",
+//         async: false
+//     }).responseText;
+//     console.log(jsonData);
+//     console.log("jsonData: " + JSON.parse(jsonData));
+//     // Create our data table out of JSON data loaded from server.
+//     var data = new google.visualization.DataTable();
+//     data.addColumn('string', 'post_name');
+//     data.addColumn('number', 'total_likes');
+//     data.addRows(reformatLikesPerPostData(JSON.parse(jsonData)));
+//
+//     var options = {
+//         title: 'Likes Per Post',
+//         chartArea: {width: '800px'},
+//         hAxis: {
+//             title: 'Likes Per Post',
+//             minValue: 0
+//         },
+//         vAxis: {
+//             title: 'LikesPerPost'
+//         }
+//     };
+//     var chart = new google.charts.Bar(document.getElementById('likesPerPost'));
+//     chart.draw(data, options);
+// }
+//
+//
+// //Dislikes Per Post
+// function reformatDislikesPerPostData(jsonData){
+//     var temp = jsonData.Dashboard; //aqui va dashboard?
+//     console.log(temp)
+//     console.log("temp: " + JSON.stringify(temp));
+//
+//     var result = [];
+//     var i;
+//
+//     for(i=0; i < temp.length && i < 10; i++) {
+//         dataElement = [];
+//         dataElement.push(temp[i]["post"]);
+//         dataElement.push(temp[i]["dislikes"]);
+//         result.push(dataElement);
+//     }
+//     console.log(result);
+//     return result;
+// }
+//
+//
+// function drawDislikesPerPostChart() {
+//     var jsonData = $.ajax({
+//         url: "http://localhost:5000/chatGroup/Dislikes/Post",
+//         dataType: "json",
+//         async: false
+//     }).responseText;
+//     console.log(jsonData);
+//     console.log("jsonData: " + JSON.parse(jsonData));
+//
+//     // Create our data table out of JSON data loaded from server.
+//     var data = new google.visualization.DataTable();
+//     data.addColumn('string', 'post_name');
+//     data.addColumn('number', 'total_dislikes');
+//     data.addRows(reformatDislikesPerPostData(JSON.parse(jsonData)));
+//
+//     var options = {
+//         title: 'Dislikes Per Post',
+//         chartArea: {width: '800px'},
+//         hAxis: {
+//             title: 'Dislikes Per Post',
+//             minValue: 0
+//         },
+//         vAxis: {
+//             title: 'DislikesPerPost'
+//         }
+//     };
+//     var chart = new google.charts.Bar(document.getElementById('dislikesPerPost'));
+//     chart.draw(data, options);
+// }
+//
+// //TopThreeActiveUsers
+// function reformatTopThreeActiveUsersData(jsonData){
+//     var temp = jsonData.Dashboard;
+//     console.log(temp)
+//     console.log("temp: " + JSON.stringify(temp));
+//
+//     var result = [];
+//     var i;
+//
+//     for(i=0; i < temp.length && i < 10; i++) {
+//         dataElement = [];
+//         dataElement.push(temp[i]["username"]);
+//         dataElement.push(temp[i]["total_posts"]);
+//         result.push(dataElement);
+//     }
+//     console.log(result);
+//     return result;
+// }
+//
+//
+// function drawTopThreeActiveUsersChart() {
+//     var jsonData = $.ajax({
+//         url: "http://localhost:5000/chatGroup/Post/Active/User",
+//         dataType: "json",
+//         async: false
+//     }).responseText;
+//     console.log(jsonData);
+//     console.log("jsonData: " + JSON.parse(jsonData));
+//
+//     // Create our data table out of JSON data loaded from server.
+//     var data = new google.visualization.DataTable();
+//     data.addColumn('string', 'username');
+//     data.addColumn('number', 'activity');
+//     data.addRows(reformatTopThreeActiveUsersData(JSON.parse(jsonData)));
+//
+//     var options = {
+//         title: 'TopThreeActiveUsers',
+//         chartArea: {width: '800px'},
+//         hAxis: {
+//             title: 'TopThreeActiveUsers',
+//             minValue: 0
+//         },
+//         vAxis: {
+//             title: 'TopThreeActiveUsers'
+//         }
+//     };
+//     var chart = new google.charts.Bar(document.getElementById('topThreeActiveUsers'));
+//     chart.draw(data, options);
+// }
+        this.goHome = function(){
+            thisCtrl.uid = $routeParams.uid;
+            $location.path('/main/'+$routeParams.uid);
+    };
 }]);
-//
-// ]);

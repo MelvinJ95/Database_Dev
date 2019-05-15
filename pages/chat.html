@@ -28,14 +28,27 @@
                 <div class="card-content ">
                     <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">Message:</span>
                      <textarea style="background: white" id="textarea1" class="materialize-textarea" ng-model="vm.newText"></textarea>
-                     <i style="color: white"></i> <span text-white style="font-size:larger; color:white">Image:</span>
-                     <form><input type="text" ><br></form>
+                   
+                   <!---  <i style="color: white"></i> <span text-white style="font-size:larger; color:white">Image:</span>
+                     <form><input type="text" ><br></form> --> 
                 </div>
                 <div class="card-action white">
+                        <style>
+                                .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
+                              </style>
+                              
+                              <iframe name="hiddenFrame" class="hide"></iframe>
+                        <form action=" http://localhost:5000/GramChat/upload" method="POST" target="hiddenFrame" enctype="multipart/form-data">
+                        <label class="btn btn-default btn-file">
+                            Browse <input type="file" name="file" id = "file" onchange="angular.element(this).scope().photoChanged(this.files)" style="display: none;">
+                        </label>{{filename}}
                     <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Send
                     <i class="material-icons right">send</i>
                     </button>
+                        </form>
                 </div>
+               
+           
             </div>
         </div>
 

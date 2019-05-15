@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect, url_for, render_template, flash
 from handler.postHandler import PostHandler
 from handler.userHandler import UserHandler
 from handler.chatHandler import ChatHandler
@@ -8,10 +8,17 @@ from handler.hashtagHandler import HashtagHandler
 from handler.reactionHandler import ReactionHandler
 from handler.dashboardHandler import DashboardHandler
 from flask_cors import CORS, cross_origin
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 CORS(app)
 
+
+UPLOAD_FOLDER = os.path.basename('static')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 @app.route('/')
 def home():
@@ -251,7 +258,6 @@ def getAllDislikes():
 def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
 
-
 @app.route('/GramChat/reactions/delete/<int:uid>/<int:pid>', methods=['DELETE'])
 def deleteReaction(pid,uid):
     return ReactionHandler().deleteReactionByPidAndUid(pid,uid)
@@ -277,9 +283,9 @@ def getHashtags():
     else:
         return HashtagHandler().getAllHashtags()
 
-@app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
-def getPostsPerDayByUser(uid, date):
-    return PostHandler().getPostsPerDayByUser(uid, date)
+@app.route('/GramChat/posts/date/user/<int:uid>')
+def getPostsPerDayByUser(uid):
+    return PostHandler().getPostsPerDayByUser(uid)
 
 @app.route('/GramChat/users/active')
 def getActiveUsers():
@@ -313,5 +319,42 @@ def getUsersDislike(pid):
 def chatOwner(cid):
     return UserHandler().chatOwner(cid)
 
-if __name__ == '__main__':
+@app.route('/GramChat/likes/date')
+def getLikesPerDay():
+    return ReactionHandler().getLikesPerDay()
+
+@app.route('/GramChat/dislikes/date')
+def getDislikesPerDay():
+    return ReactionHandler().getDislikesPerDay()
+
+@app.route('/GramChat/replies/date')
+def getRepliesPerDay():
+    return PostHandler().getNumberOfRepliesPerDay()
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/GramChat/upload', methods=['GET','POST'])
+def upload_file():
+    print("ENTERED THINGY")
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            print('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            print('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('upload_file',filename=filename))
+    
+    return redirect(request.url)
+if __name__ == "__main__":
     app.run()

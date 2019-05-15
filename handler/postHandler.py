@@ -74,7 +74,13 @@ class PostHandler:
     def build_post_perday(self,row):
         result = {}
         result['day'] = row[0]
-        result['total'] = row[1]
+        result['posts'] = row[1]
+        return result
+
+    def build_post_repliesperday(self,row):
+        result = {}
+        result['day'] = row[0]
+        result['replies'] = row[1]
         return result
 
     def getAllPosts(self):
@@ -108,17 +114,13 @@ class PostHandler:
                 result_list.append(result)
             return jsonify(Posts=result_list)
 
-    def getPostsPerDayByUser(self, uid, pdate):
+    def getPostsPerDayByUser(self, uid):
         dao = PostsDAO()
-        row = dao.getPostsPerDayByUser(uid, pdate)
-        if not row:
-            return jsonify(Error="The User didn't Posted on this Date"), 404
-        else:
-            posts_list = dao.getPostsPerDayByUser(uid, pdate)
-            result_list = []
-            for row in posts_list:
-                temp = self.build_post_dict(row)
-                result_list.append(temp)
+        posts_list = dao.getPostsPerDayByUser(uid)
+        result_list = []
+        for row in posts_list:
+            temp = self.build_post_perday(row)
+            result_list.append(temp)
         return jsonify(Posts=result_list)
 
     def getPostsByChatId(self, cid):
@@ -303,6 +305,15 @@ class PostHandler:
         result_list = []
         for row in post:
             result = self.build_post_perday(row)
+            result_list.append(result)
+        return jsonify(Posts=result_list)
+
+    def getNumberOfRepliesPerDay(self):
+        dao = PostsDAO()
+        post = dao.getNumberOfRepliesPerDay()
+        result_list = []
+        for row in post:
+            result = self.build_post_repliesperday(row)
             result_list.append(result)
         return jsonify(Posts=result_list)
 
