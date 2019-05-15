@@ -250,12 +250,12 @@ class UserHandler:
 
     def chatOwner(self, cid):
         dao = UsersDAO()
-        user_list = dao.chatOwner(cid)
-        result_list = []
-        for row in user_list:
-            result = self.build_members(row)
-            result_list.append(result)
-        return jsonify(Users=result_list)
+        row = dao.chatOwner(cid)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            user = self.build_members(row)
+            return jsonify(User=user)
 
     def getUserChats(self,uid):
         dao = UsersDAO()

@@ -189,7 +189,7 @@ def getAllChats():
         else:
             return ChatHandler().searchChats(request.args)
 
-@app.route('/GramChat/chat/createchat/', methods=['POST'])
+@app.route('/GramChat/chat/createchat', methods=['POST'])
 def createNewChat():
     return ChatHandler().insertChatJson(request.json)
 
