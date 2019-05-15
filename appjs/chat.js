@@ -444,9 +444,6 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 	    $location.path('/reply/' + thisCtrl.uid + '/' + thisCtrl.cid + '/' + mid);
 	};
 
-    this.viewReaction = function(mid){
-         $location.path('/likes/' + mid);
-    };
     this.goHome = function(){
         
 	    $location.path('/main/'+$routeParams.uid);
