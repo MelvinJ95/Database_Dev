@@ -169,7 +169,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             if(message != null){
                 console.log(message);           
                 var url = "http://127.0.0.1:5000/GramChat/hashtags";
-                $http.post(url,{ htext:hashtag, pid:pid}).then(
+                $http.post(url,{ htext:message, pid:pid}).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
                     
