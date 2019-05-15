@@ -7,6 +7,7 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
         this.cid;
         this.uid;
         this.disp;
+        var count = 0;
 
          this.loadReplies = function(){
               //var list = [];
@@ -17,8 +18,9 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
               $http.get(url).then(
                 function(response){
                     console.log("Response: "+JSON.stringify(response));
-                    thisCtrl.list = response.data.Replies
-
+                    thisCtrl.list = response.data.Replies;
+                    thisCtrl.count = thisCtrl.list.length;
+                    count = thisCtrl.count;
                 },
                 function (response){
                     console.log("Error response: "+JSON.stringify(response));
