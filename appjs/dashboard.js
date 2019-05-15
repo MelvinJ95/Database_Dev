@@ -291,8 +291,8 @@ function reformatActiveUsersData(jsonData){
 
     for(i=0; i < temp.length && i < 10; i++) {
         dataElement = [];
-        dataElement.push(temp[i]["user"]);
-        dataElement.push(temp[i]["activity"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+        dataElement.push(temp[i]["count"]);
+        dataElement.push(temp[i]["name"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
         result.push(dataElement);
     }
     console.log(result);
@@ -339,8 +339,8 @@ function drawActiveUsersChart() {
 
     // Create our data table out of JSON data loaded from server.
     var data = new google.visualization.DataTable();
-    data.addColumn('string', 'User');
-    data.addColumn('number', 'Number of Post');
+    data.addColumn('number', 'Activities');
+    data.addColumn('string', 'Users');
     data.addRows(reformatActiveUsersData(JSON.parse(jsonData)));
     var options = {
         title: 'Top users',
