@@ -122,6 +122,7 @@ class ChatHandler:
         if cname and uid:
             dao = ChatDAO()
             cid = dao.insert(cname, uid)
+            dao.insertMember(cid, uid)
             result = self.build_chat_attributes(cid, cname, uid)
 
             return jsonify(Chat=result), 201
@@ -149,11 +150,13 @@ class ChatHandler:
         if not result.getChatByID(cID):
             return jsonify(Error="Chat not found."), 404
         else:
-            if ownerID == user.chatOwnerID(cID):
+            print(ownerID, user.chatOwner(cID)[0])
+            if ownerID == user.chatOwner(cID)[0]:
+                print(ownerID, user.chatOwner(cID))
                 result.delete(cID)
                 return jsonify(DeleteStatus="OK"), 200
             else: 
-                return jsonify(Error="Not chat admin")
+                return jsonify(Error="Not chat admin"), 404
     
     def chatOwner(self, cid):
         dao = UsersDAO()

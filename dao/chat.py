@@ -52,6 +52,7 @@ class ChatDAO:
         return result
     
     def delete(self, cid):
+        self.removeChatMembers(cid)
         cursor = self.conn.cursor()
         query = "delete from chats where cid = %s;"
         cursor.execute(query, (cid,))
@@ -64,8 +65,15 @@ class ChatDAO:
     
     def removeMember(self, cid, uid):
         cursor = self.conn.cursor()
-        query = "delete from members where cid = %s and uid = %s;"
+        query = "delete from members where cid = %s and user_id = %s;"
         cursor.execute(query, (cid, uid,))
+        self.conn.commit()
+        return cid
+
+    def removeChatMembers(self, cid):
+        cursor = self.conn.cursor()
+        query = "delete from members where cid = %s;"
+        cursor.execute(query, (cid,))
         self.conn.commit()
         return cid
 

@@ -22,7 +22,7 @@ google.charts.setOnLoadCallback(drawActiveUsersChart);
 
 // Hashtags
 function reformatHashtagsData(jsonData){
-    var temp = jsonData.Trends; //Aqui va Dashboard?
+    var temp = jsonData.Trends;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
 
@@ -74,7 +74,7 @@ function drawHashtagsChart()
 // Post
 function reformatPostData(jsonData)
 {
-    var temp = jsonData.Posts; //Aqui va Dashboard?
+    var temp = jsonData.Posts;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
     var result = [];
@@ -120,7 +120,7 @@ function drawPostChart() {
 
 //Replies
 function reformatRepliesData(jsonData){
-    var temp = jsonData.Posts; //Aqui va Dashboard?
+    var temp = jsonData.Posts;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
     var result = [];
@@ -194,7 +194,7 @@ function drawLikesChart() {
     // Create our data table out of JSON data loaded from server.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Days');
-    data.addColumn('number', 'Number of Likes');     //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+    data.addColumn('number', 'Number of Likes');
     data.addRows(reformatLikesData(JSON.parse(jsonData)));
 
     var options = {
@@ -228,7 +228,7 @@ function reformatDislikesData(jsonData){
     for(i=0; i < temp.length && i < 10; i++) {
         dataElement = [];
         dataElement.push(temp[i]["date"]);
-        dataElement.push(temp[i]["dislikes"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+        dataElement.push(temp[i]["dislikes"]);
         result.push(dataElement);
     }
     console.log(result);

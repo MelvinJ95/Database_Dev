@@ -35,10 +35,12 @@ class ContactDAO:
     def addContact(self,usrID,first_name,last_name,phone,email):
         cursor = self.conn.cursor()
         query = "select * from users where first_name = %s and last_name = %s and uphone = %s or uemail = %s;"
-        cursor.execute(query, (first_name,last_name,phone,email,)) 
+        cursor.execute(query, (first_name,last_name,phone,email,))
         cid = cursor.fetchone()[0]
-        query_T = "insert into contacts(contact,user_id) values (%s, %s) returning contact;"
-        cursor.execute(query_T, (cid,usrID,))
+        print(usrID)
+        print(cid)
+        query_T = "insert into contacts(owner, contact) values (%s, %s) returning contact;"
+        cursor.execute(query_T, (usrID,cid,))
         self.conn.commit()
         return cid
 

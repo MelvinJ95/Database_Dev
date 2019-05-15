@@ -164,7 +164,7 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
             thisCtrl.cid = $routeParams.cid;
             thisCtrl.uid = $routeParams.uid;
             
-                message = message.match(/#[a-z-_]+/ig); 
+                message = message.match(/#[a-z-_]+/ig);
                 
             if(message != null){
                 console.log(message);           
@@ -444,9 +444,6 @@ angular.module('AppChat').controller('ChatController', ['$http', '$log', '$scope
 	    $location.path('/reply/' + thisCtrl.uid + '/' + thisCtrl.cid + '/' + mid);
 	};
 
-    this.viewReaction = function(mid){
-         $location.path('/likes/' + mid);
-    };
     this.goHome = function(){
         
 	    $location.path('/main/'+$routeParams.uid);

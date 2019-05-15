@@ -6,7 +6,7 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
 	this.cname = ""
 
         this.addChatGroup = function(){
-            var reqURL = "http://localhost:5000/GramChat/chat/createchat/";
+            var reqURL = "http://localhost:5000/GramChat/chat/createchat";
             console.log("reqURL: " + reqURL);
             console.log("UID: "+thisCtrl.uid);
             $http.post(reqURL,{cname: thisCtrl.cname, uid: thisCtrl.uid}).then(
@@ -38,7 +38,7 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
 
 	this.returnToMainPage = function(){
 		$location.path('/main/'+ thisCtrl.uid);
-	}
+	};
 
 	this.loadUID = function(){
 	    var user = thisCtrl.uid;
@@ -78,12 +78,12 @@ angular.module('AppChat').controller('AddChatController', ['$http', '$log', '$sc
                     alert("Internal system error has occurred");
                 }
             });
-	}
+	};
 
 	this.loadVar = function(){
 		thisCtrl.uid = $routeParams.uid;
 		
-	}
+	};
 
         this.loadVar();
 	this.loadUID();

@@ -60,5 +60,9 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
         $location.path('/dashboard/'+thisCtrl.uid)
     };
 
+    this.goToLogin = function () {
+        $location.path('/login');
+    };
+
 	this.loadMainPage();
 }]);

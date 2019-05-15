@@ -189,7 +189,7 @@ def getAllChats():
         else:
             return ChatHandler().searchChats(request.args)
 
-@app.route('/GramChat/chat/createchat/', methods=['POST'])
+@app.route('/GramChat/chat/createchat', methods=['POST'])
 def createNewChat():
     return ChatHandler().insertChatJson(request.json)
 
@@ -330,6 +330,10 @@ def getDislikesPerDay():
 @app.route('/GramChat/replies/date')
 def getRepliesPerDay():
     return PostHandler().getNumberOfRepliesPerDay()
+
+@app.route('/GramChat/posts/replies')
+def getNumberOfPostReplies():
+    return PostHandler().getNumberOfPostReplies()
 
 
 def allowed_file(filename):

@@ -3,6 +3,7 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
         var thisCtrl = this;
         this.Message = "";
         var list = [];
+         
         this.mid;
         this.cid;
         this.uid;
@@ -60,7 +61,7 @@ angular.module('AppChat').controller('ReplyController', ['$http', '$log', '$scop
                     name = user.first_name;
                     author = name;
                     var nextId = thisCtrl.counter++;
-                    thisCtrl.messageList.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
+                    thisCtrl.list.unshift({"id": nextId, "pcaption" : msg, "user" : author, "like" : 0, "dislike" : 0});
                     thisCtrl.newText = "";
                 },
                 function (response){
