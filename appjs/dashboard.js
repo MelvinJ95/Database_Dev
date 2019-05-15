@@ -15,14 +15,15 @@ google.charts.setOnLoadCallback(drawPostChart);
 google.charts.setOnLoadCallback(drawRepliesChart);
 google.charts.setOnLoadCallback(drawLikesChart);
 google.charts.setOnLoadCallback(drawDislikesChart);
-// // google.charts.setOnLoadCallback(drawRepliesPerPostChart);
+google.charts.setOnLoadCallback(drawPostUserChart);
+google.charts.setOnLoadCallback(drawRepliesPerPostChart);
 // google.charts.setOnLoadCallback(drawLikesPerPostChart);
 // google.charts.setOnLoadCallback(drawDislikesPerPostChart);
 // google.charts.setOnLoadCallback(drawTopThreeActiveUsersChart);
 
 // Hashtags
 function reformatHashtagsData(jsonData){
-    var temp = jsonData.Trends; //Aqui va Dashboard?
+    var temp = jsonData.Trends;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
 
@@ -74,7 +75,7 @@ function drawHashtagsChart()
 // Post
 function reformatPostData(jsonData)
 {
-    var temp = jsonData.Posts; //Aqui va Dashboard?
+    var temp = jsonData.Posts;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
     var result = [];
@@ -120,7 +121,7 @@ function drawPostChart() {
 
 //Replies
 function reformatRepliesData(jsonData){
-    var temp = jsonData.Posts; //Aqui va Dashboard?
+    var temp = jsonData.Posts;
     console.log(temp);
     console.log("temp: " + JSON.stringify(temp));
     var result = [];
@@ -194,7 +195,7 @@ function drawLikesChart() {
     // Create our data table out of JSON data loaded from server.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Days');
-    data.addColumn('number', 'Number of Likes');     //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+    data.addColumn('number', 'Number of Likes');
     data.addRows(reformatLikesData(JSON.parse(jsonData)));
 
     var options = {
@@ -228,7 +229,7 @@ function reformatDislikesData(jsonData){
     for(i=0; i < temp.length && i < 10; i++) {
         dataElement = [];
         dataElement.push(temp[i]["date"]);
-        dataElement.push(temp[i]["dislikes"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+        dataElement.push(temp[i]["dislikes"]);
         result.push(dataElement);
     }
     console.log(result);
@@ -266,60 +267,107 @@ function drawDislikesChart() {
     chart.draw(data, options);
 }
 
-// //Todavia no hemos hecho esto
-// //RepliesPerPost
-// // function reformatRepliesPerPostData(jsonData){
-// //     var temp = jsonData.RepliesPerPost;
-// //     console.log(temp)
-// //     console.log("temp: " + JSON.stringify(temp));
-// //
-// //     var result = [];
-// //     var i;
-// //
-// //     for(i=0; i < temp.length && i < 10; i++) {
-// //         dataElement = [];
-// //         dataElement.push(temp[i]["post"]);
-// //         dataElement.push(temp[i]["replies"]);
-// //         result.push(dataElement);
-// //     }
-// //     console.log(result);
-// //     return result;
-// // }
-// //
-// //
-// // function drawRepliesPerPostChart() {
-// //     var jsonData = $.ajax({
-// //         url: "http://127.0.0.1:5000/Pictochat/dashboard/post/replies",
-// //         dataType: "json",
-// //         async: false
-// //     }).responseText;
-// //     console.log(jsonData);
-// //     console.log("jsonData: " + JSON.parse(jsonData));
-// //
-// //     // Create our data table out of JSON data loaded from server.
-// //     var data = new google.visualization.DataTable();
-// //     data.addColumn('string', 'post_name');
-// //     data.addColumn('number', 'total_replies');
-// //     data.addRows(reformatRepliesPerPostData(JSON.parse(jsonData)));
-// //
-// //     var options = {
-// //         title: 'Replies Per Post',
-// //         chartArea: {width: '800px'},
-// //         hAxis: {
-// //             title: 'Replies Per Post',
-// //             minValue: 0
-// //         },
-// //         vAxis: {
-// //             title: 'RepliesPerPost'
-// //         }
-// //     };
-// //
-// //     var chart = new google.charts.Bar(document.getElementById('repliesPerPost'));
-// //
-// //     chart.draw(data, options);
-// //
-// // }
-//
+// Post per day by some user
+function reformatPostUserData(jsonData)
+{
+    var temp = jsonData.Posts;
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+    var result = [];
+    var i;
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["day"]);
+        dataElement.push(temp[i]["posts"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+function drawPostUserChart() {
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/posts/date/user/"+ $routeParams.uid,
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log($routeParams.uid);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Days');
+    data.addColumn('number', 'Number of Post');
+    data.addRows(reformatPostUserData(JSON.parse(jsonData)));
+    var options = {
+        title: 'Posts per day by this user',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Total Posts',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Day'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('postPerDayByUser'));
+    chart.draw(data, options);
+}
+
+//RepliesPerPost
+function reformatRepliesPerPostData(jsonData){
+    var temp = jsonData.Replies;
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+
+    var result = [];
+    var i;
+
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["post"]);
+        dataElement.push(temp[i]["replies"]);
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+
+function drawRepliesPerPostChart() {
+    var jsonData = $.ajax({
+        url: "http://127.0.0.1:5000/GramChat/posts/replies",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Post');
+    data.addColumn('number', 'Replies');
+    data.addRows(reformatRepliesPerPostData(JSON.parse(jsonData)));
+
+    var options = {
+        title: 'Replies Per Post',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Replies Per Post',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'RepliesPerPost'
+        }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('repliesPerPost'));
+
+    chart.draw(data, options);
+
+}
+
 // //Likes Per Post
 // function reformatLikesPerPostData(jsonData){
 //     var temp = jsonData.Reaction;

@@ -83,6 +83,12 @@ class PostHandler:
         result['replies'] = row[1]
         return result
 
+    def build_post_replies(self, row):
+        result = {}
+        result['post'] = row[0]
+        result['replies'] = row[1]
+        return result
+
     def getAllPosts(self):
         dao = PostsDAO()
         posts_list = dao.getAllPosts()
@@ -323,6 +329,14 @@ class PostHandler:
         replies = []
         for r in result:
             replies.append(self.build_post_query(r))
+        return jsonify(Replies=replies)
+
+    def getNumberOfPostReplies(self):
+        dao = PostsDAO()
+        result = dao.getNumberOfPostReplies()
+        replies = []
+        for r in result:
+            replies.append(self.build_post_replies(r))
         return jsonify(Replies=replies)
 
     def getAllPostWebsite(self):

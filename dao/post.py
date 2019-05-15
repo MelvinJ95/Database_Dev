@@ -113,6 +113,15 @@ class PostsDAO:
             result.append(row)
         return result
 
+    def getNumberOfPostReplies(self):
+        cursor = self.conn.cursor()
+        query = "select pid, count(rid) from posts, reply where pid = post_id group by pid order by pid;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getReactionsByPost(self, pid, reaction):
         cursor = self.conn.cursor()
         query = "select reaction count(*) from posts inner natural join reactions where pid = %s and reaction = %s group by reaction;" #TO BE TESTED
