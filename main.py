@@ -258,7 +258,6 @@ def getAllDislikes():
 def getLikesbyPostID(PID):
     return ReactionHandler().getLikesByPostId(PID)
 
-
 @app.route('/GramChat/reactions/delete/<int:uid>/<int:pid>', methods=['DELETE'])
 def deleteReaction(pid,uid):
     return ReactionHandler().deleteReactionByPidAndUid(pid,uid)
@@ -284,9 +283,9 @@ def getHashtags():
     else:
         return HashtagHandler().getAllHashtags()
 
-@app.route('/GramChat/posts/user/<int:uid>/date/<string:date>')
-def getPostsPerDayByUser(uid, date):
-    return PostHandler().getPostsPerDayByUser(uid, date)
+@app.route('/GramChat/posts/date/user/<int:uid>')
+def getPostsPerDayByUser(uid):
+    return PostHandler().getPostsPerDayByUser(uid)
 
 @app.route('/GramChat/users/active')
 def getActiveUsers():
@@ -319,6 +318,18 @@ def getUsersDislike(pid):
 @app.route('/GramChat/chat/owner/<int:cid>', methods=['GET'])
 def chatOwner(cid):
     return UserHandler().chatOwner(cid)
+
+@app.route('/GramChat/likes/date')
+def getLikesPerDay():
+    return ReactionHandler().getLikesPerDay()
+
+@app.route('/GramChat/dislikes/date')
+def getDislikesPerDay():
+    return ReactionHandler().getDislikesPerDay()
+
+@app.route('/GramChat/replies/date')
+def getRepliesPerDay():
+    return PostHandler().getNumberOfRepliesPerDay()
 
 
 def allowed_file(filename):

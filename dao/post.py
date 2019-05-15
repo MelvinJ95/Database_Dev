@@ -72,10 +72,19 @@ class PostsDAO:
             result.append(row)
         return result
 
-    def getPostsPerDayByUser(self, uid, pdate):
+    # def getPostsPerDayByUser(self, uid, pdate):
+    #     cursor = self.conn.cursor()
+    #     query = "select * from posts where uid = %s and pdate = %s;"
+    #     cursor.execute(query, (uid, pdate))
+    #     result = []
+    #     for row in cursor:
+    #         result.append(row)
+    #     return result
+
+    def getPostsPerDayByUser(self, uid):
         cursor = self.conn.cursor()
-        query = "select * from posts where uid = %s and pdate = %s;"
-        cursor.execute(query, (uid, pdate))
+        query = "select pdate, count(pdate) from posts where uid = %s group by pdate;"
+        cursor.execute(query, (uid,))
         result = []
         for row in cursor:
             result.append(row)
@@ -88,7 +97,16 @@ class PostsDAO:
 
     def getNumberOfPostsPerDay(self):
         cursor = self.conn.cursor()
-        query = "select pdate, count(*) from posts group by pdate;" #TO BE TESTED
+        query = "select pdate, count(*) from posts group by pdate;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getNumberOfRepliesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select pdate, count(*) from posts as p, reply as r where p.pid = r.rid group by pdate;"
         cursor.execute(query)
         result = []
         for row in cursor:
