@@ -28,6 +28,18 @@ class ReactionHandler:
         result['likes'] = row[1]
         return result
 
+    def build_likeperday(self,row):
+        result = {}
+        result['date'] = row[0]
+        result['likes'] = row[1]
+        return result
+
+    def build_dislikeperday(self,row):
+        result = {}
+        result['date'] = row[0]
+        result['dislikes'] = row[1]
+        return result
+
     def buildDislike(self,row):
         result = {}
         result['pid'] = row[0]
@@ -186,3 +198,20 @@ class ReactionHandler:
         #print(self.build_reaction_counts(result))
         return jsonify(reactionCounts = self.build_reaction_counts(result)), 200
 
+    def getLikesPerDay(self):
+        dao = ReactionsDAO()
+        likes_list = dao.getLikesPerDay()
+        result_list = []
+        for row in likes_list:
+            result = self.build_likeperday(row)
+            result_list.append(result)
+        return jsonify(Reactions=result_list)
+
+    def getDislikesPerDay(self):
+        dao = ReactionsDAO()
+        likes_list = dao.getDislikesPerDay()
+        result_list = []
+        for row in likes_list:
+            result = self.build_dislikeperday(row)
+            result_list.append(result)
+        return jsonify(Reactions=result_list)

@@ -7,7 +7,7 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
         this.loadMainPage = function(){
             thisCtrl.uid = $routeParams.uid;
 	
-            var reqURL = "http://localhost:5000/GramChat/users/chats/" + thisCtrl.uid;
+            var reqURL = "http://localhost:5000/GramChat/user/chats/" + thisCtrl.uid;
             console.log("reqURL: " + reqURL);
 
             $http.get(reqURL).then(
@@ -40,20 +40,25 @@ angular.module('AppChat').controller('MainPageController', ['$http', '$log', '$s
 
 	this.goToAddChatPage = function(){
 		$location.path('/addChat/'+thisCtrl.uid);
-	}
+	};
 	
 	this.goToAddContactPage = function(){
 		$location.path('/addContact/'+thisCtrl.uid);
-	}
+	};
 
 	this.chatpage = function (cid){
 	        console.log("Going to message page for group: " + cid);
             $location.path('/chat/' + cid + '/' + thisCtrl.uid);
-        }
+	};
     this.removeContact = function(){
         $location.path('/removeContact/'+thisCtrl.uid);
-
-    }
+    };
+    this.removeChat = function(){
+        $location.path('/removeChat/'+thisCtrl.uid);
+    };
+    this.goToDashboard = function () {
+        $location.path('/dashboard/'+thisCtrl.uid)
+    };
 
 	this.loadMainPage();
 }]);

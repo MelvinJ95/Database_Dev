@@ -4,14 +4,14 @@
     <div class="card">
 		<div class="card-action">
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goHome()">Home
-                <i class="material-icons right">link</i>
+                <i class="material-icons right">home</i>
                 </button>
         
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goToAddParticipant()">Add New Participant
-                    <i class="material-icons right">link</i>
+                    <i class="material-icons right">add_circle</i>
                     </button>
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.goToRemoveParticipant()">Remove Participant
-                    <i class="material-icons right">link</i>
+                    <i class="material-icons right">remove_circle</i>
                     </button>
             <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.loadMessagesByHashtag()">Search By Hashtag
                         <i class="material-icons right">search</i>
@@ -28,14 +28,27 @@
                 <div class="card-content ">
                     <i class="material-icons prefix" style="color: white">mode_edit</i> <span text-white style="font-size:larger; color:white">Message:</span>
                      <textarea style="background: white" id="textarea1" class="materialize-textarea" ng-model="vm.newText"></textarea>
-                    <span text-white style="font-size:larger; color:white">Image:</span>
-                     <form><br><input type="text" name="imagepath" class="materialize-textarea" ng-model="vm.im"><br></form>
+                   
+                   <!---  <i style="color: white"></i> <span text-white style="font-size:larger; color:white">Image:</span>
+                     <form><input type="text" ><br></form> --> 
                 </div>
                 <div class="card-action white">
-                    <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Enviar
+                        <style>
+                                .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
+                              </style>
+                              
+                              <iframe name="hiddenFrame" class="hide"></iframe>
+                        <form action=" http://localhost:5000/GramChat/upload" method="POST" target="hiddenFrame" enctype="multipart/form-data">
+                        <label class="btn btn-default btn-file">
+                            Browse <input type="file" name="file" id = "file" onchange="angular.element(this).scope().photoChanged(this.files)" style="display: none;">
+                        </label>{{filename}}
+                    <button class="btn waves-effect waves-light " type="submit" name="action" ng-click="vm.postMsg()">Send
                     <i class="material-icons right">send</i>
                     </button>
+                        </form>
                 </div>
+               
+           
             </div>
         </div>
 
@@ -62,7 +75,7 @@
                         </div>
                         <div class="card-action">
                             <a class="btn-floating btn-small waves-effect waves-light blue">
-				<button class="btn-floating btn-small waves-effect waves-light blue" type="submit" name="action" ng-click="vm.like($index, m.pid)"> 
+				<button class="btn-floating btn-small waves-effect waves-light blue" type="submit" name="action" ng-click="vm.like($index, m.pid)">
 				<i class="material-icons">thumb_up</i>
 				</button>
 			    </a> 
@@ -77,7 +90,7 @@
                         <i class="material-icons right">reply</i>
                         </button>
                             <button class="btn waves-effect waves-light blue " type="submit" name="action" ng-click="vm.viewReaction(m.pid)">View
-                        <i class="material-icons right">link</i>
+                        <i class="material-icons right">open_in_new</i>
                         </button>
                         </div>
                     </div>

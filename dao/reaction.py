@@ -55,6 +55,15 @@ class ReactionsDAO:
         #result = cursor.fetchone()
         return result
 
+    def getLikesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select rdate, count(reaction) from reactions where reaction = 'like' group by rdate;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getAllDislikes(self):
         cursor = self.conn.cursor()
         query = "select * from reactions where reaction = 'dislike';"
@@ -63,6 +72,15 @@ class ReactionsDAO:
         for row in cursor:
             result.append(row)
         # result = cursor.fetchone()
+        return result
+
+    def getDislikesPerDay(self):
+        cursor = self.conn.cursor()
+        query = "select rdate, count(reaction) from reactions where reaction = 'dislike' group by rdate order by rdate;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def insert(self, rdate, reaction, pid, uid):

@@ -265,3 +265,12 @@ class UserHandler:
             result = self.build_user_chats(row)
             result_list.append(result)
         return jsonify(Chats=result_list)
+
+    def getAllUserChats(self,uid):
+        dao = UsersDAO()
+        user_list = dao.getAllUserChats(uid)
+        result_list = []
+        for row in user_list:
+            result = self.build_user_chats(row)
+            result_list.append(result)
+        return jsonify(Chats=result_list)

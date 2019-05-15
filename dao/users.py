@@ -70,7 +70,7 @@ class UsersDAO:
 
     def getUsersByChat(self, cid):
         cursor = self.conn.cursor()
-        query = "select * from users natural inner join members where cid = %s;"
+        query = "select * from users, members where users.uid = members.user_id and cid = %s;"
         cursor.execute(query, (cid,))
         result = []
         for row in cursor:
@@ -113,7 +113,7 @@ class UsersDAO:
 
     def getUserChats(self,uid):
         cursor = self.conn.cursor()
-        query = "select cid, cname from users natural inner join chats where uid = user_id and uid = %s;"
+        query = "select cid, cname from users natural inner join chats where uid = uid and uid = %s;"
         cursor.execute(query, (uid,))
         result = []
         for row in cursor:
@@ -125,4 +125,13 @@ class UsersDAO:
         query = "select username, upassword from users where username = %s and upassword = %s;"
         cursor.execute(query, (username, password, ))
         result = cursor.fetchone()
+        return result
+
+    def getAllUserChats(self, uid):
+        cursor = self.conn.cursor()
+        query = "select cid, cname from chats natural inner join members where user_id = %s;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
