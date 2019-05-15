@@ -280,10 +280,20 @@ class PostHandler:
         #print(self.build_post_counts(result))
         return jsonify(PostCounts = self.build_post_counts(result)), 200
 
+    def build_active_counts(self, post_counts):
+        result = []
+        #print(post_counts)
+        for P in post_counts:
+            D = {}
+            D['name'] = P[0]
+            D['count'] = P[1]
+            result.append(D)
+        return result
+
     def getActiveUsers(self):
         dao = PostsDAO()
         result = dao.getActiveUsers()
-        return result
+        return jsonify(Activity = self.build_active_counts(result)), 200
 
     def addLike(self, pid, reaction):
         dao = PostsDAO()

@@ -15,10 +15,10 @@ google.charts.setOnLoadCallback(drawPostChart);
 google.charts.setOnLoadCallback(drawRepliesChart);
 google.charts.setOnLoadCallback(drawLikesChart);
 google.charts.setOnLoadCallback(drawDislikesChart);
+google.charts.setOnLoadCallback(drawActiveUsersChart);
 // // google.charts.setOnLoadCallback(drawRepliesPerPostChart);
 // google.charts.setOnLoadCallback(drawLikesPerPostChart);
 // google.charts.setOnLoadCallback(drawDislikesPerPostChart);
-// google.charts.setOnLoadCallback(drawTopThreeActiveUsersChart);
 
 // Hashtags
 function reformatHashtagsData(jsonData){
@@ -266,209 +266,96 @@ function drawDislikesChart() {
     chart.draw(data, options);
 }
 
-// //Todavia no hemos hecho esto
-// //RepliesPerPost
-// // function reformatRepliesPerPostData(jsonData){
-// //     var temp = jsonData.RepliesPerPost;
-// //     console.log(temp)
-// //     console.log("temp: " + JSON.stringify(temp));
-// //
-// //     var result = [];
-// //     var i;
-// //
-// //     for(i=0; i < temp.length && i < 10; i++) {
-// //         dataElement = [];
-// //         dataElement.push(temp[i]["post"]);
-// //         dataElement.push(temp[i]["replies"]);
-// //         result.push(dataElement);
-// //     }
-// //     console.log(result);
-// //     return result;
-// // }
-// //
-// //
-// // function drawRepliesPerPostChart() {
-// //     var jsonData = $.ajax({
-// //         url: "http://127.0.0.1:5000/Pictochat/dashboard/post/replies",
-// //         dataType: "json",
-// //         async: false
-// //     }).responseText;
-// //     console.log(jsonData);
-// //     console.log("jsonData: " + JSON.parse(jsonData));
-// //
-// //     // Create our data table out of JSON data loaded from server.
-// //     var data = new google.visualization.DataTable();
-// //     data.addColumn('string', 'post_name');
-// //     data.addColumn('number', 'total_replies');
-// //     data.addRows(reformatRepliesPerPostData(JSON.parse(jsonData)));
-// //
-// //     var options = {
-// //         title: 'Replies Per Post',
-// //         chartArea: {width: '800px'},
-// //         hAxis: {
-// //             title: 'Replies Per Post',
-// //             minValue: 0
-// //         },
-// //         vAxis: {
-// //             title: 'RepliesPerPost'
-// //         }
-// //     };
-// //
-// //     var chart = new google.charts.Bar(document.getElementById('repliesPerPost'));
-// //
-// //     chart.draw(data, options);
-// //
-// // }
-//
-// //Likes Per Post
-// function reformatLikesPerPostData(jsonData){
-//     var temp = jsonData.Reaction;
-//     console.log(temp)
-//     console.log("temp: " + JSON.stringify(temp));
-//
-//     var result = [];
-//     var i;
-//
-//     for(i=0; i < temp.length && i < 10; i++) {
-//         dataElement = [];
-//         dataElement.push(temp[i]["pid"]);
-//         dataElement.push(temp[i]["likes"]);
-//         result.push(dataElement);
-//     }
-//     console.log(result);
-//     return result;
-// }
-//
-//
-// function drawLikesPerPostChart() {
-//     var jsonData = $.ajax({
-//         url: "http://localhost:5000/chatGroup/Likes/Post",
-//         dataType: "json",
-//         async: false
-//     }).responseText;
-//     console.log(jsonData);
-//     console.log("jsonData: " + JSON.parse(jsonData));
-//     // Create our data table out of JSON data loaded from server.
-//     var data = new google.visualization.DataTable();
-//     data.addColumn('string', 'post_name');
-//     data.addColumn('number', 'total_likes');
-//     data.addRows(reformatLikesPerPostData(JSON.parse(jsonData)));
-//
-//     var options = {
-//         title: 'Likes Per Post',
-//         chartArea: {width: '800px'},
-//         hAxis: {
-//             title: 'Likes Per Post',
-//             minValue: 0
-//         },
-//         vAxis: {
-//             title: 'LikesPerPost'
-//         }
-//     };
-//     var chart = new google.charts.Bar(document.getElementById('likesPerPost'));
-//     chart.draw(data, options);
-// }
-//
-//
-// //Dislikes Per Post
-// function reformatDislikesPerPostData(jsonData){
-//     var temp = jsonData.Dashboard; //aqui va dashboard?
-//     console.log(temp)
-//     console.log("temp: " + JSON.stringify(temp));
-//
-//     var result = [];
-//     var i;
-//
-//     for(i=0; i < temp.length && i < 10; i++) {
-//         dataElement = [];
-//         dataElement.push(temp[i]["post"]);
-//         dataElement.push(temp[i]["dislikes"]);
-//         result.push(dataElement);
-//     }
-//     console.log(result);
-//     return result;
-// }
-//
-//
-// function drawDislikesPerPostChart() {
-//     var jsonData = $.ajax({
-//         url: "http://localhost:5000/chatGroup/Dislikes/Post",
-//         dataType: "json",
-//         async: false
-//     }).responseText;
-//     console.log(jsonData);
-//     console.log("jsonData: " + JSON.parse(jsonData));
-//
-//     // Create our data table out of JSON data loaded from server.
-//     var data = new google.visualization.DataTable();
-//     data.addColumn('string', 'post_name');
-//     data.addColumn('number', 'total_dislikes');
-//     data.addRows(reformatDislikesPerPostData(JSON.parse(jsonData)));
-//
-//     var options = {
-//         title: 'Dislikes Per Post',
-//         chartArea: {width: '800px'},
-//         hAxis: {
-//             title: 'Dislikes Per Post',
-//             minValue: 0
-//         },
-//         vAxis: {
-//             title: 'DislikesPerPost'
-//         }
-//     };
-//     var chart = new google.charts.Bar(document.getElementById('dislikesPerPost'));
-//     chart.draw(data, options);
-// }
-//
-// //TopThreeActiveUsers
-// function reformatTopThreeActiveUsersData(jsonData){
-//     var temp = jsonData.Dashboard;
-//     console.log(temp)
-//     console.log("temp: " + JSON.stringify(temp));
-//
-//     var result = [];
-//     var i;
-//
-//     for(i=0; i < temp.length && i < 10; i++) {
-//         dataElement = [];
-//         dataElement.push(temp[i]["username"]);
-//         dataElement.push(temp[i]["total_posts"]);
-//         result.push(dataElement);
-//     }
-//     console.log(result);
-//     return result;
-// }
-//
-//
-// function drawTopThreeActiveUsersChart() {
-//     var jsonData = $.ajax({
-//         url: "http://localhost:5000/chatGroup/Post/Active/User",
-//         dataType: "json",
-//         async: false
-//     }).responseText;
-//     console.log(jsonData);
-//     console.log("jsonData: " + JSON.parse(jsonData));
-//
-//     // Create our data table out of JSON data loaded from server.
-//     var data = new google.visualization.DataTable();
-//     data.addColumn('string', 'username');
-//     data.addColumn('number', 'activity');
-//     data.addRows(reformatTopThreeActiveUsersData(JSON.parse(jsonData)));
-//
-//     var options = {
-//         title: 'TopThreeActiveUsers',
-//         chartArea: {width: '800px'},
-//         hAxis: {
-//             title: 'TopThreeActiveUsers',
-//             minValue: 0
-//         },
-//         vAxis: {
-//             title: 'TopThreeActiveUsers'
-//         }
-//     };
-//     var chart = new google.charts.Bar(document.getElementById('topThreeActiveUsers'));
-//     chart.draw(data, options);
-// }
+function reformatActiveUsersData(jsonData){
+    // var temp = jsonData.Active;
+    // console.log(temp)
+    // console.log("temp: " + JSON.stringify(temp));
+    //
+    // var result = [];
+    // var i;
+    //
+    // for(i=0; i < temp.length && i < 10; i++) {
+    //     dataElement = [];
+    //     dataElement.push(temp[i]["username"]);
+    //     dataElement.push(temp[i]["total_posts"]);
+    //     result.push(dataElement);
+    // }
+    // console.log(result);
+    // return result;
+    var temp = jsonData.Activity;
+    console.log(temp);
+    console.log("temp: " + JSON.stringify(temp));
+
+    var result = [];
+    var i;
+
+    for(i=0; i < temp.length && i < 10; i++) {
+        dataElement = [];
+        dataElement.push(temp[i]["user"]);
+        dataElement.push(temp[i]["activity"]);    //Creo que tenemos en el primer row el count y el segundo el date. Aqui esta al contrario
+        result.push(dataElement);
+    }
+    console.log(result);
+    return result;
+}
+
+
+function drawActiveUsersChart() {
+    // var jsonData = $.ajax({
+    //     url: "http://localhost:5000/GramChat/users/active",
+    //     dataType: "json",
+    //     async: false
+    // }).responseText;
+    // console.log(jsonData);
+    // console.log("jsonData: " + JSON.parse(jsonData));
+    //
+    // Create our data table out of JSON data loaded from server.
+    // var data = new google.visualization.DataTable();
+    // data.addColumn('string', 'username');
+    // data.addColumn('number', 'activity');
+    // data.addRows(reformatActiveUsersData(JSON.parse(jsonData)));
+    //
+    // var options = {
+    //     title: 'Top Active Users',
+    //     chartArea: {width: '800px'},
+    //     hAxis: {
+    //         title: 'Top Active Users',
+    //         minValue: 0
+    //     },
+    //     vAxis: {
+    //         title: 'Top Active Users'
+    //     }
+    // };
+    // var chart = new google.charts.Bar(document.getElementById('topActiveUsers'));
+    // chart.draw(data, options);
+
+    var jsonData = $.ajax({
+        url: "http://localhost:5000/GramChat/users/active",
+        dataType: "json",
+        async: false
+    }).responseText;
+    console.log(jsonData);
+    console.log("jsonData: " + JSON.parse(jsonData));
+
+    // Create our data table out of JSON data loaded from server.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'User');
+    data.addColumn('number', 'Number of Post');
+    data.addRows(reformatActiveUsersData(JSON.parse(jsonData)));
+    var options = {
+        title: 'Top users',
+        chartArea: {width: '800px'},
+        hAxis: {
+            title: 'Users',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Posts'
+        }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('topUsers'));
+    chart.draw(data, options);
+}
         this.goHome = function(){
             thisCtrl.uid = $routeParams.uid;
             $location.path('/main/'+$routeParams.uid);

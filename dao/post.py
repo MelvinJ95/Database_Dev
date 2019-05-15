@@ -91,8 +91,13 @@ class PostsDAO:
         return result
 
     def getActiveUsers(self):
-        global result
-        result = "Active users shown here."
+        cursor = self.conn.cursor()
+        query = "select username, (select COUNT(*) from posts where U.uid = posts.uid) as total_post " \
+                "from  users as U group by username, uid order by total_post desc;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getNumberOfPostsPerDay(self):
@@ -159,16 +164,6 @@ class PostsDAO:
             result.append(row)
         print(result)
         return result
-
-    # def getAllReplies(self, pid):
-    #     cursor = self.conn.cursor()
-    #     query = "select * from posts natural inner join reply where pid = rid and post_id = %s;"
-    #     cursor.execute(query, (pid,))
-    #     result =[]
-    #     for row in cursor:
-    #         result.append(row)
-    #     print(result)
-    #     return result
         
     def getPostsByHashtag(self,cid,hashtag):
         hashtag = '#'+hashtag
