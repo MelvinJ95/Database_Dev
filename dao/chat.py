@@ -65,7 +65,7 @@ class ChatDAO:
     
     def removeMember(self, cid, uid):
         cursor = self.conn.cursor()
-        query = "delete from members where cid = %s and uid = %s;"
+        query = "delete from members where cid = %s and user_id = %s;"
         cursor.execute(query, (cid, uid,))
         self.conn.commit()
         return cid
